@@ -1,0 +1,64 @@
+/**
+ * Page Custom (Full Width) Styles
+ *
+ * Template for landing pages with full-width blocks.
+ * Each block controls its own container/full-width layout.
+ *
+ * @package sarika
+ */
+
+.page-custom {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+
+	// Remove default page spacing
+	.page-custom__article {
+		margin: 0;
+		padding: 0;
+	}
+
+	// Header with hidden title & breadcrumb
+	.page-custom__header {
+		// Title hidden visually but accessible for SEO & screen readers
+		.page-custom__title {
+			// Uses .sr-only utility class from _utilities.scss
+			// position: absolute; width: 1px; height: 1px; overflow: hidden;
+		}
+
+		// Breadcrumb hidden visually but in DOM for SEO
+		.page-custom__breadcrumb {
+			// Uses .sr-only utility class from _utilities.scss
+		}
+	}
+
+	// Content area - full width, no container
+	.page-custom__content {
+		width: 100%;
+		margin: 0;
+		padding: 0;
+
+		// Remove default WordPress content spacing
+		> * {
+			margin: 0;
+		}
+
+		// Ensure blocks don't have default margins
+		.wp-block-sarika-hero {
+			margin: 0;
+		}
+	}
+}
+
+/**
+ * Editor Styles for Page Custom Template
+ * Applied when editing pages with "Page Custom" template
+ */
+.editor-styles-wrapper {
+	.page-template-page-custom & {
+		// Remove editor container padding for full-width preview
+		padding-left: 0;
+		padding-right: 0;
+		max-width: none;
+	}
+}

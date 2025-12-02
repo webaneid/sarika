@@ -1,0 +1,285 @@
+/**
+ * Button Styles
+ *
+ * Base button class with variations.
+ * Capsule/pill shape with consistent styling.
+ *
+ * @package sarika
+ */
+
+/**
+ * Base Button Class
+ * Use: <a class="btn btn--primary">Text</a>
+ */
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	padding: 0.875rem 2rem;
+	font-size: 1rem;
+	font-weight: 600;
+	line-height: 1.5;
+	text-align: center;
+	text-decoration: none;
+	white-space: nowrap;
+	border: 2px solid transparent;
+	border-radius: 9999px; // Capsule/pill shape
+	cursor: pointer;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	font-family: inherit;
+	user-select: none;
+
+	// Remove default button styles
+	appearance: none;
+	background-image: none;
+	outline: none;
+
+	// Hover state
+	&:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	}
+
+	// Active state
+	&:active {
+		transform: translateY(0);
+	}
+
+	// Focus state (accessibility)
+	&:focus-visible {
+		outline: 2px solid var(--sarika-color-accent);
+		outline-offset: 2px;
+	}
+
+	// Disabled state
+	&:disabled,
+	&.btn--disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+		pointer-events: none;
+	}
+
+	// Icon support
+	svg {
+		width: 1.25rem;
+		height: 1.25rem;
+		flex-shrink: 0;
+	}
+}
+
+/**
+ * Button Variations
+ */
+
+// Primary Button
+.btn--primary {
+	background: var(--sarika-color-primary);
+	color: var(--sarika-color-light) !important;
+	border-color: var(--sarika-color-primary);
+
+	&:hover {
+		background: rgba(var(--sarika-color-primary-rgb), 0.9);
+		border-color: rgba(var(--sarika-color-primary-rgb), 0.9);
+		color: var(--sarika-color-light);
+	}
+}
+
+// Primary Outline Button
+.btn--primary-outline {
+	background: transparent;
+	color: var(--sarika-color-primary);
+	border-color: var(--sarika-color-primary);
+
+	&:hover {
+		background: var(--sarika-color-primary);
+		color: var(--sarika-color-light);
+	}
+}
+
+// White Button
+.btn--white {
+	background: var(--sarika-color-white);
+	color: var(--sarika-color-body) !important;
+	border-color: var(--sarika-color-white);
+
+	&:hover {
+		background: rgba(var(--sarika-color-white-rgb), 0.95);
+		border-color: rgba(var(--sarika-color-white-rgb), 0.95);
+		color: var(--sarika-color-body);
+	}
+}
+
+// White Outline Button
+.btn--white-outline {
+	background: transparent;
+	color: var(--sarika-color-white) !important;
+	border-color: var(--sarika-color-white);
+
+	&:hover {
+		background: var(--sarika-color-white);
+		color: var(--sarika-color-body);
+	}
+}
+
+// Dark Button
+.btn--dark {
+	background: var(--sarika-color-dark);
+	color: var(--sarika-color-white) !important;
+	border-color: var(--sarika-color-dark);
+
+	&:hover {
+		background: rgba(var(--sarika-color-dark-rgb), 0.9);
+		border-color: rgba(var(--sarika-color-dark-rgb), 0.9);
+		color: var(--sarika-color-white);
+	}
+}
+
+// Dark Outline Button
+.btn--dark-outline {
+	background: transparent;
+	color: var(--sarika-color-dark) !important;
+	border-color: var(--sarika-color-dark);
+
+	&:hover {
+		background: var(--sarika-color-dark);
+		color: var(--sarika-color-white);
+	}
+}
+
+// Secondary Button
+.btn--secondary {
+	background: var(--sarika-color-secondary);
+	color: var(--sarika-color-light) !important;
+	border-color: var(--sarika-color-secondary);
+
+	&:hover {
+		background: rgba(var(--sarika-color-secondary-rgb), 0.9);
+		border-color: rgba(var(--sarika-color-secondary-rgb), 0.9);
+		color: var(--sarika-color-light);
+	}
+}
+
+// Secondary Outline Button
+.btn--secondary-outline {
+	background: transparent;
+	color: var(--sarika-color-secondary);
+	border-color: var(--sarika-color-secondary);
+
+	&:hover {
+		background: var(--sarika-color-secondary);
+		color: var(--sarika-color-light);
+	}
+}
+
+// Accent Button
+.btn--accent {
+	background: var(--sarika-color-accent);
+	color: var(--sarika-color-body);
+	border-color: var(--sarika-color-accent);
+
+	&:hover {
+		background: rgba(var(--sarika-color-accent-rgb), 0.9);
+		border-color: rgba(var(--sarika-color-accent-rgb), 0.9);
+		color: var(--sarika-color-body);
+	}
+}
+
+// Accent Outline Button
+.btn--accent-outline {
+	background: transparent;
+	color: var(--sarika-color-accent);
+	border-color: var(--sarika-color-accent);
+
+	&:hover {
+		background: var(--sarika-color-accent);
+		color: var(--sarika-color-body);
+	}
+}
+
+/**
+ * Button Sizes
+ */
+
+// Small Button
+.btn--sm {
+	padding: 0.625rem 1.5rem;
+	font-size: 0.875rem;
+
+	svg {
+		width: 1rem;
+		height: 1rem;
+	}
+}
+
+// Large Button
+.btn--lg {
+	padding: 1.125rem 2.5rem;
+	font-size: 1.125rem;
+
+	svg {
+		width: 1.5rem;
+		height: 1.5rem;
+	}
+}
+
+// Extra Large Button
+.btn--xl {
+	padding: 1.25rem 3rem;
+	font-size: 1.25rem;
+
+	svg {
+		width: 1.75rem;
+		height: 1.75rem;
+	}
+}
+
+/**
+ * Button Widths
+ */
+
+// Full Width Button
+.btn--full {
+	width: 100%;
+}
+
+// Block Button (full width on mobile, auto on desktop)
+.btn--block {
+	width: 100%;
+
+	@media (min-width: 768px) {
+		width: auto;
+	}
+}
+
+/**
+ * Button Groups
+ */
+.btn-group {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	align-items: center;
+
+	// Center aligned group
+	&.btn-group--center {
+		justify-content: center;
+	}
+
+	// Right aligned group
+	&.btn-group--right {
+		justify-content: flex-end;
+	}
+
+	// Responsive: stack on mobile
+	&.btn-group--stack {
+		@media (max-width: 767px) {
+			flex-direction: column;
+			width: 100%;
+
+			.btn {
+				width: 100%;
+			}
+		}
+	}
+}

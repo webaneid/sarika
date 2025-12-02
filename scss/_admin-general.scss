@@ -1,0 +1,45 @@
+@media screen and (max-width: 600px) {
+  #wpbody {
+    padding-top: 0px !important;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    &::before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      content: '';
+      display: block;
+      width: 100%;
+      height: 30vh;
+      background-color: var(--sarika-color-primary);
+      background: linear-gradient(180deg,rgba(var(--sarika-color-primary-rgb), 0.71) 50%, rgba(var(--sarika-color-white-rgb), 0) 100%);
+      z-index: 0;
+    }
+  }
+}
+@media screen and (max-width: 782px) {
+  body.admin-bar {
+    padding-top: 56px !important;
+  }
+}
+@media screen and (max-width: 782px) {
+  .wrap h1.wp-heading-inline {
+    color: var(--sarika-color-white);
+  }
+}
+
+.acf-fields.-border {
+  border-color: var(--sarika-color-light) !important;
+  border-width: 0 !important;
+  background: #fff;
+}
+.acf-fields > .acf-field {
+  border-top-width: 0 !important;
+}
+.acf-input .acf-fields > .acf-field {
+  padding: 0 0 20px;
+}
+.acf-field .acf-label label {
+  font-weight: 600;
+}

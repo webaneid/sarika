@@ -1,0 +1,352 @@
+/**
+ * Typography Scale System
+ *
+ * Consistent, responsive typography utilities.
+ * Use these classes throughout the theme for unified sizing.
+ *
+ * @package sarika
+ */
+
+/**
+ * 1. Title Hero
+ * Large hero headings (landing pages, hero sections)
+ * Desktop: 56px, Tablet: 40px, Mobile: 32px
+ */
+.title-hero {
+	font-size: 2rem;           // Mobile: 32px
+	font-weight: 700;
+	line-height: 1.2;
+	margin-bottom: 1.5rem;
+
+	@media (min-width: 768px) {
+		font-size: 2.5rem;     // Tablet: 40px
+	}
+
+	@media (min-width: 1024px) {
+		font-size: 3.5rem;     // Desktop: 56px
+	}
+}
+.title-tagline {
+	font-family: "Poppins", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif !important;
+}
+
+/**
+ * 2. Title Body
+ * Section headings (Services, About, Portfolio sections)
+ * Desktop: 40px, Tablet: 32px, Mobile: 28px
+ */
+
+.title-body {
+	font-size: 1.75rem;        // Mobile: 28px
+	font-weight: 700;
+	line-height: 1.3;
+	margin-bottom: 1.25rem;
+
+	@media (min-width: 768px) {
+		font-size: 2rem;       // Tablet: 32px
+	}
+
+	@media (min-width: 1024px) {
+		font-size: 2.5rem;     // Desktop: 40px
+	}
+}
+
+/**
+ * 3. Title Description
+ * Card titles, list headings, sub-sections
+ * Desktop: 24px, Tablet: 20px, Mobile: 18px
+ */
+.title-desc {
+	font-size: 1.125rem;       // Mobile: 18px
+	font-weight: 600;
+	line-height: 1.4;
+	margin-bottom: 1rem;
+
+	@media (min-width: 768px) {
+		font-size: 1.25rem;    // Tablet: 20px
+	}
+
+	@media (min-width: 1024px) {
+		font-size: 1.5rem;     // Desktop: 24px
+	}
+}
+
+/**
+ * 4. Title Small
+ * Small section titles, overline text, labels
+ * Desktop: 20px, Tablet: 18px, Mobile: 16px
+ */
+.title-small {
+	font-size: 1rem;           // Mobile: 16px
+	font-weight: 600;
+	line-height: 1.4;
+	margin-bottom: 0.75rem;
+	color: var(--sarika-color-primary);
+
+	@media (min-width: 768px) {
+		font-size: 1.125rem;   // Tablet: 18px
+	}
+
+	@media (min-width: 1024px) {
+		font-size: 1.25rem;    // Desktop: 20px
+	}
+}
+
+/**
+ * 5. Description / Body Text
+ * Paragraphs, descriptions, general content
+ * Desktop: 18px, Tablet & Mobile: 16px
+ */
+.desc {
+	font-size: 1rem;           // Mobile & Tablet: 16px
+	font-weight: 400;
+	line-height: 1.6;
+	margin-bottom: 1rem;
+
+	@media (min-width: 1024px) {
+		font-size: 1.125rem;   // Desktop: 18px
+	}
+}
+
+/**
+ * Typography Utilities - Text Colors
+ * Use with typography classes for consistent coloring
+ */
+.text-primary {
+	h1, h2, h3, h4, h5, p {
+		color: var(--sarika-color-primary) !important;
+	}
+}
+
+.text-secondary {
+	h1, h2, h3, h4, h5, p {
+		color: var(--sarika-color-secondary) !important;
+	}
+}
+
+.text-body {
+	color: var(--sarika-color-body);
+}
+
+.text-light {
+	color: var(--sarika-color-light);
+}
+
+.text-dark {
+	h1, h2, h3, h4, h5, p {
+		color: var(--sarika-color-dark) !important;
+	}
+	
+}
+
+.text-white {
+	h1, h2, h3, h4, h5, p {
+	color: var(--sarika-color-white) !important;
+	}
+}
+
+.text-black {
+	h1, h2, h3, h4, h5, p {
+	color: var(--sarika-color-black) !important;
+	}
+}
+
+/**
+ * Typography Utilities - Text Alignment (Responsive)
+ */
+.text-left {
+	text-align: left;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.text-right {
+	text-align: right;
+}
+
+// Responsive text alignment
+@media (min-width: 768px) {
+	.md\:text-left {
+		text-align: left;
+	}
+
+	.md\:text-center {
+		text-align: center;
+	}
+
+	.md\:text-right {
+		text-align: right;
+	}
+}
+
+@media (min-width: 1024px) {
+	.lg\:text-left {
+		text-align: left;
+	}
+
+	.lg\:text-center {
+		text-align: center;
+	}
+
+	.lg\:text-right {
+		text-align: right;
+	}
+}
+
+/**
+ * Typography Utilities - Font Weights
+ */
+.font-light {
+	font-weight: 300;
+}
+
+.font-normal {
+	font-weight: 400;
+}
+
+.font-medium {
+	font-weight: 500;
+}
+
+.font-semibold {
+	font-weight: 600;
+}
+
+.font-bold {
+	font-weight: 700;
+}
+
+/**
+ * Typography Utilities - Line Heights
+ */
+.leading-tight {
+	line-height: 1.2;
+}
+
+.leading-snug {
+	line-height: 1.3;
+}
+
+.leading-normal {
+	line-height: 1.5;
+}
+
+.leading-relaxed {
+	line-height: 1.6;
+}
+
+.leading-loose {
+	line-height: 1.8;
+}
+
+/**
+ * Typography Utilities - Text Transform
+ */
+.uppercase {
+	text-transform: uppercase;
+}
+
+.lowercase {
+	text-transform: lowercase;
+}
+
+.capitalize {
+	text-transform: capitalize;
+}
+
+/**
+ * Typography Utilities - Letter Spacing
+ */
+.tracking-tight {
+	letter-spacing: -0.025em;
+}
+
+.tracking-normal {
+	letter-spacing: 0;
+}
+
+.tracking-wide {
+	letter-spacing: 0.025em;
+}
+
+.tracking-wider {
+	letter-spacing: 0.05em;
+}
+
+/**
+ * Typography Utilities - Text Decoration
+ */
+.no-underline {
+	text-decoration: none;
+}
+
+.underline {
+	text-decoration: underline;
+}
+
+/**
+ * Typography Utilities - White Space
+ */
+.whitespace-normal {
+	white-space: normal;
+}
+
+.whitespace-nowrap {
+	white-space: nowrap;
+}
+
+.whitespace-pre-line {
+	white-space: pre-line;
+}
+
+/**
+ * Typography Utilities - Word Break
+ */
+.break-words {
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+}
+
+.break-all {
+	word-break: break-all;
+}
+
+/**
+ * Semantic HTML Auto-Styling for Page Custom
+ * Apply typography scale automatically to headings in custom pages
+ */
+.page-custom {
+
+	// Section titles (h2 in sections)
+	> section h2,
+	.wp-block h2 {
+		@extend .title-body;
+	}
+
+	// Card/list titles (h3)
+	> section h3,
+	.wp-block h3 {
+		@extend .title-desc;
+	}
+
+	// Descriptions (p)
+	> section p,
+	.wp-block p {
+		@extend .desc;
+	}
+}
+
+/**
+ * Usage Examples:
+ *
+ * <h1 class="title-hero">Hero Heading</h1>
+ * <h2 class="title-body text-primary">Section Title</h2>
+ * <h3 class="title-desc font-semibold">Card Title</h3>
+ * <p class="desc text-body leading-relaxed">Description text...</p>
+ *
+ * Or combine utilities:
+ * <h2 class="title-body text-center text-primary uppercase">Centered Section</h2>
+ */

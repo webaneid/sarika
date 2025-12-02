@@ -1,0 +1,2336 @@
+@charset "UTF-8";
+/**
+ * Editor Styles - Gutenberg Block Editor
+ *
+ * Custom typography dan styling untuk WordPress Editor
+ * agar match dengan frontend appearance.
+ *
+ * NOTE: CSS color variables (--sarika-color-*) di-inject via PHP
+ * dari ACF fields (inc/acf-layouts.php). Tidak pakai hardcoded _tokens.scss.
+ *
+ * SINGLE SOURCE OF TRUTH: All editor styles (typography, buttons, blocks)
+ * loaded from this file. No separate React block CSS to avoid conflicts.
+ */
+/* Import button styles - same as frontend */
+/**
+ * Button Styles
+ *
+ * Base button class with variations.
+ * Capsule/pill shape with consistent styling.
+ *
+ * @package sarika
+ */
+/**
+ * Base Button Class
+ * Use: <a class="btn btn--primary">Text</a>
+ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  border: 2px solid transparent;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+  user-select: none;
+  appearance: none;
+  background-image: none;
+  outline: none;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+.btn:active {
+  transform: translateY(0);
+}
+.btn:focus-visible {
+  outline: 2px solid var(--sarika-color-accent);
+  outline-offset: 2px;
+}
+.btn:disabled, .btn.btn--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.btn svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+}
+
+/**
+ * Button Variations
+ */
+.btn--primary {
+  background: var(--sarika-color-primary);
+  color: var(--sarika-color-light) !important;
+  border-color: var(--sarika-color-primary);
+}
+.btn--primary:hover {
+  background: rgba(var(--sarika-color-primary-rgb), 0.9);
+  border-color: rgba(var(--sarika-color-primary-rgb), 0.9);
+  color: var(--sarika-color-light);
+}
+
+.btn--primary-outline {
+  background: transparent;
+  color: var(--sarika-color-primary);
+  border-color: var(--sarika-color-primary);
+}
+.btn--primary-outline:hover {
+  background: var(--sarika-color-primary);
+  color: var(--sarika-color-light);
+}
+
+.btn--white {
+  background: var(--sarika-color-white);
+  color: var(--sarika-color-body) !important;
+  border-color: var(--sarika-color-white);
+}
+.btn--white:hover {
+  background: rgba(var(--sarika-color-white-rgb), 0.95);
+  border-color: rgba(var(--sarika-color-white-rgb), 0.95);
+  color: var(--sarika-color-body);
+}
+
+.btn--white-outline {
+  background: transparent;
+  color: var(--sarika-color-white) !important;
+  border-color: var(--sarika-color-white);
+}
+.btn--white-outline:hover {
+  background: var(--sarika-color-white);
+  color: var(--sarika-color-body);
+}
+
+.btn--dark {
+  background: var(--sarika-color-dark);
+  color: var(--sarika-color-white) !important;
+  border-color: var(--sarika-color-dark);
+}
+.btn--dark:hover {
+  background: rgba(var(--sarika-color-dark-rgb), 0.9);
+  border-color: rgba(var(--sarika-color-dark-rgb), 0.9);
+  color: var(--sarika-color-white);
+}
+
+.btn--dark-outline {
+  background: transparent;
+  color: var(--sarika-color-dark) !important;
+  border-color: var(--sarika-color-dark);
+}
+.btn--dark-outline:hover {
+  background: var(--sarika-color-dark);
+  color: var(--sarika-color-white);
+}
+
+.btn--secondary {
+  background: var(--sarika-color-secondary);
+  color: var(--sarika-color-light) !important;
+  border-color: var(--sarika-color-secondary);
+}
+.btn--secondary:hover {
+  background: rgba(var(--sarika-color-secondary-rgb), 0.9);
+  border-color: rgba(var(--sarika-color-secondary-rgb), 0.9);
+  color: var(--sarika-color-light);
+}
+
+.btn--secondary-outline {
+  background: transparent;
+  color: var(--sarika-color-secondary);
+  border-color: var(--sarika-color-secondary);
+}
+.btn--secondary-outline:hover {
+  background: var(--sarika-color-secondary);
+  color: var(--sarika-color-light);
+}
+
+.btn--accent {
+  background: var(--sarika-color-accent);
+  color: var(--sarika-color-body);
+  border-color: var(--sarika-color-accent);
+}
+.btn--accent:hover {
+  background: rgba(var(--sarika-color-accent-rgb), 0.9);
+  border-color: rgba(var(--sarika-color-accent-rgb), 0.9);
+  color: var(--sarika-color-body);
+}
+
+.btn--accent-outline {
+  background: transparent;
+  color: var(--sarika-color-accent);
+  border-color: var(--sarika-color-accent);
+}
+.btn--accent-outline:hover {
+  background: var(--sarika-color-accent);
+  color: var(--sarika-color-body);
+}
+
+/**
+ * Button Sizes
+ */
+.btn--sm {
+  padding: 0.625rem 1.5rem;
+  font-size: 0.875rem;
+}
+.btn--sm svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.btn--lg {
+  padding: 1.125rem 2.5rem;
+  font-size: 1.125rem;
+}
+.btn--lg svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.btn--xl {
+  padding: 1.25rem 3rem;
+  font-size: 1.25rem;
+}
+.btn--xl svg {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+/**
+ * Button Widths
+ */
+.btn--full {
+  width: 100%;
+}
+
+.btn--block {
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .btn--block {
+    width: auto;
+  }
+}
+
+/**
+ * Button Groups
+ */
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+.btn-group.btn-group--center {
+  justify-content: center;
+}
+.btn-group.btn-group--right {
+  justify-content: flex-end;
+}
+@media (max-width: 767px) {
+  .btn-group.btn-group--stack {
+    flex-direction: column;
+    width: 100%;
+  }
+  .btn-group.btn-group--stack .btn {
+    width: 100%;
+  }
+}
+
+/**
+ * Typography Scale System
+ *
+ * Consistent, responsive typography utilities.
+ * Use these classes throughout the theme for unified sizing.
+ *
+ * @package sarika
+ */
+/**
+ * 1. Title Hero
+ * Large hero headings (landing pages, hero sections)
+ * Desktop: 56px, Tablet: 40px, Mobile: 32px
+ */
+.title-hero {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+@media (min-width: 768px) {
+  .title-hero {
+    font-size: 2.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .title-hero {
+    font-size: 3.5rem;
+  }
+}
+
+.title-tagline {
+  font-family: "Poppins", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+
+/**
+ * 2. Title Body
+ * Section headings (Services, About, Portfolio sections)
+ * Desktop: 40px, Tablet: 32px, Mobile: 28px
+ */
+.title-body, .page-custom > section h2,
+.page-custom .wp-block h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 1.25rem;
+}
+@media (min-width: 768px) {
+  .title-body, .page-custom > section h2,
+  .page-custom .wp-block h2 {
+    font-size: 2rem;
+  }
+}
+@media (min-width: 1024px) {
+  .title-body, .page-custom > section h2,
+  .page-custom .wp-block h2 {
+    font-size: 2.5rem;
+  }
+}
+
+/**
+ * 3. Title Description
+ * Card titles, list headings, sub-sections
+ * Desktop: 24px, Tablet: 20px, Mobile: 18px
+ */
+.title-desc, .page-custom > section h3,
+.page-custom .wp-block h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+}
+@media (min-width: 768px) {
+  .title-desc, .page-custom > section h3,
+  .page-custom .wp-block h3 {
+    font-size: 1.25rem;
+  }
+}
+@media (min-width: 1024px) {
+  .title-desc, .page-custom > section h3,
+  .page-custom .wp-block h3 {
+    font-size: 1.5rem;
+  }
+}
+
+/**
+ * 4. Title Small
+ * Small section titles, overline text, labels
+ * Desktop: 20px, Tablet: 18px, Mobile: 16px
+ */
+.title-small {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+  color: var(--sarika-color-primary);
+}
+@media (min-width: 768px) {
+  .title-small {
+    font-size: 1.125rem;
+  }
+}
+@media (min-width: 1024px) {
+  .title-small {
+    font-size: 1.25rem;
+  }
+}
+
+/**
+ * 5. Description / Body Text
+ * Paragraphs, descriptions, general content
+ * Desktop: 18px, Tablet & Mobile: 16px
+ */
+.desc, .page-custom > section p,
+.page-custom .wp-block p {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+@media (min-width: 1024px) {
+  .desc, .page-custom > section p,
+  .page-custom .wp-block p {
+    font-size: 1.125rem;
+  }
+}
+
+/**
+ * Typography Utilities - Text Colors
+ * Use with typography classes for consistent coloring
+ */
+.text-primary h1, .text-primary h2, .text-primary h3, .text-primary h4, .text-primary h5, .text-primary p {
+  color: var(--sarika-color-primary) !important;
+}
+
+.text-secondary h1, .text-secondary h2, .text-secondary h3, .text-secondary h4, .text-secondary h5, .text-secondary p {
+  color: var(--sarika-color-secondary) !important;
+}
+
+.text-body {
+  color: var(--sarika-color-body);
+}
+
+.text-light {
+  color: var(--sarika-color-light);
+}
+
+.text-dark h1, .text-dark h2, .text-dark h3, .text-dark h4, .text-dark h5, .text-dark p {
+  color: var(--sarika-color-dark) !important;
+}
+
+.text-white h1, .text-white h2, .text-white h3, .text-white h4, .text-white h5, .text-white p {
+  color: var(--sarika-color-white) !important;
+}
+
+.text-black h1, .text-black h2, .text-black h3, .text-black h4, .text-black h5, .text-black p {
+  color: var(--sarika-color-black) !important;
+}
+
+/**
+ * Typography Utilities - Text Alignment (Responsive)
+ */
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+@media (min-width: 768px) {
+  .md\:text-left {
+    text-align: left;
+  }
+  .md\:text-center {
+    text-align: center;
+  }
+  .md\:text-right {
+    text-align: right;
+  }
+}
+@media (min-width: 1024px) {
+  .lg\:text-left {
+    text-align: left;
+  }
+  .lg\:text-center {
+    text-align: center;
+  }
+  .lg\:text-right {
+    text-align: right;
+  }
+}
+/**
+ * Typography Utilities - Font Weights
+ */
+.font-light {
+  font-weight: 300;
+}
+
+.font-normal {
+  font-weight: 400;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+/**
+ * Typography Utilities - Line Heights
+ */
+.leading-tight {
+  line-height: 1.2;
+}
+
+.leading-snug {
+  line-height: 1.3;
+}
+
+.leading-normal {
+  line-height: 1.5;
+}
+
+.leading-relaxed {
+  line-height: 1.6;
+}
+
+.leading-loose {
+  line-height: 1.8;
+}
+
+/**
+ * Typography Utilities - Text Transform
+ */
+.uppercase {
+  text-transform: uppercase;
+}
+
+.lowercase {
+  text-transform: lowercase;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+/**
+ * Typography Utilities - Letter Spacing
+ */
+.tracking-tight {
+  letter-spacing: -0.025em;
+}
+
+.tracking-normal {
+  letter-spacing: 0;
+}
+
+.tracking-wide {
+  letter-spacing: 0.025em;
+}
+
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+
+/**
+ * Typography Utilities - Text Decoration
+ */
+.no-underline {
+  text-decoration: none;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+/**
+ * Typography Utilities - White Space
+ */
+.whitespace-normal {
+  white-space: normal;
+}
+
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+
+.whitespace-pre-line {
+  white-space: pre-line;
+}
+
+/**
+ * Typography Utilities - Word Break
+ */
+.break-words {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.break-all {
+  word-break: break-all;
+}
+
+/**
+ * Semantic HTML Auto-Styling for Page Custom
+ * Apply typography scale automatically to headings in custom pages
+ */
+/**
+ * Usage Examples:
+ *
+ * <h1 class="title-hero">Hero Heading</h1>
+ * <h2 class="title-body text-primary">Section Title</h2>
+ * <h3 class="title-desc font-semibold">Card Title</h3>
+ * <p class="desc text-body leading-relaxed">Description text...</p>
+ *
+ * Or combine utilities:
+ * <h2 class="title-body text-center text-primary uppercase">Centered Section</h2>
+ */
+/* Import custom blocks */
+/**
+ * Hero Block - Editor Styles
+ *
+ * These styles are ONLY loaded in the WordPress editor.
+ * Frontend styles are in scss/_blocks.scss
+ *
+ * CSS Variables will be injected by:
+ * - inc/acf-layouts.php → sarika_custom_colors_admin_css() (if ACF colors set)
+ * - scss/_tokens.scss → fallback defaults
+ *
+ * @package sarika
+ */
+.sarika-hero {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sarika-hero--height-small {
+  min-height: 400px;
+}
+.sarika-hero--height-medium {
+  min-height: 600px;
+}
+.sarika-hero--height-large {
+  min-height: 800px;
+}
+.sarika-hero--align-left .sarika-hero__content {
+  text-align: left;
+}
+.sarika-hero--align-center .sarika-hero__content {
+  text-align: center;
+}
+.sarika-hero--align-right .sarika-hero__content {
+  text-align: right;
+}
+
+.sarika-hero__background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+.sarika-hero__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+.sarika-hero__overlay--dark {
+  background: linear-gradient(90deg, rgba(var(--sarika-color-dark-rgb), 0.9) 0%, rgba(var(--sarika-color-dark-rgb), 0.6) 50%, transparent 100%);
+}
+.sarika-hero__overlay--body {
+  background: linear-gradient(90deg, rgba(var(--sarika-color-body-rgb), 0.9) 0%, rgba(var(--sarika-color-body-rgb), 0.6) 50%, transparent 100%);
+}
+.sarika-hero__overlay--primary {
+  background: linear-gradient(90deg, rgba(var(--sarika-color-primary-rgb), 0.9) 0%, rgba(var(--sarika-color-primary-rgb), 0.6) 50%, transparent 100%);
+}
+.sarika-hero__overlay--secondary {
+  background: linear-gradient(90deg, rgba(var(--sarika-color-secondary-rgb), 0.9) 0%, rgba(var(--sarika-color-secondary-rgb), 0.6) 50%, transparent 100%);
+}
+
+.sarika-hero__container {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+}
+@media (max-width: 768px) {
+  .sarika-hero__container {
+    padding: 3rem 1rem;
+  }
+}
+
+.sarika-hero__content {
+  max-width: 600px;
+  color: var(--sarika-color-white);
+}
+.sarika-hero--align-left .sarika-hero__content {
+  margin-left: 0;
+  margin-right: auto;
+  text-align: left;
+}
+.sarika-hero--align-center .sarika-hero__content {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+.sarika-hero--align-right .sarika-hero__content {
+  margin-left: auto;
+  margin-right: 0;
+  text-align: right;
+}
+@media (max-width: 768px) {
+  .sarika-hero__content {
+    max-width: 100%;
+  }
+}
+
+.sarika-hero__title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+@media (max-width: 768px) {
+  .sarika-hero__title {
+    font-size: 2.5rem;
+  }
+}
+
+.sarika-hero__description {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 2rem;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+@media (max-width: 768px) {
+  .sarika-hero__description {
+    font-size: 1.125rem;
+  }
+}
+
+.sarika-hero__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+.sarika-hero--align-center .sarika-hero__buttons {
+  justify-content: center;
+}
+.sarika-hero--align-right .sarika-hero__buttons {
+  justify-content: flex-end;
+}
+
+.sarika-hero__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.sarika-hero__button--primary {
+  background: #F4C542;
+  color: #000;
+  border: 2px solid #F4C542;
+}
+.sarika-hero__button--primary:hover {
+  background: #E0B338;
+  border-color: #E0B338;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(244, 197, 66, 0.3);
+}
+.sarika-hero__button--secondary {
+  background: transparent;
+  color: #fff;
+  border: 2px solid #fff;
+}
+.sarika-hero__button--secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+}
+@media (max-width: 768px) {
+  .sarika-hero__button {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+.sarika-hero__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+.sarika-hero--align-center .sarika-hero__buttons {
+  justify-content: center;
+}
+.sarika-hero--align-right .sarika-hero__buttons {
+  justify-content: flex-end;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  border: 2px solid transparent;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+  user-select: none;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+.btn--primary {
+  background: var(--sarika-color-primary);
+  color: var(--sarika-color-dark);
+  border-color: var(--sarika-color-primary);
+}
+.btn--primary:hover {
+  background: rgba(var(--sarika-color-primary-rgb), 0.9);
+  border-color: rgba(var(--sarika-color-primary-rgb), 0.9);
+  color: var(--sarika-color-dark);
+}
+.btn--primary-outline {
+  background: transparent;
+  color: var(--sarika-color-primary);
+  border-color: var(--sarika-color-primary);
+}
+.btn--primary-outline:hover {
+  background: var(--sarika-color-primary);
+  color: var(--sarika-color-dark);
+}
+.btn--white {
+  background: var(--sarika-color-white);
+  color: var(--sarika-color-body);
+  border-color: var(--sarika-color-white);
+}
+.btn--white:hover {
+  background: rgba(var(--sarika-color-white-rgb), 0.95);
+  border-color: rgba(var(--sarika-color-white-rgb), 0.95);
+  color: var(--sarika-color-body);
+}
+.btn--white-outline {
+  background: transparent;
+  color: var(--sarika-color-white);
+  border-color: var(--sarika-color-white);
+}
+.btn--white-outline:hover {
+  background: var(--sarika-color-white);
+  color: var(--sarika-color-body);
+}
+.btn--dark {
+  background: var(--sarika-color-dark);
+  color: var(--sarika-color-white);
+  border-color: var(--sarika-color-dark);
+}
+.btn--dark:hover {
+  background: rgba(var(--sarika-color-dark-rgb), 0.9);
+  border-color: rgba(var(--sarika-color-dark-rgb), 0.9);
+  color: var(--sarika-color-white);
+}
+.btn--dark-outline {
+  background: transparent;
+  color: var(--sarika-color-dark);
+  border-color: var(--sarika-color-dark);
+}
+.btn--dark-outline:hover {
+  background: var(--sarika-color-dark);
+  color: var(--sarika-color-white);
+}
+.btn--secondary {
+  background: var(--sarika-color-secondary);
+  color: var(--sarika-color-white);
+  border-color: var(--sarika-color-secondary);
+}
+.btn--secondary:hover {
+  background: rgba(var(--sarika-color-secondary-rgb), 0.9);
+  border-color: rgba(var(--sarika-color-secondary-rgb), 0.9);
+  color: var(--sarika-color-white);
+}
+
+.sarika-hero__placeholder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  text-align: center;
+  color: #666;
+  font-size: 1.125rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+}
+.sarika-hero__placeholder p {
+  margin: 0;
+}
+
+.text-primary h1, .text-primary h2, .text-primary h3, .text-primary h4, .text-primary h5, .text-primary p {
+  color: var(--sarika-color-primary) !important;
+}
+
+.text-secondary h1, .text-secondary h2, .text-secondary h3, .text-secondary h4, .text-secondary h5, .text-secondary p {
+  color: var(--sarika-color-secondary) !important;
+}
+
+.text-dark h1, .text-dark h2, .text-dark h3, .text-dark h4, .text-dark h5, .text-dark p {
+  color: var(--sarika-color-dark) !important;
+}
+
+.text-white h1, .text-white h2, .text-white h3, .text-white h4, .text-white h5, .text-white p {
+  color: var(--sarika-color-white) !important;
+}
+
+.sarika-media-control {
+  margin-top: 1rem;
+}
+.sarika-media-control img {
+  display: block;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.sarika-media-control .components-button {
+  width: 100%;
+  justify-content: center;
+}
+
+/**
+ * Icon & Description Block - Editor Styles
+ *
+ * @package sarika
+ */
+/**
+ * NOTE: Global utilities (text colors, backgrounds, typography, spacing)
+ * are now loaded from editor-style.scss to avoid duplication.
+ * This file only contains block-specific styles.
+ */
+.sarika-icon-description {
+  padding: 4rem 0;
+  margin-bottom: 4rem;
+}
+.sarika-icon-description__header {
+  max-width: 800px;
+  margin: 0 auto 3rem;
+}
+.sarika-icon-description__header.text-left {
+  text-align: left;
+  margin-left: 0;
+  margin-right: auto;
+}
+.sarika-icon-description__header.text-center {
+  text-align: center;
+}
+.sarika-icon-description__header.text-right {
+  text-align: right;
+  margin-left: auto;
+  margin-right: 0;
+}
+.sarika-icon-description__title {
+  margin-bottom: 1rem;
+}
+.sarika-icon-description__tagline {
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-top: 0 !important;
+}
+.sarika-icon-description__description {
+  margin-bottom: 2rem;
+  max-width: 700px;
+}
+.text-center .sarika-icon-description__description {
+  margin-left: auto;
+  margin-right: auto;
+}
+.sarika-icon-description__buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.text-left .sarika-icon-description__buttons {
+  justify-content: flex-start;
+}
+.text-center .sarika-icon-description__buttons {
+  justify-content: center;
+}
+.text-right .sarika-icon-description__buttons {
+  justify-content: flex-end;
+}
+.sarika-icon-description__grid {
+  display: grid;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+.sarika-icon-description__grid.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.sarika-icon-description__grid.grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.sarika-icon-description__grid.grid-cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+@media (max-width: 1024px) {
+  .sarika-icon-description__grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.5rem;
+  }
+}
+@media (max-width: 768px) {
+  .sarika-icon-description__grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem;
+  }
+}
+.sarika-icon-description__item {
+  padding: 2.5rem 2rem;
+  background: rgba(var(--sarika-color-white-rgb), 0.7);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(var(--sarika-color-dark-rgb), 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+.sarika-icon-description__item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 32px rgba(var(--sarika-color-dark-rgb), 0.12);
+}
+.sarika-icon-description__item:has(.sarika-icon-description__item-link) {
+  cursor: pointer;
+}
+@media (max-width: 768px) {
+  .sarika-icon-description__item {
+    padding: 2rem 1.5rem;
+  }
+}
+.sarika-icon-description__icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--sarika-color-primary);
+  border-radius: 50%;
+  color: var(--sarika-color-white);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.sarika-icon-description__item:hover .sarika-icon-description__icon {
+  background: var(--sarika-color-secondary);
+  transform: scale(1.1);
+}
+.sarika-icon-description__icon .dashicons {
+  width: 48px;
+  height: 48px;
+  font-size: 48px;
+}
+.sarika-icon-description__icon img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+.sarika-icon-description__item-title {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--sarika-color-dark);
+  transition: color 0.3s ease;
+}
+.sarika-icon-description__item:hover .sarika-icon-description__item-title {
+  color: var(--sarika-color-primary);
+}
+.sarika-icon-description__item-description {
+  margin-bottom: 1.25rem;
+  color: var(--sarika-color-body);
+  line-height: 1.7;
+  font-size: 0.9375rem;
+}
+.sarika-icon-description__item-link {
+  display: inline-block;
+  color: var(--sarika-color-primary);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+.sarika-icon-description__item-link:hover {
+  color: var(--sarika-color-secondary);
+}
+.sarika-icon-description__item-link::after {
+  content: " →";
+  display: inline-block;
+  margin-left: 4px;
+  transition: transform 0.3s ease;
+}
+.sarika-icon-description__item-link:hover::after {
+  transform: translateX(4px);
+}
+.sarika-icon-description__icon--circle {
+  border-radius: 50%;
+}
+.sarika-icon-description__icon--rounded {
+  border-radius: 12px;
+}
+.sarika-icon-description__icon--square {
+  border-radius: 0;
+}
+.sarika-icon-description__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.sarika-icon-description__list li {
+  position: relative;
+  padding-left: 1.75rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+  color: var(--sarika-color-body);
+}
+.sarika-icon-description__list li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sarika-color-primary);
+  font-weight: 700;
+  font-size: 1.1em;
+}
+.sarika-icon-description__list li:last-child {
+  margin-bottom: 0;
+}
+.sarika-icon-description--align-left .sarika-icon-description__item {
+  text-align: left;
+}
+.sarika-icon-description--align-left .sarika-icon-description__icon {
+  margin-left: 0;
+  margin-right: auto;
+}
+.sarika-icon-description--align-center .sarika-icon-description__item {
+  text-align: center;
+}
+.sarika-icon-description--align-center .sarika-icon-description__icon {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/**
+ * Block Text - Editor Styles
+ *
+ * @package sarika
+ */
+/**
+ * NOTE: Global utilities (text colors, backgrounds, typography, spacing)
+ * are now loaded from editor-style.scss to avoid duplication.
+ * This file only contains block-specific styles.
+ */
+.sarika-block-text__container {
+  width: 100%;
+  transition: all 0.3s ease;
+}
+.sarika-block-text__content.content-width-medium {
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.sarika-block-text__content.content-width-full {
+  width: 100%;
+}
+.sarika-block-text__title {
+  margin-bottom: 1rem;
+}
+.sarika-block-text__tagline {
+  margin-bottom: 1.5rem;
+  margin-top: 0 !important;
+}
+.sarika-block-text__description {
+  margin-bottom: 2rem;
+}
+.sarika-block-text__buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.text-left .sarika-block-text__buttons {
+  justify-content: flex-start;
+}
+.text-center .sarika-block-text__buttons {
+  justify-content: center;
+}
+.text-right .sarika-block-text__buttons {
+  justify-content: flex-end;
+}
+.sarika-block-text--align-left .sarika-block-text__content {
+  text-align: left;
+}
+.sarika-block-text--align-center .sarika-block-text__content {
+  text-align: center;
+}
+.sarika-block-text--align-right .sarika-block-text__content {
+  text-align: right;
+}
+
+/**
+ * Block Profile - Editor Styles
+ *
+ * NOTE: Global utilities loaded from editor-style.scss.
+ * Only block-specific styles here.
+ *
+ * @package sarika
+ */
+.sarika-block-profile__container {
+  width: 100%;
+  transition: all 0.3s ease;
+}
+.sarika-block-profile__content.content-width-medium {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.sarika-block-profile__content.content-width-full {
+  width: 100%;
+}
+.sarika-block-profile__header {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  align-items: end;
+}
+.sarika-block-profile__header p {
+  margin-bottom: 0;
+}
+@media (min-width: 768px) {
+  .sarika-block-profile__header {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+}
+.sarika-block-profile__body {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+@media (min-width: 768px) {
+  .sarika-block-profile__body {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+}
+.sarika-block-profile__image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.sarika-block-profile__visi {
+  margin-bottom: 2rem;
+}
+.sarika-block-profile__visi-text {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.6;
+  margin: 0;
+}
+@media (min-width: 768px) {
+  .sarika-block-profile__visi-text {
+    font-size: 1.25rem;
+  }
+}
+@media (min-width: 1024px) {
+  .sarika-block-profile__visi-text {
+    font-size: 1.5rem;
+  }
+}
+.sarika-block-profile__misi {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.sarika-block-profile__misi-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(var(--sarika-color-white-rgb), 0.5);
+  border-radius: 30px;
+  padding: 10px 25px;
+  align-content: center;
+  line-height: 1;
+}
+.sarika-block-profile__misi-item:hover {
+  transform: translateX(4px);
+}
+.sarika-block-profile__misi-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--sarika-color-primary);
+  background: var(--sarika-color-primary);
+  border-radius: 50%;
+}
+.sarika-block-profile__misi-icon img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+.sarika-block-profile__misi-icon .dashicons {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+  color: var(--sarika-color-primary);
+}
+.sarika-block-profile__misi-text {
+  flex: 1;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 0 !important;
+}
+@media (min-width: 1024px) {
+  .sarika-block-profile__misi-text {
+    font-size: 1.125rem;
+  }
+}
+.sarika-block-profile__button {
+  margin-top: 1.5rem;
+}
+@media (max-width: 768px) {
+  .sarika-block-profile__header {
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .sarika-block-profile__body {
+    gap: 1.5rem;
+  }
+  .sarika-block-profile__visi-text {
+    font-size: 1rem;
+  }
+  .sarika-block-profile__misi {
+    gap: 0.75rem;
+  }
+  .sarika-block-profile__misi-icon {
+    width: 20px;
+    height: 20px;
+  }
+  .sarika-block-profile__misi-icon img {
+    width: 20px;
+    height: 20px;
+  }
+  .sarika-block-profile__misi-icon .dashicons {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+  .sarika-block-profile__misi-text {
+    font-size: 0.938rem;
+  }
+}
+
+/**
+ * Block Image Side Text - Editor Styles
+ *
+ * @package sarika
+ */
+.sarika-image-side-text__container {
+  width: 100%;
+  transition: all 0.3s ease;
+}
+.sarika-image-side-text__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+@media (min-width: 768px) {
+  .sarika-image-side-text__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (min-width: 768px) {
+  .sarika-image-side-text--image-left .sarika-image-side-text__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .sarika-image-side-text--image-left .sarika-image-side-text__grid .sarika-image-side-text__image-column {
+    order: 1;
+  }
+  .sarika-image-side-text--image-left .sarika-image-side-text__grid .sarika-image-side-text__text-column {
+    order: 2;
+  }
+}
+@media (min-width: 768px) {
+  .sarika-image-side-text--image-right .sarika-image-side-text__grid .sarika-image-side-text__image-column {
+    order: 2;
+  }
+  .sarika-image-side-text--image-right .sarika-image-side-text__grid .sarika-image-side-text__text-column {
+    order: 1;
+  }
+}
+.sarika-image-side-text__image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  border-radius: 10px;
+  aspect-ratio: 4/5;
+}
+.sarika-image-side-text__title {
+  margin-bottom: 1rem;
+}
+.sarika-image-side-text__tagline {
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+  margin-top: 0;
+}
+.sarika-image-side-text__description {
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+.sarika-image-side-text__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.sarika-image-side-text__list-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(var(--sarika-color-light-rgb), 0.8);
+  border-radius: 8px;
+  padding: 10px 25px;
+}
+.sarika-image-side-text__list-item:hover {
+  transform: translateX(4px);
+}
+.sarika-image-side-text__list-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--sarika-color-primary);
+  border-radius: 50%;
+  color: var(--sarika-color-white);
+}
+.sarika-image-side-text__list-icon img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+.sarika-image-side-text__list-icon .dashicons {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+.sarika-image-side-text__list-content {
+  flex: 1;
+  min-width: 0;
+}
+.sarika-image-side-text__list-title {
+  margin: 0 0 0.25rem;
+  font-size: 1rem !important;
+  font-weight: 600;
+  color: var(--sarika-color-dark);
+  line-height: 1.4;
+  margin-top: 0 !important;
+}
+.sarika-image-side-text__list-description {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--sarika-color-body);
+  margin-bottom: 0 !important;
+}
+.sarika-image-side-text__buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+@media (max-width: 768px) {
+  .sarika-image-side-text__grid {
+    gap: 2rem;
+  }
+  .sarika-image-side-text__list {
+    gap: 0.75rem;
+  }
+  .sarika-image-side-text__list-item {
+    padding: 8px 20px;
+  }
+  .sarika-image-side-text__list-icon {
+    width: 32px;
+    height: 32px;
+  }
+  .sarika-image-side-text__list-icon img {
+    width: 20px;
+    height: 20px;
+  }
+  .sarika-image-side-text__list-icon .dashicons {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+  .sarika-image-side-text__list-title {
+    font-size: 0.938rem;
+  }
+  .sarika-image-side-text__list-description {
+    font-size: 0.813rem;
+  }
+}
+
+/**
+ * Client Logos Block - Editor Styles
+ *
+ * @package sarika
+ */
+.sarika-client-logos__container {
+  width: 100%;
+  transition: all 0.3s ease;
+}
+.sarika-client-logos__placeholder {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background: rgba(var(--sarika-color-light-rgb), 0.3);
+  border: 2px dashed rgba(var(--sarika-color-dark-rgb), 0.2);
+}
+.sarika-client-logos__placeholder p {
+  margin-bottom: 1rem;
+  color: var(--sarika-color-body);
+}
+.sarika-client-logos__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  align-items: center;
+}
+@media (min-width: 768px) {
+  .sarika-client-logos__grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+.sarika-client-logos__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: var(--sarika-color-white);
+  border: 1px solid rgba(var(--sarika-color-dark-rgb), 0.1);
+  transition: all 0.3s ease;
+}
+.sarika-client-logos__item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(var(--sarika-color-dark-rgb), 0.1);
+}
+.sarika-client-logos__image {
+  width: 100%;
+  height: auto;
+  max-height: 60px;
+  object-fit: contain;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+.sarika-client-logos__image:hover {
+  opacity: 1;
+}
+
+/**
+ * FAQ Block - Editor Styles
+ *
+ * @package sarika
+ */
+.sarika-faq__container {
+  width: 100%;
+  transition: all 0.3s ease;
+}
+.sarika-faq__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+@media (min-width: 768px) {
+  .sarika-faq__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.sarika-faq__left {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.sarika-faq__title {
+  margin-bottom: 1rem;
+}
+.sarika-faq__tagline {
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+  margin-top: 0;
+}
+.sarika-faq__description {
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+.sarika-faq__image-wrapper {
+  margin-top: auto;
+}
+.sarika-faq__image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  border-radius: 10px;
+  aspect-ratio: 4/5;
+}
+.sarika-faq__right {
+  display: flex;
+  flex-direction: column;
+}
+.sarika-faq__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.sarika-faq__item {
+  background: rgba(var(--sarika-color-white-rgb), 0.9);
+  border: 1px solid rgba(var(--sarika-color-dark-rgb), 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.sarika-faq__item:hover {
+  box-shadow: 0 4px 12px rgba(var(--sarika-color-dark-rgb), 0.1);
+}
+.sarika-faq__item.is-open .sarika-faq__icon {
+  transform: rotate(180deg);
+}
+.sarika-faq__question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.063rem;
+  font-weight: 600;
+  color: var(--sarika-color-dark);
+  transition: all 0.3s ease;
+}
+.sarika-faq__question:hover {
+  color: var(--sarika-color-primary);
+}
+.sarika-faq__question span {
+  flex: 1;
+  line-height: 1.4;
+}
+.sarika-faq__icon {
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+  color: var(--sarika-color-primary);
+}
+.sarika-faq__answer {
+  padding: 0 1.5rem 1.25rem;
+  animation: fadeIn 0.3s ease;
+}
+.sarika-faq__answer p {
+  margin: 0;
+  font-size: 0.938rem;
+  line-height: 1.6;
+  color: var(--sarika-color-body);
+}
+@media (max-width: 768px) {
+  .sarika-faq__grid {
+    gap: 2rem;
+  }
+  .sarika-faq__question {
+    padding: 1rem 1.25rem;
+    font-size: 1rem;
+  }
+  .sarika-faq__answer {
+    padding: 0 1.25rem 1rem;
+  }
+  .sarika-faq__answer p {
+    font-size: 0.875rem;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/**
+ * Video Background Block - Editor Styles
+ */
+.sarika-video-bg {
+  position: relative;
+  width: 100%;
+  min-height: 500px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sarika-video-bg__background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+.sarika-video-bg__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+.sarika-video-bg__overlay--dark {
+  background: linear-gradient(0deg, rgba(var(--sarika-color-dark-rgb), 0.9) 0%, rgba(var(--sarika-color-dark-rgb), 0.6) 40%, transparent 100%);
+}
+.sarika-video-bg__overlay--body {
+  background: linear-gradient(0deg, rgba(var(--sarika-color-body-rgb), 0.9) 0%, rgba(var(--sarika-color-body-rgb), 0.6) 40%, transparent 100%);
+}
+.sarika-video-bg__overlay--primary {
+  background: linear-gradient(0deg, rgba(var(--sarika-color-primary-rgb), 0.9) 0%, rgba(var(--sarika-color-primary-rgb), 0.6) 40%, transparent 100%);
+}
+.sarika-video-bg__overlay--secondary {
+  background: linear-gradient(0deg, rgba(var(--sarika-color-secondary-rgb), 0.9) 0%, rgba(var(--sarika-color-secondary-rgb), 0.6) 40%, transparent 100%);
+}
+.sarika-video-bg__container {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+.sarika-video-bg__content {
+  max-width: 800px;
+}
+.sarika-video-bg--align-left .sarika-video-bg__content {
+  margin-left: 0;
+  margin-right: auto;
+  text-align: left;
+}
+.sarika-video-bg--align-center .sarika-video-bg__content {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+.sarika-video-bg--align-right .sarika-video-bg__content {
+  margin-left: auto;
+  margin-right: 0;
+  text-align: right;
+}
+.sarika-video-bg__title {
+  margin: 0 0 1.5rem;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+}
+.sarika-video-bg__title:focus {
+  outline: 2px solid var(--sarika-color-primary);
+  outline-offset: 4px;
+}
+.sarika-video-bg__description {
+  margin: 0 0 2rem;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  font-family: "Inter", sans-serif;
+  line-height: 1.6;
+}
+.sarika-video-bg__description:focus {
+  outline: 2px solid var(--sarika-color-primary);
+  outline-offset: 4px;
+}
+.sarika-video-bg__button-wrapper {
+  display: flex;
+}
+.sarika-video-bg--align-left .sarika-video-bg__button-wrapper {
+  justify-content: flex-start;
+}
+.sarika-video-bg--align-center .sarika-video-bg__button-wrapper {
+  justify-content: center;
+}
+.sarika-video-bg--align-right .sarika-video-bg__button-wrapper {
+  justify-content: flex-end;
+}
+.sarika-video-bg__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  background: #f4c542;
+  color: #000;
+  border: 2px solid #f4c542;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: "Poppins", sans-serif;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+.sarika-video-bg__button:hover {
+  background: #e5b630;
+  border-color: #e5b630;
+}
+
+/* Google Fonts sudah di-enqueue via PHP */
+/* Editor wrapper */
+.editor-styles-wrapper {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--sarika-color-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings - Poppins font */
+.editor-styles-wrapper h1,
+.editor-styles-wrapper h2,
+.editor-styles-wrapper h3,
+.editor-styles-wrapper h4,
+.editor-styles-wrapper h5,
+.editor-styles-wrapper h6,
+.editor-styles-wrapper .wp-block-heading {
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--sarika-color-primary);
+  margin: 1.5em 0 0.75em;
+}
+
+.editor-styles-wrapper h1,
+.editor-styles-wrapper .wp-block-heading.has-h-1-font-size {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.editor-styles-wrapper h2,
+.editor-styles-wrapper .wp-block-heading.has-h-2-font-size {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.editor-styles-wrapper h3,
+.editor-styles-wrapper .wp-block-heading.has-h-3-font-size {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.editor-styles-wrapper h4,
+.editor-styles-wrapper .wp-block-heading.has-h-4-font-size {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.editor-styles-wrapper h5,
+.editor-styles-wrapper .wp-block-heading.has-h-5-font-size {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.editor-styles-wrapper h6,
+.editor-styles-wrapper .wp-block-heading.has-h-6-font-size {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+/* Paragraphs - Inter font 17px */
+.editor-styles-wrapper p,
+.editor-styles-wrapper .wp-block-paragraph {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 17px;
+  line-height: 1.75;
+  margin-bottom: 1.5em;
+  color: var(--sarika-color-body);
+}
+
+/* Lead/Intro paragraph */
+.editor-styles-wrapper .has-large-font-size,
+.editor-styles-wrapper .wp-block-paragraph.has-large-font-size {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+/* Small text */
+.editor-styles-wrapper .has-small-font-size,
+.editor-styles-wrapper .wp-block-paragraph.has-small-font-size {
+  font-size: 0.875rem;
+}
+
+/* Links */
+.editor-styles-wrapper a {
+  color: var(--sarika-color-primary);
+  text-decoration: none !important;
+  transition: color 0.2s ease;
+}
+
+.editor-styles-wrapper a:hover {
+  color: var(--sarika-color-secondary);
+}
+
+/* Lists */
+.editor-styles-wrapper ul,
+.editor-styles-wrapper ol {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 17px;
+  line-height: 1.75;
+  margin-bottom: 1.5em;
+  padding-left: 1.5em;
+}
+
+.editor-styles-wrapper li {
+  margin-bottom: 0.5em;
+}
+
+/* Blockquote */
+.editor-styles-wrapper blockquote,
+.editor-styles-wrapper .wp-block-quote {
+  font-family: "Poppins", serif;
+  font-size: 1.25rem;
+  font-style: italic;
+  line-height: 1.6;
+  margin: 2em 0;
+  padding: 1.5em 2em;
+  border-left: 4px solid var(--sarika-color-primary);
+  background: var(--sarika-color-light);
+  color: var(--sarika-color-secondary);
+}
+
+.editor-styles-wrapper blockquote cite,
+.editor-styles-wrapper .wp-block-quote cite {
+  font-family: "Inter", sans-serif;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 600;
+  color: var(--sarika-color-body);
+  display: block;
+  margin-top: 1em;
+}
+
+/* Code */
+.editor-styles-wrapper code,
+.editor-styles-wrapper .wp-block-code {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.9em;
+  background: var(--sarika-color-light);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+}
+
+.editor-styles-wrapper pre,
+.editor-styles-wrapper .wp-block-code code {
+  padding: 1.5em;
+  background: var(--sarika-color-dark);
+  color: var(--sarika-color-light);
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+/* Tables */
+.editor-styles-wrapper table,
+.editor-styles-wrapper .wp-block-table {
+  font-family: "Inter", sans-serif;
+  font-size: 0.95rem;
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1.5em;
+}
+
+.editor-styles-wrapper table th {
+  font-weight: 600;
+  background: var(--sarika-color-light);
+  padding: 0.75em 1em;
+  text-align: left;
+  border-bottom: 2px solid var(--sarika-color-primary);
+}
+
+.editor-styles-wrapper table td {
+  padding: 0.75em 1em;
+  border-bottom: 1px solid var(--sarika-color-light);
+}
+
+/* Images */
+.editor-styles-wrapper .wp-block-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.editor-styles-wrapper figcaption {
+  font-family: "Inter", sans-serif;
+  font-size: 0.875rem;
+  color: var(--sarika-color-secondary);
+  margin-top: 0.75em;
+  text-align: center;
+  font-style: italic;
+}
+
+/* Buttons */
+.editor-styles-wrapper .wp-block-button__link {
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.75em 2em;
+  border-radius: 4px;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+/* Separator */
+.editor-styles-wrapper hr,
+.editor-styles-wrapper .wp-block-separator {
+  border: 0;
+  border-top: 2px solid var(--sarika-color-light);
+  margin: 2.5em 0;
+}
+
+/* Pullquote */
+.editor-styles-wrapper .wp-block-pullquote {
+  font-family: "Poppins", serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+  padding: 2em;
+  border-top: 4px solid var(--sarika-color-primary);
+  border-bottom: 4px solid var(--sarika-color-primary);
+  margin: 2em 0;
+}
+
+/* Cover block text */
+.editor-styles-wrapper .wp-block-cover h1,
+.editor-styles-wrapper .wp-block-cover h2,
+.editor-styles-wrapper .wp-block-cover h3,
+.editor-styles-wrapper .wp-block-cover p {
+  color: #ffffff;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Columns */
+.editor-styles-wrapper .wp-block-columns {
+  margin-bottom: 1.5em;
+}
+
+/* Spacing */
+.editor-styles-wrapper > *:first-child {
+  margin-top: 0;
+}
+
+.editor-styles-wrapper > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Selection color */
+.editor-styles-wrapper ::selection {
+  background: var(--sarika-color-accent);
+  color: var(--sarika-color-primary);
+}
+
+/* Editor title */
+.editor-post-title__input,
+.editor-post-title textarea {
+  font-family: "Poppins", sans-serif;
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--sarika-color-primary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .editor-styles-wrapper {
+    font-size: 16px;
+  }
+  .editor-styles-wrapper h1,
+  .editor-styles-wrapper .wp-block-heading.has-h-1-font-size {
+    font-size: 2rem;
+  }
+  .editor-styles-wrapper h2,
+  .editor-styles-wrapper .wp-block-heading.has-h-2-font-size {
+    font-size: 1.75rem;
+  }
+  .editor-styles-wrapper h3,
+  .editor-styles-wrapper .wp-block-heading.has-h-3-font-size {
+    font-size: 1.5rem;
+  }
+  .editor-post-title__input,
+  .editor-post-title textarea {
+    font-size: 2rem;
+  }
+}
+/* ========================================
+ * GLOBAL UTILITIES - Re-usable across all blocks
+ * ======================================== */
+/* Text Color Utilities */
+.editor-styles-wrapper .text-primary {
+  color: var(--sarika-color-primary) !important;
+}
+
+.editor-styles-wrapper .text-secondary {
+  color: var(--sarika-color-secondary) !important;
+}
+
+.editor-styles-wrapper .text-body {
+  color: var(--sarika-color-body) !important;
+}
+
+.editor-styles-wrapper .text-light {
+  color: var(--sarika-color-light) !important;
+}
+
+.editor-styles-wrapper .text-dark {
+  color: var(--sarika-color-dark) !important;
+}
+
+.editor-styles-wrapper .text-accent {
+  color: var(--sarika-color-accent) !important;
+}
+
+.editor-styles-wrapper .text-white {
+  color: var(--sarika-color-white) !important;
+}
+
+.editor-styles-wrapper .text-black {
+  color: var(--sarika-color-black) !important;
+}
+
+/* Background Color Utilities */
+.editor-styles-wrapper .bg-primary {
+  background-color: var(--sarika-color-primary) !important;
+}
+
+.editor-styles-wrapper .bg-secondary {
+  background-color: var(--sarika-color-secondary) !important;
+}
+
+.editor-styles-wrapper .bg-light {
+  background-color: var(--sarika-color-light) !important;
+}
+
+.editor-styles-wrapper .bg-dark {
+  background-color: var(--sarika-color-dark) !important;
+}
+
+.editor-styles-wrapper .bg-accent {
+  background-color: var(--sarika-color-accent) !important;
+}
+
+.editor-styles-wrapper .bg-white {
+  background-color: var(--sarika-color-white) !important;
+}
+
+.editor-styles-wrapper .bg-black {
+  background-color: var(--sarika-color-black) !important;
+}
+
+.editor-styles-wrapper .bg-transparent {
+  background-color: transparent !important;
+}
+
+/* Typography Utilities */
+.editor-styles-wrapper .title-hero {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+@media (min-width: 768px) {
+  .editor-styles-wrapper .title-hero {
+    font-size: 2.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .editor-styles-wrapper .title-hero {
+    font-size: 3.5rem;
+  }
+}
+
+.editor-styles-wrapper .title-tagline {
+  font-family: "Poppins", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+
+.editor-styles-wrapper .title-body {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 1.25rem;
+}
+@media (min-width: 768px) {
+  .editor-styles-wrapper .title-body {
+    font-size: 2rem;
+  }
+}
+@media (min-width: 1024px) {
+  .editor-styles-wrapper .title-body {
+    font-size: 2.5rem;
+  }
+}
+
+.editor-styles-wrapper .title-desc {
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+}
+@media (min-width: 768px) {
+  .editor-styles-wrapper .title-desc {
+    font-size: 1.25rem;
+  }
+}
+@media (min-width: 1024px) {
+  .editor-styles-wrapper .title-desc {
+    font-size: 1.5rem;
+  }
+}
+
+.editor-styles-wrapper .title-small {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+  color: var(--sarika-color-primary);
+}
+@media (min-width: 768px) {
+  .editor-styles-wrapper .title-small {
+    font-size: 1.125rem;
+  }
+}
+@media (min-width: 1024px) {
+  .editor-styles-wrapper .title-small {
+    font-size: 1.25rem;
+  }
+}
+
+.editor-styles-wrapper .desc {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+@media (min-width: 1024px) {
+  .editor-styles-wrapper .desc {
+    font-size: 1.125rem;
+  }
+}
+
+/* Text Gradient Utility */
+.editor-styles-wrapper .text-gradient {
+  background: linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Spacing Utilities */
+.editor-styles-wrapper .padding-top-medium {
+  padding-top: 3rem;
+}
+@media (max-width: 768px) {
+  .editor-styles-wrapper .padding-top-medium {
+    padding-top: 1rem;
+  }
+}
+
+.editor-styles-wrapper .padding-top-large {
+  padding-top: 5rem;
+}
+@media (max-width: 768px) {
+  .editor-styles-wrapper .padding-top-large {
+    padding-top: 1rem;
+  }
+}
+
+.editor-styles-wrapper .padding-bottom-medium {
+  padding-bottom: 3rem;
+}
+@media (max-width: 768px) {
+  .editor-styles-wrapper .padding-bottom-medium {
+    padding-bottom: 1rem;
+  }
+}
+
+.editor-styles-wrapper .padding-bottom-large {
+  padding-bottom: 5rem;
+}
+@media (max-width: 768px) {
+  .editor-styles-wrapper .padding-bottom-large {
+    padding-bottom: 1rem;
+  }
+}
+
+.editor-styles-wrapper .margin-bottom-zero {
+  margin-bottom: 0 !important;
+}
+
+.editor-styles-wrapper .margin-bottom-medium {
+  margin-bottom: 3rem;
+}
+@media (max-width: 768px) {
+  .editor-styles-wrapper .margin-bottom-medium {
+    margin-bottom: 1rem;
+  }
+}
+
+.editor-styles-wrapper .margin-bottom-large {
+  margin-bottom: 5rem;
+}
+@media (max-width: 768px) {
+  .editor-styles-wrapper .margin-bottom-large {
+    margin-bottom: 1rem;
+  }
+}/*# sourceMappingURL=editor-style.css.map */

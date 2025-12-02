@@ -1,0 +1,877 @@
+import { __ } from '@wordpress/i18n';
+import { useBlockProps, InspectorControls, MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
+import {
+	PanelBody,
+	TextControl,
+	TextareaControl,
+	SelectControl,
+	RangeControl,
+	ColorPicker,
+	Button,
+	TabPanel,
+	__experimentalLinkControl as LinkControl,
+} from '@wordpress/components';
+
+export default function Edit({ attributes, setAttributes }) {
+	const {
+		ane_title,
+		ane_tagline,
+		ane_description,
+		ane_button_link,
+		ane_button2_link,
+		ane_button_style,
+		ane_button2_style,
+		ane_visi_text,
+		ane_visi_image,
+		ane_visi_image_id,
+		ane_misi_items,
+		ane_section_background,
+		ane_padding_top,
+		ane_padding_bottom,
+		ane_margin_bottom,
+		ane_container_background,
+		ane_container_border_radius,
+		ane_container_padding,
+		ane_content_width,
+		ane_alignment,
+		ane_title_size,
+		ane_title_color,
+		ane_tagline_size,
+		ane_tagline_color,
+		ane_description_color,
+		ane_visi_color,
+		ane_visi_image_position,
+		ane_icon_shape,
+	} = attributes;
+
+	// Build block classes
+	let blockClasses = `sarika-block-profile`;
+	blockClasses += ` padding-top-${ane_padding_top}`;
+	blockClasses += ` padding-bottom-${ane_padding_bottom}`;
+	blockClasses += ` margin-bottom-${ane_margin_bottom}`;
+	blockClasses += ` sarika-block-profile--align-${ane_alignment}`;
+
+	// Handle section background (predefined vs custom)
+	const blockStyle = {};
+	if (ane_section_background) {
+		if (ane_section_background.startsWith('#') || ane_section_background.startsWith('rgb')) {
+			blockStyle.backgroundColor = ane_section_background;
+		} else if (ane_section_background === 'gradient-primary') {
+			blockStyle.background = 'linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%)';
+		} else if (ane_section_background === 'gradient-dark') {
+			blockStyle.background = 'linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%)';
+		} else {
+			blockClasses += ` bg-${ane_section_background}`;
+		}
+	}
+
+	// Container classes and styles
+	let containerClasses = `sarika-block-profile__container`;
+	const containerStyle = {};
+
+	if (ane_container_background) {
+		if (ane_container_background.startsWith('#') || ane_container_background.startsWith('rgb')) {
+			containerStyle.backgroundColor = ane_container_background;
+		} else if (ane_container_background === 'gradient-primary') {
+			containerStyle.background = 'linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%)';
+		} else if (ane_container_background === 'gradient-dark') {
+			containerStyle.background = 'linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%)';
+		} else {
+			containerClasses += ` bg-${ane_container_background}`;
+		}
+	}
+
+	if (ane_container_border_radius > 0) {
+		containerStyle.borderRadius = `${ane_container_border_radius}px`;
+	}
+
+	if (ane_container_padding > 0) {
+		containerStyle.padding = `${ane_container_padding}px`;
+	}
+
+	// Content classes
+	let contentClasses = `sarika-block-profile__content text-${ane_alignment}`;
+	if (ane_content_width === 'medium') {
+		contentClasses += ' content-width-medium';
+	} else {
+		contentClasses += ' content-width-full';
+	}
+
+	// Title classes
+	const titleClasses = `sarika-block-profile__title title-${ane_title_size}`;
+	const titleStyle = {};
+	if (ane_title_color) {
+		if (ane_title_color.startsWith('#') || ane_title_color.startsWith('rgb')) {
+			titleStyle.color = ane_title_color;
+		} else {
+			titleStyle.color = `var(--sarika-color-${ane_title_color})`;
+		}
+	}
+
+	// Tagline classes
+	const taglineClasses = `sarika-block-profile__tagline title-tagline title-${ane_tagline_size}`;
+	const taglineStyle = {};
+	if (ane_tagline_color) {
+		if (ane_tagline_color.startsWith('#') || ane_tagline_color.startsWith('rgb')) {
+			taglineStyle.color = ane_tagline_color;
+		} else {
+			taglineStyle.color = `var(--sarika-color-${ane_tagline_color})`;
+		}
+	}
+
+	// Description style
+	const descStyle = {};
+	if (ane_description_color) {
+		if (ane_description_color.startsWith('#') || ane_description_color.startsWith('rgb')) {
+			descStyle.color = ane_description_color;
+		} else {
+			descStyle.color = `var(--sarika-color-${ane_description_color})`;
+		}
+	}
+
+	// Visi text style
+	const visiStyle = {};
+	if (ane_visi_color) {
+		if (ane_visi_color.startsWith('#') || ane_visi_color.startsWith('rgb')) {
+			visiStyle.color = ane_visi_color;
+		} else {
+			visiStyle.color = `var(--sarika-color-${ane_visi_color})`;
+		}
+	}
+
+	const blockProps = useBlockProps({ className: blockClasses, style: blockStyle });
+
+	return (
+		<>
+			<InspectorControls>
+				<TabPanel
+					tabs={[
+						{ name: 'content', title: __('Content', 'sarika') },
+						{ name: 'options', title: __('Options', 'sarika') },
+					]}
+				>
+					{(tab) => (
+						<>
+							{tab.name === 'content' && (
+								<>
+									{/* Header Content */}
+									<PanelBody title={__('Header', 'sarika')} initialOpen={true}>
+										<TextControl
+											label={__('Title', 'sarika')}
+											value={ane_title}
+											onChange={(value) => setAttributes({ ane_title: value })}
+										/>
+										<TextControl
+											label={__('Tagline', 'sarika')}
+											value={ane_tagline}
+											onChange={(value) => setAttributes({ ane_tagline: value })}
+										/>
+										<TextareaControl
+											label={__('Description', 'sarika')}
+											value={ane_description}
+											onChange={(value) => setAttributes({ ane_description: value })}
+											rows={4}
+										/>
+									</PanelBody>
+
+									{/* Visi Section */}
+									<PanelBody title={__('Visi (Vision)', 'sarika')} initialOpen={false}>
+										<TextareaControl
+											label={__('Visi Text', 'sarika')}
+											value={ane_visi_text}
+											onChange={(value) => setAttributes({ ane_visi_text: value })}
+											rows={3}
+											help={__('Short vision statement (1-2 sentences)', 'sarika')}
+										/>
+
+										<MediaUploadCheck>
+											<MediaUpload
+												onSelect={(media) => setAttributes({ ane_visi_image: media.url, ane_visi_image_id: media.id })}
+												allowedTypes={['image']}
+												value={ane_visi_image_id}
+												render={({ open }) => (
+													<div style={{ marginTop: '12px' }}>
+														{ane_visi_image ? (
+															<div>
+																<img src={ane_visi_image} alt="" style={{ maxWidth: '100%', height: 'auto', marginBottom: '8px' }} />
+																<Button onClick={open} variant="secondary" style={{ marginRight: '8px' }}>
+																	{__('Change Image', 'sarika')}
+																</Button>
+																<Button
+																	onClick={() => setAttributes({ ane_visi_image: '', ane_visi_image_id: 0 })}
+																	variant="link"
+																	isDestructive
+																>
+																	{__('Remove', 'sarika')}
+																</Button>
+															</div>
+														) : (
+															<Button onClick={open} variant="secondary">
+																{__('Upload Visi Image', 'sarika')}
+															</Button>
+														)}
+													</div>
+												)}
+											/>
+										</MediaUploadCheck>
+									</PanelBody>
+
+									{/* Misi Section */}
+									<PanelBody title={__('Misi (Mission)', 'sarika')} initialOpen={false}>
+										{ane_misi_items.map((item, index) => (
+											<div key={index} style={{ marginBottom: '20px', padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }}>
+												<strong>{__('Mission Item', 'sarika')} #{index + 1}</strong>
+
+												{/* Icon Selection */}
+												<div style={{ marginTop: '12px' }}>
+													<label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
+														{__('Icon', 'sarika')}
+													</label>
+
+													{/* Image Upload */}
+													<MediaUploadCheck>
+														<MediaUpload
+															onSelect={(media) => {
+																const newItems = [...ane_misi_items];
+																newItems[index].ane_icon_image = media.url;
+																newItems[index].ane_icon_image_id = media.id;
+																newItems[index].ane_icon = ''; // Clear Dashicon if image selected
+																setAttributes({ ane_misi_items: newItems });
+															}}
+															allowedTypes={['image']}
+															value={item.ane_icon_image_id}
+															render={({ open }) => (
+																<div style={{ marginBottom: '8px' }}>
+																	{item.ane_icon_image ? (
+																		<div>
+																			<img
+																				src={item.ane_icon_image}
+																				alt=""
+																				style={{ width: '48px', height: '48px', objectFit: 'contain', marginBottom: '8px' }}
+																			/>
+																			<Button onClick={open} variant="secondary" size="small" style={{ marginRight: '8px' }}>
+																				{__('Change', 'sarika')}
+																			</Button>
+																			<Button
+																				onClick={() => {
+																					const newItems = [...ane_misi_items];
+																					newItems[index].ane_icon_image = '';
+																					newItems[index].ane_icon_image_id = 0;
+																					setAttributes({ ane_misi_items: newItems });
+																				}}
+																				variant="link"
+																				isDestructive
+																				size="small"
+																			>
+																				{__('Remove', 'sarika')}
+																			</Button>
+																		</div>
+																	) : (
+																		<Button onClick={open} variant="secondary" size="small">
+																			{__('Upload Icon Image', 'sarika')}
+																		</Button>
+																	)}
+																</div>
+															)}
+														/>
+													</MediaUploadCheck>
+
+																					{/* Dashicon Fallback */}
+																					{!item.ane_icon_image && (
+																						<TextControl
+																							label={__('Or use Dashicon', 'sarika')}
+																							value={item.ane_icon}
+																							onChange={(value) => {
+																								const newItems = [...ane_misi_items];
+																								newItems[index].ane_icon = value;
+																								setAttributes({ ane_misi_items: newItems });
+																							}}
+																							placeholder="star-filled"
+																							help={__('Enter Dashicon name (e.g., "star-filled", "heart")', 'sarika')}
+																						/>
+																					)}
+																				</div>
+
+																				{/* Mission Text */}
+																				<TextareaControl
+																					label={__('Mission Text', 'sarika')}
+																					value={item.ane_text}
+																					onChange={(value) => {
+																						const newItems = [...ane_misi_items];
+																						newItems[index].ane_text = value;
+																						setAttributes({ ane_misi_items: newItems });
+																					}}
+																					rows={2}
+																				/>
+
+																				{/* Remove Item Button */}
+																				{ane_misi_items.length > 1 && (
+																					<Button
+																						onClick={() => {
+																							const newItems = ane_misi_items.filter((_, i) => i !== index);
+																							setAttributes({ ane_misi_items: newItems });
+																						}}
+																						variant="link"
+																						isDestructive
+																						style={{ marginTop: '8px' }}
+																					>
+																						{__('Remove Mission Item', 'sarika')}
+																					</Button>
+																				)}
+																			</div>
+																		))}
+
+																		{/* Add New Mission Button */}
+																		<Button
+																			onClick={() => {
+																				const newItems = [
+																					...ane_misi_items,
+																					{ ane_icon: '', ane_icon_image: '', ane_icon_image_id: 0, ane_text: '' },
+																				];
+																				setAttributes({ ane_misi_items: newItems });
+																			}}
+																			variant="secondary"
+																			style={{ marginTop: '12px' }}
+																		>
+																			{__('+ Add Mission Item', 'sarika')}
+																		</Button>
+																	</PanelBody>
+
+																	{/* Button 1 */}
+																	<PanelBody title={__('Button 1', 'sarika')} initialOpen={false}>
+																		<div style={{ marginBottom: '12px' }}>
+																			<label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
+																				{__('Link', 'sarika')}
+																			</label>
+																			<LinkControl
+																				value={ane_button_link}
+																				onChange={(newLink) => setAttributes({ ane_button_link: newLink })}
+																			/>
+																		</div>
+
+																		<SelectControl
+																			label={__('Button Style', 'sarika')}
+																			value={ane_button_style}
+																			options={[
+																				{ label: __('Primary', 'sarika'), value: 'primary' },
+																				{ label: __('Primary Outline', 'sarika'), value: 'primary-outline' },
+																				{ label: __('Secondary', 'sarika'), value: 'secondary' },
+																				{ label: __('Secondary Outline', 'sarika'), value: 'secondary-outline' },
+																				{ label: __('Dark', 'sarika'), value: 'dark' },
+																				{ label: __('Dark Outline', 'sarika'), value: 'dark-outline' },
+																				{ label: __('White', 'sarika'), value: 'white' },
+																				{ label: __('White Outline', 'sarika'), value: 'white-outline' },
+																				{ label: __('Accent', 'sarika'), value: 'accent' },
+																				{ label: __('Accent Outline', 'sarika'), value: 'accent-outline' },
+																			]}
+																			onChange={(value) => setAttributes({ ane_button_style: value })}
+																		/>
+																	</PanelBody>
+
+																	{/* Button 2 */}
+																	<PanelBody title={__('Button 2', 'sarika')} initialOpen={false}>
+																		<div style={{ marginBottom: '12px' }}>
+																			<label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
+																				{__('Link', 'sarika')}
+																			</label>
+																			<LinkControl
+																				value={ane_button2_link}
+																				onChange={(newLink) => setAttributes({ ane_button2_link: newLink })}
+																			/>
+																		</div>
+
+																		<SelectControl
+																			label={__('Button Style', 'sarika')}
+																			value={ane_button2_style}
+																			options={[
+																				{ label: __('Primary', 'sarika'), value: 'primary' },
+																				{ label: __('Primary Outline', 'sarika'), value: 'primary-outline' },
+																				{ label: __('Secondary', 'sarika'), value: 'secondary' },
+																				{ label: __('Secondary Outline', 'sarika'), value: 'secondary-outline' },
+																				{ label: __('Dark', 'sarika'), value: 'dark' },
+																				{ label: __('Dark Outline', 'sarika'), value: 'dark-outline' },
+																				{ label: __('White', 'sarika'), value: 'white' },
+																				{ label: __('White Outline', 'sarika'), value: 'white-outline' },
+																				{ label: __('Accent', 'sarika'), value: 'accent' },
+																				{ label: __('Accent Outline', 'sarika'), value: 'accent-outline' },
+																			]}
+																			onChange={(value) => setAttributes({ ane_button2_style: value })}
+																		/>
+																	</PanelBody>
+																</>
+															)}
+
+															{tab.name === 'options' && (
+																<>
+																	{/* Section Options */}
+																	<PanelBody title={__('Section Options', 'sarika')} initialOpen={true}>
+																		<SelectControl
+																			label={__('Background Color', 'sarika')}
+																			value={ane_section_background}
+																			options={[
+																				{ label: __('None', 'sarika'), value: '' },
+																				{ label: __('Primary', 'sarika'), value: 'primary' },
+																				{ label: __('Secondary', 'sarika'), value: 'secondary' },
+																				{ label: __('Light', 'sarika'), value: 'light' },
+																				{ label: __('Dark', 'sarika'), value: 'dark' },
+																				{ label: __('Accent', 'sarika'), value: 'accent' },
+																				{ label: __('White', 'sarika'), value: 'white' },
+																				{ label: __('Black', 'sarika'), value: 'black' },
+																				{ label: __('Gradient (Primary → Secondary)', 'sarika'), value: 'gradient-primary' },
+																				{ label: __('Gradient (Dark → Primary)', 'sarika'), value: 'gradient-dark' },
+																				{ label: __('Custom Color', 'sarika'), value: 'custom' },
+																			]}
+																			onChange={(value) => setAttributes({ ane_section_background: value === 'custom' ? '#ffffff' : value })}
+																		/>
+
+																		{ane_section_background && (ane_section_background.startsWith('#') || ane_section_background.startsWith('rgb')) && (
+																			<div style={{ marginTop: '12px', padding: '12px', border: '1px solid #ddd' }}>
+																				<ColorPicker
+																					color={ane_section_background}
+																					onChangeComplete={(color) =>
+																						setAttributes({ ane_section_background: `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})` })
+																					}
+																					disableAlpha={false}
+																				/>
+																			</div>
+																		)}
+
+																		<SelectControl
+																			label={__('Padding Top', 'sarika')}
+																			value={ane_padding_top}
+																			options={[
+																				{ label: __('Medium (3rem)', 'sarika'), value: 'medium' },
+																				{ label: __('Large (5rem)', 'sarika'), value: 'large' },
+																			]}
+																			onChange={(value) => setAttributes({ ane_padding_top: value })}
+																		/>
+
+																		<SelectControl
+																			label={__('Padding Bottom', 'sarika')}
+																			value={ane_padding_bottom}
+																			options={[
+																				{ label: __('Medium (3rem)', 'sarika'), value: 'medium' },
+																				{ label: __('Large (5rem)', 'sarika'), value: 'large' },
+																			]}
+																			onChange={(value) => setAttributes({ ane_padding_bottom: value })}
+																		/>
+
+																		<SelectControl
+																			label={__('Margin Bottom', 'sarika')}
+																			value={ane_margin_bottom}
+																			options={[
+																				{ label: __('Zero', 'sarika'), value: 'zero' },
+																				{ label: __('Medium (3rem)', 'sarika'), value: 'medium' },
+																				{ label: __('Large (5rem)', 'sarika'), value: 'large' },
+																			]}
+																			onChange={(value) => setAttributes({ ane_margin_bottom: value })}
+																		/>
+																	</PanelBody>
+
+																	{/* Container Options */}
+																	<PanelBody title={__('Container Options', 'sarika')} initialOpen={false}>
+																		<SelectControl
+																			label={__('Background Color', 'sarika')}
+																			value={ane_container_background}
+																			options={[
+																				{ label: __('Transparent (Default)', 'sarika'), value: '' },
+																				{ label: __('Primary', 'sarika'), value: 'primary' },
+																				{ label: __('Secondary', 'sarika'), value: 'secondary' },
+																				{ label: __('Light', 'sarika'), value: 'light' },
+																				{ label: __('Dark', 'sarika'), value: 'dark' },
+																				{ label: __('Accent', 'sarika'), value: 'accent' },
+																				{ label: __('White', 'sarika'), value: 'white' },
+																				{ label: __('Black', 'sarika'), value: 'black' },
+																				{ label: __('Gradient (Primary → Secondary)', 'sarika'), value: 'gradient-primary' },
+																				{ label: __('Gradient (Dark → Primary)', 'sarika'), value: 'gradient-dark' },
+																				{ label: __('Custom Color', 'sarika'), value: 'custom' },
+																			]}
+																			onChange={(value) => setAttributes({ ane_container_background: value === 'custom' ? '#ffffff' : value })}
+																		/>
+
+																		{ane_container_background && (ane_container_background.startsWith('#') || ane_container_background.startsWith('rgb')) && (
+																			<div style={{ marginTop: '12px', padding: '12px', border: '1px solid #ddd' }}>
+																				<ColorPicker
+																					color={ane_container_background}
+																					onChangeComplete={(color) =>
+																						setAttributes({ ane_container_background: `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})` })
+																					}
+																					disableAlpha={false}
+																				/>
+																			</div>
+																		)}
+
+																		<RangeControl
+																			label={__('Border Radius (px)', 'sarika')}
+																			value={ane_container_border_radius}
+																			onChange={(value) => setAttributes({ ane_container_border_radius: value })}
+																			min={0}
+																			max={50}
+																			step={1}
+																		/>
+
+																		<RangeControl
+																			label={__('Container Padding (px)', 'sarika')}
+																			value={ane_container_padding}
+																			onChange={(value) => setAttributes({ ane_container_padding: value })}
+																			min={0}
+																			max={100}
+																			step={5}
+																		/>
+																	</PanelBody>
+
+																	{/* Layout Options */}
+																	<PanelBody title={__('Layout Options', 'sarika')} initialOpen={false}>
+																		<SelectControl
+																			label={__('Content Width', 'sarika')}
+																			value={ane_content_width}
+																			options={[
+																				{ label: __('Medium (800px max)', 'sarika'), value: 'medium' },
+																				{ label: __('Full (100%)', 'sarika'), value: 'full' },
+																			]}
+																			onChange={(value) => setAttributes({ ane_content_width: value })}
+																		/>
+
+																		<SelectControl
+																			label={__('Alignment', 'sarika')}
+																			value={ane_alignment}
+																			options={[
+																				{ label: __('Center', 'sarika'), value: 'center' },
+																				{ label: __('Left', 'sarika'), value: 'left' },
+																				{ label: __('Right', 'sarika'), value: 'right' },
+																			]}
+																			onChange={(value) => setAttributes({ ane_alignment: value })}
+																		/>
+
+																		<SelectControl
+																			label={__('Visi Image Position', 'sarika')}
+																			value={ane_visi_image_position}
+																			options={[
+																				{ label: __('Left', 'sarika'), value: 'left' },
+																				{ label: __('Right', 'sarika'), value: 'right' },
+																			]}
+																			onChange={(value) => setAttributes({ ane_visi_image_position: value })}
+																		/>
+
+																		<SelectControl
+																			label={__('Icon Shape', 'sarika')}
+																			value={ane_icon_shape}
+																			options={[
+																				{ label: __('Circle', 'sarika'), value: 'circle' },
+																				{ label: __('Square', 'sarika'), value: 'square' },
+																			]}
+																			onChange={(value) => setAttributes({ ane_icon_shape: value })}
+																		/>
+																	</PanelBody>
+
+																	{/* Title Options */}
+																	<PanelBody title={__('Title Options', 'sarika')} initialOpen={false}>
+																		<SelectControl
+																			label={__('Title Size', 'sarika')}
+																			value={ane_title_size}
+																			options={[
+																				{ label: __('Hero (Large)', 'sarika'), value: 'hero' },
+																				{ label: __('Body (Medium)', 'sarika'), value: 'body' },
+																				{ label: __('Description (Small)', 'sarika'), value: 'desc' },
+																				{ label: __('Small (Tiny)', 'sarika'), value: 'small' },
+																			]}
+																			onChange={(value) => setAttributes({ ane_title_size: value })}
+																		/>
+
+																		<SelectControl
+																			label={__('Title Color', 'sarika')}
+																			value={ane_title_color}
+																			options={[
+																				{ label: __('Default', 'sarika'), value: '' },
+																				{ label: __('Primary', 'sarika'), value: 'primary' },
+																				{ label: __('Secondary', 'sarika'), value: 'secondary' },
+																				{ label: __('Body Text', 'sarika'), value: 'body' },
+																				{ label: __('Light', 'sarika'), value: 'light' },
+																				{ label: __('Dark', 'sarika'), value: 'dark' },
+																				{ label: __('Accent', 'sarika'), value: 'accent' },
+																				{ label: __('White', 'sarika'), value: 'white' },
+																				{ label: __('Black', 'sarika'), value: 'black' },
+																				{ label: __('Gradient', 'sarika'), value: 'gradient' },
+																				{ label: __('Custom Color', 'sarika'), value: 'custom' },
+																			]}
+																			onChange={(value) => setAttributes({ ane_title_color: value === 'custom' ? '#000000' : value })}
+																		/>
+
+																		{ane_title_color && (ane_title_color.startsWith('#') || ane_title_color.startsWith('rgb')) && (
+																			<div style={{ marginTop: '12px', padding: '12px', border: '1px solid #ddd' }}>
+																				<ColorPicker
+																					color={ane_title_color}
+																					onChangeComplete={(color) =>
+																						setAttributes({ ane_title_color: `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})` })
+																					}
+																					disableAlpha={false}
+																				/>
+																			</div>
+																		)}
+																	</PanelBody>
+
+																	{/* Tagline Options */}
+																	<PanelBody title={__('Tagline Options', 'sarika')} initialOpen={false}>
+																		<SelectControl
+																			label={__('Tagline Size', 'sarika')}
+																			value={ane_tagline_size}
+																			options={[
+																				{ label: __('Hero (Large)', 'sarika'), value: 'hero' },
+																				{ label: __('Body (Medium)', 'sarika'), value: 'body' },
+																			]}
+																			onChange={(value) => setAttributes({ ane_tagline_size: value })}
+																		/>
+
+																		<SelectControl
+																			label={__('Tagline Color', 'sarika')}
+																			value={ane_tagline_color}
+																			options={[
+																				{ label: __('Primary', 'sarika'), value: 'primary' },
+																				{ label: __('Secondary', 'sarika'), value: 'secondary' },
+																				{ label: __('Body Text', 'sarika'), value: 'body' },
+																				{ label: __('Light', 'sarika'), value: 'light' },
+																				{ label: __('Dark', 'sarika'), value: 'dark' },
+																				{ label: __('Accent', 'sarika'), value: 'accent' },
+																				{ label: __('White', 'sarika'), value: 'white' },
+																				{ label: __('Black', 'sarika'), value: 'black' },
+																				{ label: __('Gradient', 'sarika'), value: 'gradient' },
+																				{ label: __('Custom Color', 'sarika'), value: 'custom' },
+																			]}
+																			onChange={(value) => setAttributes({ ane_tagline_color: value === 'custom' ? '#000000' : value })}
+																		/>
+
+																		{ane_tagline_color && (ane_tagline_color.startsWith('#') || ane_tagline_color.startsWith('rgb')) && (
+																			<div style={{ marginTop: '12px', padding: '12px', border: '1px solid #ddd' }}>
+																				<ColorPicker
+																					color={ane_tagline_color}
+																					onChangeComplete={(color) =>
+																						setAttributes({ ane_tagline_color: `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})` })
+																					}
+																					disableAlpha={false}
+																				/>
+																			</div>
+																		)}
+																	</PanelBody>
+
+																	{/* Description Options */}
+																	<PanelBody title={__('Description Options', 'sarika')} initialOpen={false}>
+																		<SelectControl
+																			label={__('Description Color', 'sarika')}
+																			value={ane_description_color}
+																			options={[
+																				{ label: __('Default', 'sarika'), value: '' },
+																				{ label: __('Primary', 'sarika'), value: 'primary' },
+																				{ label: __('Secondary', 'sarika'), value: 'secondary' },
+																				{ label: __('Body Text', 'sarika'), value: 'body' },
+																				{ label: __('Light', 'sarika'), value: 'light' },
+																				{ label: __('Dark', 'sarika'), value: 'dark' },
+																				{ label: __('Accent', 'sarika'), value: 'accent' },
+																				{ label: __('White', 'sarika'), value: 'white' },
+																				{ label: __('Black', 'sarika'), value: 'black' },
+																				{ label: __('Custom Color', 'sarika'), value: 'custom' },
+																			]}
+																			onChange={(value) => setAttributes({ ane_description_color: value === 'custom' ? '#000000' : value })}
+																		/>
+
+																		{ane_description_color && (ane_description_color.startsWith('#') || ane_description_color.startsWith('rgb')) && (
+																			<div style={{ marginTop: '12px', padding: '12px', border: '1px solid #ddd' }}>
+																				<ColorPicker
+																					color={ane_description_color}
+																					onChangeComplete={(color) =>
+																						setAttributes({ ane_description_color: `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})` })
+																					}
+																					disableAlpha={false}
+																				/>
+																			</div>
+																		)}
+																	</PanelBody>
+
+																	{/* Visi Text Options */}
+																	<PanelBody title={__('Visi Text Options', 'sarika')} initialOpen={false}>
+																		<SelectControl
+																			label={__('Visi Text Color', 'sarika')}
+																			value={ane_visi_color}
+																			options={[
+																				{ label: __('Default', 'sarika'), value: '' },
+																				{ label: __('Primary', 'sarika'), value: 'primary' },
+																				{ label: __('Secondary', 'sarika'), value: 'secondary' },
+																				{ label: __('Body Text', 'sarika'), value: 'body' },
+																				{ label: __('Light', 'sarika'), value: 'light' },
+																				{ label: __('Dark', 'sarika'), value: 'dark' },
+																				{ label: __('Accent', 'sarika'), value: 'accent' },
+																				{ label: __('White', 'sarika'), value: 'white' },
+																				{ label: __('Black', 'sarika'), value: 'black' },
+																				{ label: __('Custom Color', 'sarika'), value: 'custom' },
+																			]}
+																			onChange={(value) => setAttributes({ ane_visi_color: value === 'custom' ? '#000000' : value })}
+																		/>
+
+																		{ane_visi_color && (ane_visi_color.startsWith('#') || ane_visi_color.startsWith('rgb')) && (
+																			<div style={{ marginTop: '12px', padding: '12px', border: '1px solid #ddd' }}>
+																				<ColorPicker
+																					color={ane_visi_color}
+																					onChangeComplete={(color) =>
+																						setAttributes({ ane_visi_color: `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})` })
+																					}
+																					disableAlpha={false}
+																				/>
+																			</div>
+																		)}
+																	</PanelBody>
+																</>
+															)}
+														</>
+													)}
+												</TabPanel>
+											</InspectorControls>
+
+											<div {...blockProps}>
+												<div className="container">
+													<div className={containerClasses} style={containerStyle}>
+														<div className={contentClasses}>
+															{/* Header */}
+															{ane_title && <h2 className={titleClasses} style={titleStyle}>{ane_title}</h2>}
+															{ane_tagline && <p className={taglineClasses} style={taglineStyle}>{ane_tagline}</p>}
+															{ane_description && (
+																<p className="sarika-block-profile__description desc" style={descStyle}>
+																	{ane_description}
+																</p>
+															)}
+
+															{/* Buttons */}
+															{(ane_button_link.url || ane_button2_link.url) && (
+																<div className="sarika-block-profile__buttons">
+																	{ane_button_link.url && (
+																		<a href={ane_button_link.url} className={`btn btn--${ane_button_style}`} onClick={(e) => e.preventDefault()}>
+																			{ane_button_link.title || __('Button 1', 'sarika')}
+																		</a>
+																	)}
+																	{ane_button2_link.url && (
+																		<a href={ane_button2_link.url} className={`btn btn--${ane_button2_style}`} onClick={(e) => e.preventDefault()}>
+																			{ane_button2_link.title || __('Button 2', 'sarika')}
+																		</a>
+																	)}
+																</div>
+															)}
+
+															{/* Visi Section */}
+															{(ane_visi_text || ane_visi_image) && (
+																<div className={`sarika-block-profile__visi sarika-block-profile__visi--image-${ane_visi_image_position}`}>
+																	{ane_visi_image && (
+																		<div className="sarika-block-profile__visi-image">
+																			<img src={ane_visi_image} alt="Vision" />
+																		</div>
+																	)}
+																	{ane_visi_text && (
+																		<div className="sarika-block-profile__visi-text">
+																			<p className="desc" style={visiStyle}>
+																				{ane_visi_text}
+																			</p>
+																		</div>
+																	)}
+																</div>
+															)}
+
+															{/* Misi Section */}
+															{ane_misi_items && ane_misi_items.length > 0 && (
+																<div className="sarika-block-profile__misi">
+																	{ane_misi_items.map((item, index) => (
+																		<div key={index} className="sarika-block-profile__misi-item">
+																			{(item.ane_icon_image || item.ane_icon) && (
+																				<div className={`sarika-block-profile__misi-icon sarika-block-profile__misi-icon--${ane_icon_shape}`}>
+																					{item.ane_icon_image ? (
+																						<img src={item.ane_icon_image} alt="" style={{ width: '48px', height: '48px', objectFit: 'contain' }} />
+																					) : item.ane_icon ? (
+																						<span className={`dashicons dashicons-${item.ane_icon.replace('dashicons-', '')}`}></span>
+																					) : null}
+																				</div>
+																			)}
+																			{item.ane_text && <p className="sarika-block-profile__misi-text">{item.ane_text}</p>}
+																		</div>
+																	))}
+																</div>
+															)}
+														</div>
+													</div>
+												</div>
+											</div>
+										</>
+									)}
+								</>
+							)}
+				</TabPanel>
+			</InspectorControls>
+
+						<div {...blockProps}>
+							<div className="container">
+								<div className={containerClasses} style={containerStyle}>
+									<div className={contentClasses}>
+										{/* Header */}
+										{ane_title && <h2 className={titleClasses} style={titleStyle}>{ane_title}</h2>}
+										{ane_tagline && <p className={taglineClasses} style={taglineStyle}>{ane_tagline}</p>}
+										{ane_description && (
+											<p className="sarika-block-profile__description desc" style={descStyle}>
+												{ane_description}
+											</p>
+										)}
+
+										{/* Buttons */}
+										{(ane_button_link.url || ane_button2_link.url) && (
+											<div className="sarika-block-profile__buttons">
+												{ane_button_link.url && (
+													<a href={ane_button_link.url} className={`btn btn--${ane_button_style}`} onClick={(e) => e.preventDefault()}>
+														{ane_button_link.title || __('Button 1', 'sarika')}
+													</a>
+												)}
+												{ane_button2_link.url && (
+													<a href={ane_button2_link.url} className={`btn btn--${ane_button2_style}`} onClick={(e) => e.preventDefault()}>
+														{ane_button2_link.title || __('Button 2', 'sarika')}
+													</a>
+												)}
+											</div>
+										)}
+
+										{/* Visi Section */}
+										{(ane_visi_text || ane_visi_image) && (
+											<div className={`sarika-block-profile__visi sarika-block-profile__visi--image-${ane_visi_image_position}`}>
+												{ane_visi_image && (
+													<div className="sarika-block-profile__visi-image">
+														<img src={ane_visi_image} alt="Vision" />
+													</div>
+												)}
+												{ane_visi_text && (
+													<div className="sarika-block-profile__visi-text">
+														<p className="desc" style={visiStyle}>
+															{ane_visi_text}
+														</p>
+													</div>
+												)}
+											</div>
+										)}
+
+										{/* Misi Section */}
+										{ane_misi_items && ane_misi_items.length > 0 && (
+											<div className="sarika-block-profile__misi">
+												{ane_misi_items.map((item, index) => (
+													<div key={index} className="sarika-block-profile__misi-item">
+														{(item.ane_icon_image || item.ane_icon) && (
+															<div className={`sarika-block-profile__misi-icon sarika-block-profile__misi-icon--${ane_icon_shape}`}>
+																{item.ane_icon_image ? (
+																	<img src={item.ane_icon_image} alt="" style={{ width: '48px', height: '48px', objectFit: 'contain' }} />
+																) : item.ane_icon ? (
+																	<span className={`dashicons dashicons-${item.ane_icon.replace('dashicons-', '')}`}></span>
+																) : null}
+															</div>
+														)}
+														{item.ane_text && <p className="sarika-block-profile__misi-text">{item.ane_text}</p>}
+													</div>
+												))}
+											</div>
+										)}
+									</div>
+								</div>
+							</div>
+						</div>
+					</>
+				);
+			}

@@ -1,0 +1,73 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "sarika/hero",
+  "version": "0.1.0",
+  "title": "Hero Banner",
+  "category": "sarika-sections",
+  "icon": "cover-image",
+  "description": "Full-width hero section with background image, title, description, and CTA buttons - Live preview enabled.",
+  "keywords": [
+    "hero",
+    "banner",
+    "header",
+    "landing"
+  ],
+  "supports": {
+    "html": false,
+    "align": [
+      "full"
+    ],
+    "anchor": true
+  },
+  "attributes": {
+    "backgroundUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundId": {
+      "type": "number",
+      "default": 0
+    },
+    "title": {
+      "type": "string",
+      "default": ""
+    },
+    "description": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonText": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "button2Text": {
+      "type": "string",
+      "default": ""
+    },
+    "button2Url": {
+      "type": "string",
+      "default": ""
+    },
+    "contentAlignment": {
+      "type": "string",
+      "default": "left"
+    },
+    "overlayOpacity": {
+      "type": "number",
+      "default": 50
+    },
+    "minHeight": {
+      "type": "string",
+      "default": "medium"
+    }
+  },
+  "textdomain": "sarika",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

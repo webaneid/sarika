@@ -1,0 +1,210 @@
+/**
+ * Block Profile - Editor Styles
+ *
+ * NOTE: Global utilities loaded from editor-style.scss.
+ * Only block-specific styles here.
+ *
+ * @package sarika
+ */
+
+.sarika-block-profile {
+	&__container {
+		width: 100%;
+		transition: all 0.3s ease;
+	}
+
+	&__content {
+		&.content-width-medium {
+			max-width: 800px;
+			margin: 0 auto;
+		}
+
+		&.content-width-full {
+			width: 100%;
+		}
+	}
+
+	// Header: 2 Columns (Desktop)
+	&__header {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 2rem;
+		margin-bottom: 3rem;
+		align-items: end;
+		p {
+			margin-bottom: 0;
+		}
+
+		@media (min-width: 768px) {
+			grid-template-columns: 1fr 1fr;
+			gap: 3rem;
+		}
+	}
+
+	&__header-left {
+		// Title + Tagline column
+	}
+
+	&__header-right {
+		// Description column
+	}
+
+	// Body: 2 Columns (Desktop)
+	&__body {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 2rem;
+		align-items: start;
+
+		@media (min-width: 768px) {
+			grid-template-columns: 1fr 1fr;
+			gap: 3rem;
+		}
+	}
+
+	&__body-left {
+		// Image column
+	}
+
+	&__body-right {
+		// Visi + Misi + Button column
+	}
+
+	&__image {
+		width: 100%;
+		height: auto;
+		object-fit: cover;
+		display: block;
+		border-radius: 10px;
+		overflow: hidden;
+	}
+
+	// Visi: Bold text
+	&__visi {
+		margin-bottom: 2rem;
+
+		&-text {
+			font-size: 1.125rem;
+			font-weight: 700;
+			line-height: 1.6;
+			margin: 0;
+
+			@media (min-width: 768px) {
+				font-size: 1.25rem;
+			}
+
+			@media (min-width: 1024px) {
+				font-size: 1.5rem;
+			}
+		}
+	}
+
+	// Misi: List with icons (with background)
+	&__misi {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		margin-bottom: 2rem;
+
+		&-item {
+			display: flex;
+			align-items: flex-start;
+			gap: 0.75rem;
+			transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+			background: rgba(var(--sarika-color-white-rgb),0.5);
+			border-radius: 30px;
+			padding: 10px 25px;
+			align-content: center;
+			line-height: 1;
+
+			&:hover {
+				transform: translateX(4px);
+			}
+		}
+
+		&-icon {
+			flex-shrink: 0;
+			width: 24px;
+			height: 24px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: var(--sarika-color-primary);
+			background: var(--sarika-color-primary);
+			border-radius: 50%;
+
+			img {
+				width: 24px;
+				height: 24px;
+				object-fit: contain;
+				filter: brightness(0) invert(1);
+
+			}
+
+			.dashicons {
+				font-size: 24px;
+				width: 24px;
+				height: 24px;
+				color: var(--sarika-color-primary);
+			}
+		}
+
+		&-text {
+			flex: 1;
+			margin: 0;
+			font-size: 1rem;
+			line-height: 1.6;
+			margin-bottom: 0 !important;
+
+			@media (min-width: 1024px) {
+				font-size: 1.125rem;
+			}
+		}
+	}
+
+	// Button
+	&__button {
+		margin-top: 1.5rem;
+	}
+
+
+	// Mobile responsive adjustments
+	@media (max-width: 768px) {
+		&__header {
+			gap: 1.5rem;
+			margin-bottom: 2rem;
+		}
+
+		&__body {
+			gap: 1.5rem;
+		}
+
+		&__visi-text {
+			font-size: 1rem;
+		}
+
+		&__misi {
+			gap: 0.75rem;
+
+			&-icon {
+				width: 20px;
+				height: 20px;
+
+				img {
+					width: 20px;
+					height: 20px;
+				}
+
+				.dashicons {
+					font-size: 20px;
+					width: 20px;
+					height: 20px;
+				}
+			}
+
+			&-text {
+				font-size: 0.938rem;
+			}
+		}
+	}
+}

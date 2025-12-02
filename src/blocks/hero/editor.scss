@@ -1,0 +1,401 @@
+/**
+ * Hero Block - Editor Styles
+ *
+ * These styles are ONLY loaded in the WordPress editor.
+ * Frontend styles are in scss/_blocks.scss
+ *
+ * CSS Variables will be injected by:
+ * - inc/acf-layouts.php → sarika_custom_colors_admin_css() (if ACF colors set)
+ * - scss/_tokens.scss → fallback defaults
+ *
+ * @package sarika
+ */
+
+.sarika-hero {
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	// Height variants
+	&--height-small {
+		min-height: 400px;
+	}
+
+	&--height-medium {
+		min-height: 600px;
+	}
+
+	&--height-large {
+		min-height: 800px;
+	}
+
+	// Alignment variants
+	&--align-left .sarika-hero__content {
+		text-align: left;
+	}
+
+	&--align-center .sarika-hero__content {
+		text-align: center;
+	}
+
+	&--align-right .sarika-hero__content {
+		text-align: right;
+	}
+}
+
+.sarika-hero__background {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	z-index: 1;
+}
+
+// Overlay - Horizontal gradient (matches frontend)
+.sarika-hero__overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 2;
+
+	// Overlay Color Variants - Gradient horizontal (content area only)
+	&--dark {
+		background: linear-gradient(90deg, rgba(var(--sarika-color-dark-rgb), 0.9) 0%, rgba(var(--sarika-color-dark-rgb), 0.6) 50%, transparent 100%);
+	}
+
+	&--body {
+		background: linear-gradient(90deg, rgba(var(--sarika-color-body-rgb), 0.9) 0%, rgba(var(--sarika-color-body-rgb), 0.6) 50%, transparent 100%);
+	}
+
+	&--primary {
+		background: linear-gradient(90deg, rgba(var(--sarika-color-primary-rgb), 0.9) 0%, rgba(var(--sarika-color-primary-rgb), 0.6) 50%, transparent 100%);
+	}
+
+	&--secondary {
+		background: linear-gradient(90deg, rgba(var(--sarika-color-secondary-rgb), 0.9) 0%, rgba(var(--sarika-color-secondary-rgb), 0.6) 50%, transparent 100%);
+	}
+}
+
+.sarika-hero__container {
+	position: relative;
+	z-index: 3;
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 4rem 1.5rem;
+
+	@media (max-width: 768px) {
+		padding: 3rem 1rem;
+	}
+}
+
+.sarika-hero__content {
+	max-width: 600px; // 50% dari container 1200px
+	color: var(--sarika-color-white);
+
+	// Alignment variants (matches frontend)
+	.sarika-hero--align-left & {
+		margin-left: 0;
+		margin-right: auto;
+		text-align: left;
+	}
+
+	.sarika-hero--align-center & {
+		margin-left: auto;
+		margin-right: auto;
+		text-align: center;
+	}
+
+	.sarika-hero--align-right & {
+		margin-left: auto;
+		margin-right: 0;
+		text-align: right;
+	}
+
+	@media (max-width: 768px) {
+		max-width: 100%;
+	}
+}
+
+.sarika-hero__title {
+	font-size: 3.5rem;
+	font-weight: 700;
+	line-height: 1.2;
+	color: #fff;
+	margin-bottom: 1.5rem;
+	text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+	@media (max-width: 768px) {
+		font-size: 2.5rem;
+	}
+}
+
+.sarika-hero__description {
+	font-size: 1.25rem;
+	line-height: 1.6;
+	color: rgba(255, 255, 255, 0.9);
+	margin-bottom: 2rem;
+	text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+
+	@media (max-width: 768px) {
+		font-size: 1.125rem;
+	}
+}
+
+.sarika-hero__buttons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	align-items: center;
+
+	.sarika-hero--align-center & {
+		justify-content: center;
+	}
+
+	.sarika-hero--align-right & {
+		justify-content: flex-end;
+	}
+}
+
+.sarika-hero__button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1rem 2rem;
+	font-size: 1.125rem;
+	font-weight: 600;
+	text-decoration: none;
+	border-radius: 0;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	cursor: pointer;
+	white-space: nowrap;
+
+	&--primary {
+		background: #F4C542;
+		color: #000;
+		border: 2px solid #F4C542;
+
+		&:hover {
+			background: #E0B338;
+			border-color: #E0B338;
+			transform: translateY(-2px);
+			box-shadow: 0 4px 12px rgba(244, 197, 66, 0.3);
+		}
+	}
+
+	&--secondary {
+		background: transparent;
+		color: #fff;
+		border: 2px solid #fff;
+
+		&:hover {
+			background: rgba(255, 255, 255, 0.1);
+			transform: translateY(-2px);
+			box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+		}
+	}
+
+	@media (max-width: 768px) {
+		padding: 0.875rem 1.5rem;
+		font-size: 1rem;
+	}
+}
+
+// Buttons container
+.sarika-hero__buttons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	align-items: center;
+
+	.sarika-hero--align-center & {
+		justify-content: center;
+	}
+
+	.sarika-hero--align-right & {
+		justify-content: flex-end;
+	}
+}
+
+// Button Styles (matches _button.scss)
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	padding: 0.875rem 2rem;
+	font-size: 1rem;
+	font-weight: 600;
+	line-height: 1.5;
+	text-align: center;
+	text-decoration: none;
+	white-space: nowrap;
+	border: 2px solid transparent;
+	border-radius: 9999px; // Capsule shape
+	cursor: pointer;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	font-family: inherit;
+	user-select: none;
+
+	&:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	}
+
+	// Primary Button
+	&--primary {
+		background: var(--sarika-color-primary);
+		color: var(--sarika-color-dark);
+		border-color: var(--sarika-color-primary);
+
+		&:hover {
+			background: rgba(var(--sarika-color-primary-rgb), 0.9);
+			border-color: rgba(var(--sarika-color-primary-rgb), 0.9);
+			color: var(--sarika-color-dark);
+		}
+	}
+
+	// Primary Outline
+	&--primary-outline {
+		background: transparent;
+		color: var(--sarika-color-primary);
+		border-color: var(--sarika-color-primary);
+
+		&:hover {
+			background: var(--sarika-color-primary);
+			color: var(--sarika-color-dark);
+		}
+	}
+
+	// White Button
+	&--white {
+		background: var(--sarika-color-white);
+		color: var(--sarika-color-body);
+		border-color: var(--sarika-color-white);
+
+		&:hover {
+			background: rgba(var(--sarika-color-white-rgb), 0.95);
+			border-color: rgba(var(--sarika-color-white-rgb), 0.95);
+			color: var(--sarika-color-body);
+		}
+	}
+
+	// White Outline
+	&--white-outline {
+		background: transparent;
+		color: var(--sarika-color-white);
+		border-color: var(--sarika-color-white);
+
+		&:hover {
+			background: var(--sarika-color-white);
+			color: var(--sarika-color-body);
+		}
+	}
+
+	// Dark Button
+	&--dark {
+		background: var(--sarika-color-dark);
+		color: var(--sarika-color-white);
+		border-color: var(--sarika-color-dark);
+
+		&:hover {
+			background: rgba(var(--sarika-color-dark-rgb), 0.9);
+			border-color: rgba(var(--sarika-color-dark-rgb), 0.9);
+			color: var(--sarika-color-white);
+		}
+	}
+
+	// Dark Outline
+	&--dark-outline {
+		background: transparent;
+		color: var(--sarika-color-dark);
+		border-color: var(--sarika-color-dark);
+
+		&:hover {
+			background: var(--sarika-color-dark);
+			color: var(--sarika-color-white);
+		}
+	}
+
+	// Secondary Button
+	&--secondary {
+		background: var(--sarika-color-secondary);
+		color: var(--sarika-color-white);
+		border-color: var(--sarika-color-secondary);
+
+		&:hover {
+			background: rgba(var(--sarika-color-secondary-rgb), 0.9);
+			border-color: rgba(var(--sarika-color-secondary-rgb), 0.9);
+			color: var(--sarika-color-white);
+		}
+	}
+}
+
+.sarika-hero__placeholder {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 4;
+	text-align: center;
+	color: #666;
+	font-size: 1.125rem;
+	padding: 2rem;
+	background: rgba(255, 255, 255, 0.9);
+	border: 2px dashed #ccc;
+	border-radius: 8px;
+
+	p {
+		margin: 0;
+	}
+}
+
+// Text Color Utilities (matches frontend _typography.scss)
+.text-primary {
+	h1, h2, h3, h4, h5, p {
+		color: var(--sarika-color-primary) !important;
+	}
+}
+
+.text-secondary {
+	h1, h2, h3, h4, h5, p {
+		color: var(--sarika-color-secondary) !important;
+	}
+}
+
+.text-dark {
+	h1, h2, h3, h4, h5, p {
+		color: var(--sarika-color-dark) !important;
+	}
+}
+
+.text-white {
+	h1, h2, h3, h4, h5, p {
+		color: var(--sarika-color-white) !important;
+	}
+}
+
+// Inspector Controls Styling (Sidebar)
+.sarika-media-control {
+	margin-top: 1rem;
+
+	img {
+		display: block;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+	}
+
+	.components-button {
+		width: 100%;
+		justify-content: center;
+	}
+}
