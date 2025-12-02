@@ -4,16 +4,52 @@ Panduan lengkap cara membuat GitHub Release agar sistem auto-update theme WordPr
 
 ---
 
+## 🎯 Quick Start (Recommended - GitHub Actions)
+
+**Cara tercepat dan otomatis menggunakan GitHub Actions:**
+
+```bash
+# 1. Update version di style.css
+# Line 7: Version: 0.1.0 → 0.2.0
+
+# 2. Update CHANGELOG.md
+# Tambahkan section baru untuk versi ini
+
+# 3. Stage & commit changes
+git add style.css CHANGELOG.md
+git commit -m "chore: bump version to 0.2.0"
+
+# 4. Push commits
+git push origin main
+
+# 5. Create & push tag (ini trigger GitHub Actions!)
+git tag -a v0.2.0 -m "Release v0.2.0"
+git push origin v0.2.0
+```
+
+**Selesai!** 🎉 GitHub Actions akan otomatis:
+- ✅ Create ZIP file `sarika-0.2.0.zip`
+- ✅ Extract changelog dari CHANGELOG.md
+- ✅ Create GitHub Release dengan ZIP attached
+- ✅ Publish release
+
+Cek progress di: `https://github.com/webaneid/sarika/actions`
+
+---
+
 ## 📋 Prerequisites
 
 1. ✅ Repository sudah di-push ke GitHub: `https://github.com/webaneid/sarika`
 2. ✅ File `README.md` dan `CHANGELOG.md` sudah ada
-3. ✅ Version di `style.css` sudah di-update
-4. ✅ Semua perubahan sudah di-commit dan di-push
+3. ✅ GitHub Actions workflow (`.github/workflows/release.yml`) sudah di-push
+4. ✅ Version di `style.css` sudah di-update
+5. ✅ Semua perubahan sudah di-commit dan di-push
 
 ---
 
-## 🚀 Step-by-Step: Membuat GitHub Release
+## 🚀 Method 1: Automated Release (GitHub Actions) ⭐ Recommended
+
+GitHub Actions akan otomatis create release setiap kali kamu push tag.
 
 ### Step 1: Buat ZIP File Theme
 

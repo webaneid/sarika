@@ -1,0 +1,78 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+      
+      - name: Create theme ZIP
+        run: |
+          # Create temporary directory
+          mkdir -p /tmp/sarika
+          
+          # Copy all files except excluded ones
+          rsync -av --progress . /tmp/sarika \
+            --exclude .git \
+            --exclude .github \
+            --exclude node_modules \
+            --exclude .DS_Store \
+            --exclude package-lock.json \
+            --exclude '*.log'
+          
+          # Create ZIP from the copied directory
+          cd /tmp
+          zip -r sarika-${{ steps.get_version.outputs.VERSION }}.zip sarika/
+          
+          # Move ZIP back to workspace
+          mv sarika-${{ steps.get_version.outputs.VERSION }}.zip $GITHUB_WORKSPACE/
+      
+      - name: Extract changelog for this version
+        id: changelog
+        run: |
+          # Extract changelog section for this version
+          VERSION="${{ steps.get_version.outputs.VERSION }}"
+          
+          # Try to extract from CHANGELOG.md
+          if [ -f CHANGELOG.md ]; then
+            CHANGELOG=$(sed -n "/## \[$VERSION\]/,/## \[/p" CHANGELOG.md | sed '$d')
+            
+            # If empty, use generic message
+            if [ -z "$CHANGELOG" ]; then
+              CHANGELOG="Release version $VERSION. See CHANGELOG.md for details."
+            fi
+          else
+            CHANGELOG="Release version $VERSION"
+          fi
+          
+          # Save to file for multiline support
+          echo "$CHANGELOG" > /tmp/changelog.txt
+          echo "CHANGELOG_FILE=/tmp/changelog.txt" >> $GITHUB_OUTPUT
+      
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Sarika v${{ steps.get_version.outputs.VERSION }}
+          body_path: ${{ steps.changelog.outputs.CHANGELOG_FILE }}
+          files: sarika-${{ steps.get_version.outputs.VERSION }}.zip
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Update version badge
+        run: |
+          echo "✅ Release v${{ steps.get_version.outputs.VERSION }} created successfully!"
+          echo "📦 ZIP file: sarika-${{ steps.get_version.outputs.VERSION }}.zip"
+          echo "🔗 Download: https://github.com/${{ github.repository }}/releases/download/v${{ steps.get_version.outputs.VERSION }}/sarika-${{ steps.get_version.outputs.VERSION }}.zip"
