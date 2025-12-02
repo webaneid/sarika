@@ -1,0 +1,251 @@
+# Changelog
+
+All notable changes to the Sarika WordPress theme will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+### Planned Features
+- Contact form integration (Contact Form 7 / WPForms styling)
+- Google Maps integration for location display
+- Social proof section (client logos carousel - ✅ done, stats counter)
+- FAQ section accordion (✅ done)
+- Pricing tables block
+- Multi-language support enhancement
+- Lottie animation playback component
+- Portfolio Custom Post Type
+- Services Custom Post Type
+- Team Members Custom Post Type
+- Testimonials Custom Post Type
+
+---
+
+## [0.1.0] - 2025-01-29
+
+### Initial Release - Fork from Tempone v0.1.9
+
+This is the initial release of Sarika theme, forked from Tempone v0.1.9 with 100% feature inheritance plus new company profile capabilities.
+
+### Added
+
+#### Gutenberg Blocks
+- **Hero Block** - Fullscreen hero section dengan image background, title, description, dan CTA button
+- **Video Background Block** - YouTube video sebagai fullscreen background dengan overlay gradient (bottom to top)
+  - Autoplay, loop, muted video behavior
+  - Alignment options (left, center, right)
+  - Overlay color options (dark, body, primary, secondary)
+  - Responsive: video positioning adjusted untuk mobile
+  - Fullscreen 100vh dengan proper aspect ratio coverage
+- **Icon & Description Block** - Services/features showcase dengan SVG icon upload support
+  - Grid layout (1-4 columns)
+  - Alignment options
+  - Icon size customization
+- **Block Text** - Flexible text content block dengan typography controls
+- **Block Profile** - Team member atau testimonial profiles dengan image
+- **Block Image Side Text** - Content dengan gambar di kiri/kanan
+- **Client Logos Block** - Logo carousel untuk social proof
+  - Responsive grid layout
+  - Grayscale dengan hover effect
+- **FAQ Block** - Accordion-style FAQ dengan expand/collapse functionality
+
+#### Page Templates
+- **Page Custom (Full Width)** - Template untuk landing pages dengan blocks
+  - No sidebar, no container wrapper
+  - Page title dan breadcrumb tersembunyi (SEO-friendly)
+  - **Header Overlay Setting** - ACF toggle untuk transparent header over first section
+
+#### Header & Navigation
+- **Glassmorphism header design** - One-line layout (Logo | Menu | Search)
+  - Background: `rgba(255, 255, 255, 0.85)` dengan `backdrop-filter: blur(20px)`
+  - Sticky positioning at top
+  - Dropdown submenu support dengan glassmorphism effect
+  - **Header Overlay Mode:**
+    - Position absolute over first section
+    - Transparent background
+    - White text color dengan 3D text-shadow effect
+    - Perfect untuk hero/video background sections
+- **Search functionality** - Toggle search form dengan slide-down animation
+- **Mobile menu** - Hamburger toggle dengan slide-down navigation (≤1024px)
+
+#### Media Upload Support
+- **SVG Upload** - Sanitized SVG upload support
+  - Security: Strips dangerous tags (script, iframe, object, embed, form)
+  - Security: Removes event handlers (onclick, onload, etc.)
+  - Media library: SVG thumbnails display correctly
+  - Auto-detect dimensions from viewBox or width/height
+- **JSON/Lottie Upload** - JSON file upload untuk Lottie animations
+  - Validation: JSON syntax checking
+  - Validation: Verifies Lottie format (must have 'v' version property)
+
+#### Styling System
+- **Custom utility classes** following DRY principles (~300 lines SCSS → 6KB CSS)
+  - Layout utilities (flex, grid, display)
+  - Spacing utilities (padding, margin dengan consistent scale)
+  - Typography utilities (font-size, font-weight, text-align, line-height)
+  - Color utilities (text, background dengan CSS variables)
+  - Border, width/height, position, overflow utilities
+  - Responsive utilities (md, lg breakpoints)
+  - Transition & animation utilities
+- **Monochrome color palette** dengan CSS variables (`--sarika-color-*`)
+- **SCSS modular architecture** - 3 main files (sarika.scss, admin.scss, editor-style.scss)
+- **Total CSS:** 75KB minified (termasuk semua utilities)
+
+#### Admin Customization (Inherited from Tempone)
+- **Custom dashboard** dengan Chart.js analytics
+  - Post statistics (total, published, draft, pending)
+  - Traffic overview visualization
+  - Quick links untuk content management
+- **Enhanced user profile page** dengan performance metrics
+  - User statistics dan activity charts
+  - Post count, comment count visualization
+- **Glassmorphism login page** dengan Webane branding
+- **Dynamic color system** via ACF fields
+  - 6 customizable colors: Primary, Secondary, Dark, Body, Light, Accent
+  - Real-time CSS variable injection
+- **Mobile footer navigation** (5 menu items, ≤782px)
+  - Dashboard, Pages, Create (center, primary), Posts, Settings
+  - iPhone safe area support
+- **Custom menu icon system** dengan SVG support
+
+#### SEO & Optimization (Inherited from Tempone)
+- Open Graph meta tags untuk social sharing
+- Dublin Core metadata untuk better indexing
+- Citation metadata (AI crawler optimization)
+- Enhanced RSS feed
+- Schema.org Organization/LocalBusiness markup (adjusted for company profile)
+
+#### Developer Features
+- **ACF Pro integration** untuk flexible content dan color customization
+- **ACF field registration** via PHP (`inc/acf-fields.php`)
+  - Page Custom Settings field group (Header Overlay toggle)
+- **Webpack bundling** untuk Gutenberg blocks (multi-entry configuration)
+- **SCSS preprocessing** dengan compressed output
+- **Translation ready** - i18n support dengan text domain `sarika`
+- **GitHub-based auto-update system** (`inc/updater.php`)
+  - Checks GitHub releases every 24 hours
+  - Update notifications di Appearance → Themes
+  - Manual update check: `wp-admin/themes.php?sarika_force_check=1`
+  - Debug mode: `wp-admin/themes.php?sarika_debug=1`
+
+### Changed
+
+#### From Tempone to Sarika
+- **All function prefixes:** `tempone_` → `sarika_`
+- **All CSS classes:** `.tempone-` → `.sarika-`
+- **All CSS variables:** `--tempone-color-*` → `--sarika-color-*`
+- **Text domain:** `tempone` → `sarika`
+- **Constants:** `TEMPONE_*` → `SARIKA_*`
+- **Theme slug:** `tempone` → `sarika`
+- **Theme name:** Tempone → Sarika
+- **Theme description:** News/Magazine → Company Profile
+- **Theme tags:** blog, news → business, corporate, company-profile, portfolio
+- **Logo files:** `logo-tempone.svg` → `logo-sarika.svg`
+- **Admin CSS handle:** `tempone-admin` → `sarika-admin`
+- **Main CSS file:** `tempone.min.css` → `sarika.min.css`
+
+#### Styling Improvements
+- ❌ **Removed Tailwind CSS CDN** (was 50-80KB runtime overhead)
+- ✅ **Custom utility classes** (6KB, no runtime overhead)
+- ✅ **SCSS modular architecture** (better maintainability)
+- ✅ **All CSS compiled and minified** (development CSS files removed)
+
+### Retained from Tempone
+
+#### Core Systems (100% retained)
+- Blog/news loop system dengan featured posts
+- Archive templates (category, tag, author, date)
+- Post templates dengan multiple layouts (overlay, classic, title, image-side)
+- Carousel system (desktop auto-play, mobile swipe)
+- Pagination system
+- Widget system
+- Translation system (files regenerated untuk Sarika)
+
+#### Admin Features (100% retained)
+- Custom dashboard design
+- Enhanced user profile page
+- Mobile footer navigation
+- Custom admin menu icons
+- Login page glassmorphism
+- Gutenberg editor styling
+
+### Fixed
+- **Video Background fullscreen coverage** - Fixed aspect ratio calculation
+  - Iframe sizing: `width: calc(100vh * (16 / 9))` dan `min-width: 100vw`
+  - Parent container: `overflow: hidden` untuk crop excess
+  - No black bars di kiri-kanan atau atas-bawah
+- **Function redeclaration error** - Moved `sarika_get_youtube_id()` from template to `inc/blocks.php`
+- **Header overlay body class** - Moved body_class filter to `inc/acf-layouts.php` (before header renders)
+- **CSS compilation** - All SCSS files compiled to .min.css for production
+
+### Security
+- SVG sanitization - Strips XSS-prone tags dan event handlers
+- JSON validation - Checks syntax dan Lottie format
+- WordPress escaping - All output escaped (`esc_html`, `esc_attr`, `esc_url`, `wp_kses_post`)
+
+### Documentation
+- **README.md** - Comprehensive theme documentation dengan installation guide
+- **CHANGELOG.md** - Version history (this file)
+- **CLAUDE.md** - Development guide (1,800+ lines) dengan architecture overview
+- **inc/admin/README.md** - Admin customization system guide (1,045 lines)
+- **BLOCK-DEVELOPMENT-STANDARD.md** - Gutenberg block development standards
+
+### Known Issues
+- Translation files empty (needs regeneration untuk Indonesian)
+- Screenshot.jpg masih screenshot Tempone (needs update)
+- Some admin labels masih reference "Tempone Setup" (gradual migration)
+
+---
+
+## Version History Format
+
+### [Version] - YYYY-MM-DD
+
+#### Added
+- New features
+
+#### Changed
+- Changes in existing functionality
+
+#### Deprecated
+- Soon-to-be removed features
+
+#### Removed
+- Removed features
+
+#### Fixed
+- Bug fixes
+
+#### Security
+- Security fixes
+
+---
+
+## Upgrade Guide
+
+### From v0.1.0 to future versions
+1. Backup your site (files + database)
+2. Go to **Appearance → Themes**
+3. Click **Update Available** button when notification appears
+4. Theme will auto-update via GitHub releases
+5. Clear all caches (browser, WordPress, server)
+6. Test all pages and functionality
+
+### Manual Update (if auto-update fails)
+1. Backup your site
+2. Download latest release ZIP from [GitHub Releases](https://github.com/webaneid/sarika/releases)
+3. Go to **Appearance → Themes → Add New → Upload Theme**
+4. Choose the ZIP and click **Install Now**
+5. Activate theme
+6. Clear caches
+
+---
+
+## Contributing
+
+Found a bug or want to suggest a feature? Please create an issue on [GitHub Issues](https://github.com/webaneid/sarika/issues).
+
+---
+
+**Maintained by Webane Indonesia** - https://webane.com
