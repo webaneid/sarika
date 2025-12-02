@@ -5,75 +5,73 @@ on:
     tags:
       - 'v*.*.*'
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Sass
+        run: npm install -g sass
+
+      - name: Compile SCSS
+        run: |
+          sass scss/sarika.scss css/sarika.min.css --style=compressed
+          sass scss/admin.scss css/admin.min.css --style=compressed
+          sass scss/editor-style.scss css/editor-style.min.css --style=compressed
       
       - name: Get version from tag
         id: get_version
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
       
-      - name: Create theme ZIP
+      - name: Create distribution package
         run: |
-          # Create temporary directory with theme name
-          TEMP_DIR="/tmp/sarika"
-          mkdir -p "$TEMP_DIR"
-
-          # Copy files using tar (preserves structure, excludes patterns)
-          tar --exclude='.git' \
-              --exclude='.github' \
-              --exclude='node_modules' \
-              --exclude='.DS_Store' \
-              --exclude='package-lock.json' \
-              --exclude='*.log' \
-              -cf - . | tar -xf - -C "$TEMP_DIR"
-
-          # Create ZIP from parent directory to get sarika/ folder structure
-          cd /tmp
-          zip -r "$GITHUB_WORKSPACE/sarika-${{ steps.get_version.outputs.VERSION }}.zip" sarika/
-
-          # Verify ZIP was created
-          ls -lh "$GITHUB_WORKSPACE/sarika-${{ steps.get_version.outputs.VERSION }}.zip"
+          mkdir -p dist
+          rsync -av --progress . dist/sarika \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='node_modules' \
+            --exclude='scss' \
+            --exclude='dist' \
+            --exclude='.gitignore' \
+            --exclude='.DS_Store' \
+            --exclude='*.map' \
+            --exclude='package-lock.json' \
+            --exclude='*.log'
+          cd dist
+          zip -r sarika-${{ steps.get_version.outputs.VERSION }}.zip sarika
       
-      - name: Extract changelog for this version
-        id: changelog
-        run: |
-          # Extract changelog section for this version
-          VERSION="${{ steps.get_version.outputs.VERSION }}"
-          
-          # Try to extract from CHANGELOG.md
-          if [ -f CHANGELOG.md ]; then
-            CHANGELOG=$(sed -n "/## \[$VERSION\]/,/## \[/p" CHANGELOG.md | sed '$d')
-            
-            # If empty, use generic message
-            if [ -z "$CHANGELOG" ]; then
-              CHANGELOG="Release version $VERSION. See CHANGELOG.md for details."
-            fi
-          else
-            CHANGELOG="Release version $VERSION"
-          fi
-          
-          # Save to file for multiline support
-          echo "$CHANGELOG" > /tmp/changelog.txt
-          echo "CHANGELOG_FILE=/tmp/changelog.txt" >> $GITHUB_OUTPUT
-      
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          name: Sarika v${{ steps.get_version.outputs.VERSION }}
-          body_path: ${{ steps.changelog.outputs.CHANGELOG_FILE }}
-          files: sarika-${{ steps.get_version.outputs.VERSION }}.zip
-          draft: false
-          prerelease: false
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Update version badge
-        run: |
-          echo "✅ Release v${{ steps.get_version.outputs.VERSION }} created successfully!"
-          echo "📦 ZIP file: sarika-${{ steps.get_version.outputs.VERSION }}.zip"
-          echo "🔗 Download: https://github.com/${{ github.repository }}/releases/download/v${{ steps.get_version.outputs.VERSION }}/sarika-${{ steps.get_version.outputs.VERSION }}.zip"
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Sarika v${{ steps.get_version.outputs.VERSION }}
+          body: |
+            Release version ${{ steps.get_version.outputs.VERSION }}
+
+            See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details.
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/sarika-${{ steps.get_version.outputs.VERSION }}.zip
+          asset_name: sarika-${{ steps.get_version.outputs.VERSION }}.zip
+          asset_content_type: application/zip
