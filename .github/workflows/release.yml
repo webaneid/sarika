@@ -19,24 +19,25 @@ jobs:
       
       - name: Create theme ZIP
         run: |
-          # Create temporary directory
-          mkdir -p /tmp/sarika
-          
-          # Copy all files except excluded ones
-          rsync -av --progress . /tmp/sarika \
-            --exclude .git \
-            --exclude .github \
-            --exclude node_modules \
-            --exclude .DS_Store \
-            --exclude package-lock.json \
-            --exclude '*.log'
-          
-          # Create ZIP from the copied directory
+          # Create temporary directory with theme name
+          TEMP_DIR="/tmp/sarika"
+          mkdir -p "$TEMP_DIR"
+
+          # Copy files using tar (preserves structure, excludes patterns)
+          tar --exclude='.git' \
+              --exclude='.github' \
+              --exclude='node_modules' \
+              --exclude='.DS_Store' \
+              --exclude='package-lock.json' \
+              --exclude='*.log' \
+              -cf - . | tar -xf - -C "$TEMP_DIR"
+
+          # Create ZIP from parent directory to get sarika/ folder structure
           cd /tmp
-          zip -r sarika-${{ steps.get_version.outputs.VERSION }}.zip sarika/
-          
-          # Move ZIP back to workspace
-          mv sarika-${{ steps.get_version.outputs.VERSION }}.zip $GITHUB_WORKSPACE/
+          zip -r "$GITHUB_WORKSPACE/sarika-${{ steps.get_version.outputs.VERSION }}.zip" sarika/
+
+          # Verify ZIP was created
+          ls -lh "$GITHUB_WORKSPACE/sarika-${{ steps.get_version.outputs.VERSION }}.zip"
       
       - name: Extract changelog for this version
         id: changelog
