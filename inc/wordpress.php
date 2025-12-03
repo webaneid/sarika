@@ -14,9 +14,9 @@ function sarika_enqueue_lightbox() {
 		return;
 	}
 
-	// Check if post content has gallery block.
+	// Check if post content has gallery block (core or custom).
 	global $post;
-	if ( ! has_block( 'gallery', $post ) ) {
+	if ( ! has_block( 'gallery', $post ) && ! has_block( 'sarika/gallery', $post ) ) {
 		return;
 	}
 

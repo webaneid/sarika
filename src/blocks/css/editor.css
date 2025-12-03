@@ -1,56 +1,24 @@
-@charset "UTF-8";
 /**
- * Hero Block - Editor Styles
- *
- * These styles are ONLY loaded in the WordPress editor.
- * Frontend styles are in scss/_blocks.scss
- *
- * CSS Variables will be injected by:
- * - inc/acf-layouts.php → sarika_custom_colors_admin_css() (if ACF colors set)
- * - scss/_tokens.scss → fallback defaults
- *
- * @package sarika
+ * Video Background Block - Editor Styles
  */
-.sarika-hero {
+.sarika-video-bg {
   position: relative;
   width: 100%;
+  min-height: 500px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.sarika-hero--height-small {
-  min-height: 400px;
-}
-.sarika-hero--height-medium {
-  min-height: 600px;
-}
-.sarika-hero--height-large {
-  min-height: 800px;
-}
-.sarika-hero--align-left .sarika-hero__content {
-  text-align: left;
-}
-.sarika-hero--align-center .sarika-hero__content {
-  text-align: center;
-}
-.sarika-hero--align-right .sarika-hero__content {
-  text-align: right;
-}
-
-.sarika-hero__background {
+.sarika-video-bg__background {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   z-index: 1;
 }
-
-.sarika-hero__overlay {
+.sarika-video-bg__overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -58,183 +26,190 @@
   height: 100%;
   z-index: 2;
 }
-.sarika-hero__overlay--dark {
-  background: linear-gradient(90deg, rgba(var(--sarika-color-dark-rgb), 0.9) 0%, rgba(var(--sarika-color-dark-rgb), 0.6) 50%, transparent 100%);
+.sarika-video-bg__overlay--dark {
+  background: linear-gradient(0deg, rgba(var(--sarika-color-dark-rgb), 0.9) 0%, rgba(var(--sarika-color-dark-rgb), 0.6) 40%, transparent 100%);
 }
-.sarika-hero__overlay--body {
-  background: linear-gradient(90deg, rgba(var(--sarika-color-body-rgb), 0.9) 0%, rgba(var(--sarika-color-body-rgb), 0.6) 50%, transparent 100%);
+.sarika-video-bg__overlay--body {
+  background: linear-gradient(0deg, rgba(var(--sarika-color-body-rgb), 0.9) 0%, rgba(var(--sarika-color-body-rgb), 0.6) 40%, transparent 100%);
 }
-.sarika-hero__overlay--primary {
-  background: linear-gradient(90deg, rgba(var(--sarika-color-primary-rgb), 0.9) 0%, rgba(var(--sarika-color-primary-rgb), 0.6) 50%, transparent 100%);
+.sarika-video-bg__overlay--primary {
+  background: linear-gradient(0deg, rgba(var(--sarika-color-primary-rgb), 0.9) 0%, rgba(var(--sarika-color-primary-rgb), 0.6) 40%, transparent 100%);
 }
-.sarika-hero__overlay--secondary {
-  background: linear-gradient(90deg, rgba(var(--sarika-color-secondary-rgb), 0.9) 0%, rgba(var(--sarika-color-secondary-rgb), 0.6) 50%, transparent 100%);
+.sarika-video-bg__overlay--secondary {
+  background: linear-gradient(0deg, rgba(var(--sarika-color-secondary-rgb), 0.9) 0%, rgba(var(--sarika-color-secondary-rgb), 0.6) 40%, transparent 100%);
 }
-
-.sarika-hero__container {
+.sarika-video-bg__container {
   position: relative;
   z-index: 3;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 4rem 1.5rem;
+  padding: 4rem 2rem;
 }
-@media (max-width: 768px) {
-  .sarika-hero__container {
-    padding: 3rem 1rem;
-  }
+.sarika-video-bg__content {
+  max-width: 800px;
 }
-
-.sarika-hero__content {
-  max-width: 600px;
-  color: var(--sarika-color-white);
-}
-.sarika-hero--align-left .sarika-hero__content {
+.sarika-video-bg--align-left .sarika-video-bg__content {
   margin-left: 0;
   margin-right: auto;
   text-align: left;
 }
-.sarika-hero--align-center .sarika-hero__content {
+.sarika-video-bg--align-center .sarika-video-bg__content {
   margin-left: auto;
   margin-right: auto;
   text-align: center;
 }
-.sarika-hero--align-right .sarika-hero__content {
+.sarika-video-bg--align-right .sarika-video-bg__content {
   margin-left: auto;
   margin-right: 0;
   text-align: right;
 }
-@media (max-width: 768px) {
-  .sarika-hero__content {
-    max-width: 100%;
-  }
-}
-
-.sarika-hero__title {
-  font-size: 3.5rem;
-  font-weight: 700;
-  line-height: 1.2;
-  color: #fff;
-  margin-bottom: 1.5rem;
+.sarika-video-bg__title {
+  margin: 0 0 1.5rem;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
 }
-@media (max-width: 768px) {
-  .sarika-hero__title {
-    font-size: 2.5rem;
-  }
+.sarika-video-bg__title:focus {
+  outline: 2px solid var(--sarika-color-primary);
+  outline-offset: 4px;
 }
-
-.sarika-hero__description {
-  font-size: 1.25rem;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 2rem;
+.sarika-video-bg__description {
+  margin: 0 0 2rem;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  font-family: "Inter", sans-serif;
+  line-height: 1.6;
 }
-@media (max-width: 768px) {
-  .sarika-hero__description {
-    font-size: 1.125rem;
-  }
+.sarika-video-bg__description:focus {
+  outline: 2px solid var(--sarika-color-primary);
+  outline-offset: 4px;
 }
-
-.sarika-hero__buttons {
+.sarika-video-bg__button-wrapper {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  align-items: center;
 }
-.sarika-hero--align-center .sarika-hero__buttons {
+.sarika-video-bg--align-left .sarika-video-bg__button-wrapper {
+  justify-content: flex-start;
+}
+.sarika-video-bg--align-center .sarika-video-bg__button-wrapper {
   justify-content: center;
 }
-.sarika-hero--align-right .sarika-hero__buttons {
+.sarika-video-bg--align-right .sarika-video-bg__button-wrapper {
   justify-content: flex-end;
 }
-
-.sarika-hero__button {
+.sarika-video-bg__button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 1rem 2rem;
-  font-size: 1.125rem;
+  font-size: 0.875rem;
   font-weight: 600;
   text-decoration: none;
-  border-radius: 0;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
-  white-space: nowrap;
-}
-.sarika-hero__button--primary {
-  background: #F4C542;
+  background: #f4c542;
   color: #000;
-  border: 2px solid #F4C542;
+  border: 2px solid #f4c542;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: "Poppins", sans-serif;
+  transition: all 0.3s ease;
+  cursor: default;
 }
-.sarika-hero__button--primary:hover {
-  background: #E0B338;
-  border-color: #E0B338;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(244, 197, 66, 0.3);
+.sarika-video-bg__button:hover {
+  background: #e5b630;
+  border-color: #e5b630;
+}/*# sourceMappingURL=editor.css.map */ons {
+  width: 48px;
+  height: 48px;
+  font-size: 48px;
 }
-.sarika-hero__button--secondary {
-  background: transparent;
-  color: #fff;
-  border: 2px solid #fff;
+.sarika-icon-description__icon img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
 }
-.sarika-hero__button--secondary:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
-}
-@media (max-width: 768px) {
-  .sarika-hero__button {
-    padding: 0.875rem 1.5rem;
-    font-size: 1rem;
-  }
-}
-
-.sarika-hero__buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  align-items: center;
-}
-.sarika-hero--align-center .sarika-hero__buttons {
-  justify-content: center;
-}
-.sarika-hero--align-right .sarika-hero__buttons {
-  justify-content: flex-end;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.875rem 2rem;
-  font-size: 1rem;
+.sarika-icon-description__item-title {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
   font-weight: 600;
-  line-height: 1.5;
-  text-align: center;
-  text-decoration: none;
-  white-space: nowrap;
-  border: 2px solid transparent;
-  border-radius: 9999px;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-family: inherit;
-  user-select: none;
-}
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-.btn--primary {
-  background: var(--sarika-color-primary);
   color: var(--sarika-color-dark);
-  border-color: var(--sarika-color-primary);
+  transition: color 0.3s ease;
 }
-.btn--primary:hover {
-  background: rgba(var(--sarika-color-primary-rgb), 0.9);
-  border-color: rgba(var(--sarika-color-primary-rgb), 0.9);
+.sarika-icon-description__item:hover .sarika-icon-description__item-title {
+  color: var(--sarika-color-primary);
+}
+.sarika-icon-description__item-description {
+  margin-bottom: 1.25rem;
+  color: var(--sarika-color-body);
+  line-height: 1.7;
+  font-size: 0.9375rem;
+}
+.sarika-icon-description__item-link {
+  display: inline-block;
+  color: var(--sarika-color-primary);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+.sarika-icon-description__item-link:hover {
+  color: var(--sarika-color-secondary);
+}
+.sarika-icon-description__item-link::after {
+  content: " →";
+  display: inline-block;
+  margin-left: 4px;
+  transition: transform 0.3s ease;
+}
+.sarika-icon-description__item-link:hover::after {
+  transform: translateX(4px);
+}
+.sarika-icon-description__icon--circle {
+  border-radius: 50%;
+}
+.sarika-icon-description__icon--rounded {
+  border-radius: 12px;
+}
+.sarika-icon-description__icon--square {
+  border-radius: 0;
+}
+.sarika-icon-description__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.sarika-icon-description__list li {
+  position: relative;
+  padding-left: 1.75rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+  color: var(--sarika-color-body);
+}
+.sarika-icon-description__list li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sarika-color-primary);
+  font-weight: 700;
+  font-size: 1.1em;
+}
+.sarika-icon-description__list li:last-child {
+  margin-bottom: 0;
+}
+.sarika-icon-description--align-left .sarika-icon-description__item {
+  text-align: left;
+}
+.sarika-icon-description--align-left .sarika-icon-description__icon {
+  margin-left: 0;
+  margin-right: auto;
+}
+.sarika-icon-description--align-center .sarika-icon-description__item {
+  text-align: center;
+}
+.sarika-icon-description--align-center .sarika-icon-description__icon {
+  margin-left: auto;
+  margin-right: auto;
+}/*# sourceMappingURL=editor.css.map */ 0.9);
   color: var(--sarika-color-dark);
 }
 .btn--primary-outline {

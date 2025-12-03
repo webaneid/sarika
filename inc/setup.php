@@ -38,11 +38,6 @@ if ( ! function_exists( 'sarika_setup' ) ) {
 		add_theme_support( 'editor-styles' );
 		add_editor_style( 'css/editor.css' );
 
-		// Custom image sizes
-		add_image_size( 'sarika-square', 300, 300, true );     // Large square for avatars/thumbnails
-		add_image_size( 'sarika-square-sm', 150, 150, true ); // Small square for avatars
-		add_image_size( 'sarika-portrait', 1080, 1345, true ); // Portrait 4:5 ratio (Instagram post)
-
 		// Custom logo support
 		add_theme_support(
 			'custom-logo',

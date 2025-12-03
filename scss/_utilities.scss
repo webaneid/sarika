@@ -479,6 +479,18 @@
 // ============================================================================
 
 // Padding Top
+.padding-top-none {
+	padding-top: 0;
+}
+
+.padding-top-small {
+	padding-top: 2rem;
+
+	@media (max-width: 768px) {
+		padding-top: 1rem;
+	}
+}
+
 .padding-top-medium {
 	padding-top: 3rem;
 
@@ -495,7 +507,27 @@
 	}
 }
 
+.padding-top-xlarge {
+	padding-top: 7rem;
+
+	@media (max-width: 768px) {
+		padding-top: 2rem;
+	}
+}
+
 // Padding Bottom
+.padding-bottom-none {
+	padding-bottom: 0;
+}
+
+.padding-bottom-small {
+	padding-bottom: 2rem;
+
+	@media (max-width: 768px) {
+		padding-bottom: 1rem;
+	}
+}
+
 .padding-bottom-medium {
 	padding-bottom: 3rem;
 
@@ -512,9 +544,25 @@
 	}
 }
 
+.padding-bottom-xlarge {
+	padding-bottom: 7rem;
+
+	@media (max-width: 768px) {
+		padding-bottom: 2rem;
+	}
+}
+
 // Margin Bottom
-.margin-bottom-zero {
+.margin-bottom-none {
 	margin-bottom: 0;
+}
+
+.margin-bottom-small {
+	margin-bottom: 2rem;
+
+	@media (max-width: 768px) {
+		margin-bottom: 1rem;
+	}
 }
 
 .margin-bottom-medium {
@@ -531,5 +579,22 @@
 	@media (max-width: 768px) {
 		margin-bottom: 1rem;
 	}
+}
+
+.margin-bottom-xlarge {
+	margin-bottom: 7rem;
+
+	@media (max-width: 768px) {
+		margin-bottom: 2rem;
+	}
+}
+
+// Gradients
+.gradient-primary {
+	background: linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%);
+}
+
+.gradient-dark {
+	background: linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%);
 }
 

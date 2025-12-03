@@ -91,6 +91,21 @@
 					?>
 				</nav>
 			<?php endif; ?>
+
+			<!-- Mobile Search Form (inside mobile menu) -->
+			<div class="site-header__mobile-search">
+				<form action="<?php echo esc_url( home_url( '/' ) ); ?>" method="get">
+					<label class="screen-reader-text" for="mobile-search"><?php esc_html_e( 'Search', 'sarika' ); ?></label>
+					<input type="search" id="mobile-search" name="s" placeholder="<?php esc_attr_e( 'Search...', 'sarika' ); ?>" />
+					<button type="submit">
+						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<circle cx="11" cy="11" r="8"></circle>
+							<path d="m21 21-4.35-4.35"></path>
+						</svg>
+						<span class="screen-reader-text"><?php esc_html_e( 'Submit search', 'sarika' ); ?></span>
+					</button>
+				</form>
+			</div>
 		</div>
 	</div>
 </header>

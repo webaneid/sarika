@@ -18,5 +18,7 @@ module.exports = {
 		'client-logos/index': path.resolve( process.cwd(), 'src/blocks/client-logos', 'index.js' ),
 		'faq/index': path.resolve( process.cwd(), 'src/blocks/faq', 'index.js' ),
 		'video-background/index': path.resolve( process.cwd(), 'src/blocks/video-background', 'index.js' ),
+		'gallery/index': path.resolve( process.cwd(), 'src/blocks/gallery', 'index.js' ),
+		'funfact/index': path.resolve( process.cwd(), 'src/blocks/funfact', 'index.js' ),
 	},
 };

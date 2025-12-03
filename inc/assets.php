@@ -16,12 +16,29 @@ function sarika_enqueue_assets() : void {
 		null
 	);
 
+	// Swiper CSS for sliding gallery
+	wp_enqueue_style(
+		'swiper',
+		'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css',
+		array(),
+		'11.0.0'
+	);
+
 	// Custom theme styles (SCSS compiled - gradients, post layouts, custom designs).
 	wp_enqueue_style(
 		'sarika-theme',
 		SARIKA_URI . '/css/sarika.min.css',
-		array( 'sarika-fonts' ),
+		array( 'sarika-fonts', 'swiper' ),
 		$theme_version
+	);
+
+	// Swiper JS for sliding gallery
+	wp_enqueue_script(
+		'swiper',
+		'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js',
+		array(),
+		'11.0.0',
+		true
 	);
 
 	// Main JavaScript.
@@ -55,6 +72,15 @@ function sarika_enqueue_assets() : void {
 	wp_enqueue_script(
 		'sarika-submenu-toggle',
 		SARIKA_URI . '/js/submenu-toggle.js',
+		array(),
+		$theme_version,
+		true
+	);
+
+	// Funfact counter animation.
+	wp_enqueue_script(
+		'sarika-funfact-counter',
+		SARIKA_URI . '/js/funfact-counter.js',
 		array(),
 		$theme_version,
 		true

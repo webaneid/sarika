@@ -10,8 +10,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Planned Features
 - Contact form integration (Contact Form 7 / WPForms styling)
 - Google Maps integration for location display
-- Social proof section (client logos carousel - ✅ done, stats counter)
-- FAQ section accordion (✅ done)
 - Pricing tables block
 - Multi-language support enhancement
 - Lottie animation playback component
@@ -19,6 +17,100 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Services Custom Post Type
 - Team Members Custom Post Type
 - Testimonials Custom Post Type
+
+---
+
+## [0.1.2] - 2025-01-30
+
+### Added
+
+#### New Gutenberg Blocks
+- **Gallery Block** - Lightbox photo gallery dengan grid layout
+  - Responsive grid columns (2, 3, 4, 5 columns)
+  - Lightbox functionality dengan keyboard navigation (← → ESC)
+  - Click overlay untuk close lightbox
+  - Image counter display (1/10, 2/10, etc.)
+  - Smooth fade-in/out animations
+  - Mobile-optimized layout
+- **Funfact Block** - Animated statistics counter dengan counting animation
+  - Repeater items untuk multiple stats (JSON string storage)
+  - Number counter animation (counts from 0 to target)
+  - Suffix support (%, K, M, X, +, etc.)
+  - Intersection Observer - animation triggers on scroll into view
+  - Grid layout (2, 3, 4, 5 columns responsive)
+  - Customizable colors untuk numbers, labels, descriptions
+  - Alignment options (left, center, right)
+  - Decimal number support (21.2K works correctly)
+
+#### JavaScript Enhancements
+- **Lightbox functionality** (`js/lightbox.js`)
+  - Keyboard navigation support
+  - Click overlay to close
+  - Smooth transitions dengan CSS animations
+- **Funfact counter animation** (`js/funfact-counter.js`)
+  - Intersection Observer API untuk trigger on scroll
+  - Smooth counting animation (2 seconds duration, 60 steps)
+  - Decimal number support dengan proper formatting
+  - Each counter animates only once (observer unobserve after trigger)
+
+### Fixed
+
+#### Mobile Search Button
+- **Search button hidden on mobile** - Fixed visibility issue di header mobile
+  - Search button sekarang visible dan berfungsi di ≤782px
+  - Position adjusted untuk tidak overlap dengan hamburger menu
+  - Proper touch target size untuk mobile usability
+  - File: `scss/_header.scss` lines 580-620
+
+#### Block Development Standards
+- **Repeater data storage** - Fixed data persistence untuk repeater fields
+  - Changed from `type: 'array'` → `type: 'string'` dengan `JSON.stringify()`
+  - Matching pattern dari Block Image Side Text (proven working)
+  - PHP template decode JSON dengan `json_decode($json, true)`
+  - React component parse JSON dengan `JSON.parse(ane_funfact_items)`
+  - All update functions stringify before `setAttributes()`
+  - File: `src/blocks/funfact/index.js`, `edit.js`, `tp/blocks/block-funfact.php`
+
+#### Gallery Block Fixes
+- **Image aspect ratio** - Desktop uses 4:5 portrait ratio, mobile auto height
+  - Desktop: `aspect-ratio: 4 / 5` via CSS
+  - Mobile: natural image height
+  - Responsive `<picture>` element dengan multiple sources
+  - File: `scss/_blocks.scss` lines 1477-1520
+
+#### FAQ Block Fixes
+- **Image aspect ratio** - Consistent dengan Gallery block pattern
+  - Desktop: `aspect-ratio: 4 / 5` portrait
+  - Mobile: natural height dengan `border-radius: 10px`
+  - File: `scss/_blocks.scss` lines 1151-1163
+
+#### Block Profile Fixes
+- **Image aspect ratio** - Matching gallery/FAQ pattern
+  - Desktop: `aspect-ratio: 4 / 5` untuk portrait photos
+  - Mobile: auto height
+  - File: `scss/_blocks.scss` lines 900-913
+
+#### Block Image Side Text Fixes
+- **Glassmorphism list items** - Enhanced visual design untuk list mode
+  - Background: `rgba(var(--sarika-color-white-rgb), 0.2)`
+  - Backdrop filter: `blur(5px)` dengan webkit prefix
+  - Box shadow: `0 4px 30px rgba(0, 0, 0, 0.1)`
+  - Border: `1px solid rgba(var(--sarika-color-white-rgb), 0.3)`
+  - Hover effect: `translateX(4px)`
+  - Border radius: `8px`
+  - File: `scss/_blocks.scss` lines 750-769 dan 935-951
+
+### Changed
+
+#### Documentation Updates
+- **BLOCK-DEVELOPMENT-STANDARD.md** - Added repeater field pattern
+  - JSON string storage pattern documented
+  - Block Image Side Text example added
+  - Parse/stringify workflow explained
+  - Best practices untuk data persistence
+
+### Security
+- No security changes in this release
 
 ---
 

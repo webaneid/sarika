@@ -127,6 +127,32 @@ function sarika_register_video_background_block() : void {
 add_action( 'init', 'sarika_register_video_background_block' );
 
 /**
+ * Register server-side rendering for Gallery block.
+ */
+function sarika_register_gallery_block() : void {
+	register_block_type(
+		'sarika/gallery',
+		array(
+			'render_callback' => 'sarika_render_gallery_block',
+		)
+	);
+}
+add_action( 'init', 'sarika_register_gallery_block' );
+
+/**
+ * Register server-side rendering for Funfact block.
+ */
+function sarika_register_funfact_block() : void {
+	register_block_type(
+		'sarika/funfact',
+		array(
+			'render_callback' => 'sarika_render_funfact_block',
+		)
+	);
+}
+add_action( 'init', 'sarika_register_funfact_block' );
+
+/**
  * Extract YouTube video ID from URL.
  *
  * @param string $url YouTube URL.
@@ -327,6 +353,52 @@ function sarika_render_video_background_block( array $attributes ) : string {
 }
 
 /**
+ * Render callback for Gallery block.
+ *
+ * @param array $attributes Block attributes.
+ * @return string Block HTML output.
+ */
+function sarika_render_gallery_block( array $attributes ) : string {
+	// Start output buffering.
+	ob_start();
+
+	// Create $block array untuk compatibility dengan template.
+	$block = array(
+		'attrs' => $attributes,
+		'id'    => uniqid(),
+	);
+
+	// Include template file.
+	require SARIKA_PATH . '/tp/blocks/gallery.php';
+
+	// Return buffered content.
+	return ob_get_clean();
+}
+
+/**
+ * Render callback for Funfact block.
+ *
+ * @param array $attributes Block attributes.
+ * @return string Block HTML output.
+ */
+function sarika_render_funfact_block( array $attributes ) : string {
+	// Start output buffering.
+	ob_start();
+
+	// Create $block array untuk compatibility dengan template (like other blocks).
+	$block = array(
+		'attrs' => $attributes,
+		'id'    => uniqid(),
+	);
+
+	// Include template file.
+	require SARIKA_PATH . '/tp/blocks/block-funfact.php';
+
+	// Return buffered content.
+	return ob_get_clean();
+}
+
+/**
  * Enqueue React block editor assets.
  */
 function sarika_enqueue_block_editor_assets() : void {
@@ -444,6 +516,36 @@ function sarika_enqueue_block_editor_assets() : void {
 		wp_enqueue_script(
 			'sarika-video-background-editor',
 			SARIKA_URI . '/build/video-background/index.js',
+			$asset['dependencies'],
+			$asset['version'],
+			true
+		);
+	}
+
+	// Gallery.
+	$gallery_asset_file = SARIKA_PATH . '/build/gallery/index.asset.php';
+
+	if ( file_exists( $gallery_asset_file ) ) {
+		$asset = require $gallery_asset_file;
+
+		wp_enqueue_script(
+			'sarika-gallery-editor',
+			SARIKA_URI . '/build/gallery/index.js',
+			$asset['dependencies'],
+			$asset['version'],
+			true
+		);
+	}
+
+	// Funfact.
+	$funfact_asset_file = SARIKA_PATH . '/build/funfact/index.asset.php';
+
+	if ( file_exists( $funfact_asset_file ) ) {
+		$asset = require $funfact_asset_file;
+
+		wp_enqueue_script(
+			'sarika-funfact-editor',
+			SARIKA_URI . '/build/funfact/index.js',
 			$asset['dependencies'],
 			$asset['version'],
 			true

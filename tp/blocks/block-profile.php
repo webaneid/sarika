@@ -225,16 +225,31 @@ if ( $visi_image_id && ! $visi_image ) {
 						<?php if ( $visi_image ) : ?>
 							<div class="sarika-block-profile__body-left">
 								<?php
-								// Get square image size
 								if ( $visi_image_id ) {
-									$square_image = wp_get_attachment_image( $visi_image_id, 'square', false, array( 'class' => 'sarika-block-profile__image' ) );
-									if ( $square_image ) {
-										echo $square_image;
+									// Get image URLs for responsive loading
+									$desktop_url = wp_get_attachment_image_url( $visi_image_id, 'medium' ); // 640x360 for desktop/tablet
+									$mobile_url  = wp_get_attachment_image_url( $visi_image_id, 'sarika-news-sm' ); // 480x270 for mobile
+									$image_alt   = get_post_meta( $visi_image_id, '_wp_attachment_image_alt', true );
+									$image_title = get_the_title( $visi_image_id );
+
+									if ( $desktop_url && $mobile_url ) {
+										?>
+										<picture>
+											<source media="(min-width: 768px)" srcset="<?php echo esc_url( $desktop_url ); ?>">
+											<source media="(max-width: 767px)" srcset="<?php echo esc_url( $mobile_url ); ?>">
+											<img
+												src="<?php echo esc_url( $desktop_url ); ?>"
+												alt="<?php echo esc_attr( $image_alt ?: $image_title ); ?>"
+												class="sarika-block-profile__image"
+												loading="lazy"
+											>
+										</picture>
+										<?php
 									} else {
-										echo '<img src="' . esc_url( $visi_image ) . '" alt="' . esc_attr( __( 'Profile Image', 'sarika' ) ) . '" class="sarika-block-profile__image">';
+										echo '<img src="' . esc_url( $visi_image ) . '" alt="' . esc_attr( $image_alt ?: $image_title ) . '" class="sarika-block-profile__image" loading="lazy">';
 									}
 								} else {
-									echo '<img src="' . esc_url( $visi_image ) . '" alt="' . esc_attr( __( 'Profile Image', 'sarika' ) ) . '" class="sarika-block-profile__image">';
+									echo '<img src="' . esc_url( $visi_image ) . '" alt="' . esc_attr( __( 'Profile Image', 'sarika' ) ) . '" class="sarika-block-profile__image" loading="lazy">';
 								}
 								?>
 							</div>

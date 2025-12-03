@@ -26,11 +26,12 @@
 		-webkit-backdrop-filter: none;
 
 		.site-header__wrapper {
-			background: rgba(var(--sarika-color-white-rgb),0.4);
+			background: rgba(var(--sarika-color-white-rgb),0.3);
 			border-radius: 50px;
 			padding: 7px 20px;
 			backdrop-filter: blur(10px);
 			-webkit-backdrop-filter: blur(10px);
+			border : 1px solid rgba(var(--sarika-color-white-rgb),0.4);
 		}
 
 		// Change text color to white for better contrast
@@ -139,9 +140,16 @@
 				}
 			}
 
+			&.current-menu-item,
+			&.current_page_item {
+				background: rgba(255,255,255,0.2);
+				border-radius: 40px;
+				padding: 0 10px;
+				border: 1px solid rgba(255, 255, 255, 0.3);
+			}
 			&.current-menu-item > a,
 			&.current_page_item > a {
-				color: var(--sarika-color-primary);
+				color: var(--sarika-color-white);
 				font-weight: 600;
 			}
 
@@ -151,10 +159,10 @@
 				top: 100%;
 				left: 0;
 				min-width: 200px;
-				background: rgba(255, 255, 255, 0.95);
-				backdrop-filter: blur(20px);
+				background: rgba(var(--sarika-color-white-rgb), 0.4);
+				border: 1px solid rgba(var(--sarika-color-white-rgb), 0.3);
+				backdrop-filter: blur(10px);
 				-webkit-backdrop-filter: blur(20px);
-				border: 1px solid rgba(var(--sarika-color-dark-rgb), 0.08);
 				border-radius: 8px;
 				box-shadow: 0 8px 24px rgba(var(--sarika-color-dark-rgb), 0.12);
 				list-style: none;
@@ -196,6 +204,14 @@
 		display: flex;
 		align-items: center;
 		gap: 1rem;
+		background: rgba(var(--sarika-color-white-rgb),0.3);
+		border-radius: 50%;
+		border: 1px solid rgba(var(--sarika-color-white-rgb),0.3);
+
+		// Hide on mobile (search will be inside mobile menu instead)
+		@media (max-width: 1024px) {
+			display: none;
+		}
 	}
 
 	&__search-toggle {
@@ -245,10 +261,25 @@
 		}
 	}
 
-	// Search Form (Slides down)
+	// Search Form (Slides down with bounce)
 	&__search-form {
 		padding: 1rem 0 1.5rem;
 		border-top: 1px solid rgba(var(--sarika-color-dark-rgb), 0.08);
+		overflow: hidden;
+		max-height: 0;
+		opacity: 0;
+		transform: translateY(-20px);
+		transition: max-height 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+		            opacity 0.3s ease,
+		            transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+		// When search form is open
+		&[style*="display: block"] {
+			max-height: 200px;
+			opacity: 1;
+			transform: translateY(0);
+			animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+		}
 
 		form {
 			position: relative;
@@ -262,16 +293,17 @@
 		input[type="search"] {
 			flex: 1;
 			padding: 0.75rem 1rem;
-			border: 1px solid rgba(var(--sarika-color-dark-rgb), 0.2);
 			border-radius: 8px;
 			font-size: 0.938rem;
 			font-family: inherit;
-			background: rgba(255, 255, 255, 0.95);
+			background: rgba(var(--sarika-color-white-rgb),0.3);
+			border-radius: 30px;
+			border: 1px solid rgba(var(--sarika-color-white-rgb),0.3);
 			transition: all 0.2s ease;
 
 			&:focus {
 				outline: none;
-				border-color: var(--sarika-color-primary);
+				border-color: rgba(var(--sarika-color-white-rgb),0.5);
 				box-shadow: 0 0 0 3px rgba(var(--sarika-color-primary-rgb), 0.1);
 			}
 
@@ -283,10 +315,10 @@
 		button {
 			appearance: none;
 			border: none;
-			background: var(--sarika-color-primary);
+			background: rgba(var(--sarika-color-white-rgb),0.3);
 			color: var(--sarika-color-white);
 			padding: 0.75rem 1.25rem;
-			border-radius: 8px;
+			border-radius: 50px;
 			cursor: pointer;
 			display: flex;
 			align-items: center;
@@ -303,13 +335,50 @@
 		}
 	}
 
-	// Mobile Menu (Slides down)
+	// Mobile Menu (Slides down with bounce)
 	&__mobile-menu {
 		padding: 1rem 0 1.5rem;
 		border-top: 1px solid rgba(var(--sarika-color-dark-rgb), 0.08);
+		overflow: hidden;
+		max-height: 0;
+		opacity: 0;
+		transform: translateY(-20px);
+		transition: max-height 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+		            opacity 0.3s ease,
+		            transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+		// When menu is open (JavaScript will add inline style or we use JS to toggle class)
+		&[style*="display: block"] {
+			max-height: 1000px;
+			opacity: 1;
+			transform: translateY(0);
+			animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+		}
 
 		@media (min-width: 1025px) {
 			display: none !important;
+		}
+	}
+
+	// Bounce animation keyframes (nyoy nyoy nyoy!)
+	@keyframes bounceIn {
+		0% {
+			opacity: 0;
+			transform: translateY(-30px);
+		}
+		50% {
+			opacity: 0.8;
+			transform: translateY(10px);
+		}
+		70% {
+			transform: translateY(-5px);
+		}
+		90% {
+			transform: translateY(2px);
+		}
+		100% {
+			opacity: 1;
+			transform: translateY(0);
 		}
 	}
 
@@ -360,6 +429,64 @@
 						}
 					}
 				}
+			}
+		}
+	}
+
+	// Mobile Search Form (inside mobile menu)
+	&__mobile-search {
+		margin-top: 1.5rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid rgba(var(--sarika-color-dark-rgb), 0.08);
+
+		form {
+			position: relative;
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+		}
+
+		input[type="search"] {
+			flex: 1;
+			padding: 0.75rem 1rem;
+			border: 1px solid rgba(var(--sarika-color-dark-rgb), 0.2);
+			border-radius: 8px;
+			font-size: 0.938rem;
+			font-family: inherit;
+			background: rgba(255, 255, 255, 0.95);
+			transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+			&:focus {
+				outline: none;
+				border-color: var(--sarika-color-primary);
+				box-shadow: 0 0 0 3px rgba(var(--sarika-color-primary-rgb), 0.1);
+			}
+
+			&::placeholder {
+				color: rgba(var(--sarika-color-body-rgb), 0.5);
+			}
+		}
+
+		button[type="submit"] {
+			flex-shrink: 0;
+			appearance: none;
+			border: none;
+			padding: 0.75rem 1rem;
+			background: var(--sarika-color-primary);
+			color: var(--sarika-color-white);
+			border-radius: 8px;
+			cursor: pointer;
+			transition: background 0.2s ease;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			&:hover {
+				background: var(--sarika-color-secondary);
+			}
+
+			svg {
+				display: block;
 			}
 		}
 	}

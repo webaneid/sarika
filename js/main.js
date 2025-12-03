@@ -433,6 +433,41 @@ document.addEventListener('DOMContentLoaded', () => {
 		});
 	});
 
+	// Gallery Block - Swiper initialization for sliding gallery
+	const gallerySliders = document.querySelectorAll('.sarika-gallery--sliding.swiper');
+
+	if (gallerySliders.length > 0 && typeof Swiper !== 'undefined') {
+		gallerySliders.forEach((slider) => {
+			new Swiper(slider, {
+				slidesPerView: 1.5,
+				spaceBetween: 16,
+				loop: true,
+				autoplay: {
+					delay: 4000,
+					disableOnInteraction: false,
+				},
+				navigation: {
+					nextEl: '.swiper-button-next',
+					prevEl: '.swiper-button-prev',
+				},
+				pagination: {
+					el: '.swiper-pagination',
+					clickable: true,
+				},
+				breakpoints: {
+					640: {
+						slidesPerView: 2,
+						spaceBetween: 16,
+					},
+					1024: {
+						slidesPerView: 3,
+						spaceBetween: 24,
+					},
+				},
+			});
+		});
+	}
+
 	// YouTube Video Background - iframe API
 	const videoBackgrounds = document.querySelectorAll('[data-video-bg]');
 

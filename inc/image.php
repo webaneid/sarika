@@ -39,6 +39,10 @@ function sarika_register_image_sizes() : void {
 	add_image_size( 'sarika-news-md', 800, 450, true );
 	add_image_size( 'sarika-news-lg', 1024, 576, true );
 	add_image_size( 'sarika-news-xl', 1600, 900, true );
+	add_image_size( 'sarika-potret', 600, 750, true );
+
+	// Masonry gallery - proportional scaling (no crop).
+	add_image_size( 'sarika-masonry', 600, 9999, false );
 
 	// Hero/Banner - ultra wide for homepage hero.
 	add_image_size( 'sarika-hero', 1920, 1080, true );

@@ -558,6 +558,1079 @@ npx sass scss/sarika.scss css/sarika.min.css --style=compressed
 | PHP function | `sarika_[block]_[action]` | `sarika_render_hero_block` |
 | JS handle | `sarika-[block]-block-editor` | `sarika-hero-block-editor` |
 
+---
+
+## 🎯 Standard Block Options (MUST FOLLOW!)
+
+### 1. Container Options - STANDARDIZED PATTERN
+
+**ALL blocks MUST include these container options:**
+
+#### Attributes (index.js)
+
+```javascript
+attributes: {
+  // Container Options (REQUIRED for all blocks)
+  ane_container_background: { type: 'string', default: '' },
+  ane_container_border_radius: { type: 'number', default: 0 },
+  ane_container_padding: { type: 'number', default: 0 },
+}
+```
+
+#### React Component Pattern (edit.js)
+
+```javascript
+import { useState } from '@wordpress/element';
+import { RangeControl, SelectControl, Button, ColorPicker } from '@wordpress/components';
+
+const [showContainerColorPicker, setShowContainerColorPicker] = useState(false);
+
+const predefinedColors = [
+  { label: __('Transparent', 'sarika'), value: '' },
+  { label: __('White', 'sarika'), value: 'white' },
+  { label: __('Black', 'sarika'), value: 'black' },
+  { label: __('Primary', 'sarika'), value: 'primary' },
+  { label: __('Secondary', 'sarika'), value: 'secondary' },
+  { label: __('Light', 'sarika'), value: 'light' },
+  { label: __('Dark', 'sarika'), value: 'dark' },
+  { label: __('Accent', 'sarika'), value: 'accent' },
+  { label: __('Gradient Primary', 'sarika'), value: 'gradient-primary' },
+  { label: __('Gradient Dark', 'sarika'), value: 'gradient-dark' },
+];
+
+// In InspectorControls:
+<PanelBody title={__('Container Settings', 'sarika')} initialOpen={false}>
+  <SelectControl
+    label={__('Container Background', 'sarika')}
+    value={ane_container_background}
+    options={predefinedColors}
+    onChange={(value) => setAttributes({ ane_container_background: value })}
+  />
+
+  {ane_container_background && (
+    <div style={{ marginTop: '12px' }}>
+      <Button
+        variant="secondary"
+        onClick={() => setShowContainerColorPicker(!showContainerColorPicker)}
+      >
+        {__('Custom Color Picker', 'sarika')}
+      </Button>
+
+      {showContainerColorPicker && (
+        <ColorPicker
+          color={ane_container_background}
+          onChangeComplete={(color) => {
+            setAttributes({
+              ane_container_background: `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})`
+            });
+          }}
+          disableAlpha={false}
+        />
+      )}
+    </div>
+  )}
+
+  <RangeControl
+    label={__('Border Radius (px)', 'sarika')}
+    value={ane_container_border_radius}
+    onChange={(value) => setAttributes({ ane_container_border_radius: value })}
+    min={0}
+    max={50}
+    step={1}
+  />
+
+  <RangeControl
+    label={__('Container Padding (px)', 'sarika')}
+    value={ane_container_padding}
+    onChange={(value) => setAttributes({ ane_container_padding: value })}
+    min={0}
+    max={100}
+    step={5}
+  />
+</PanelBody>
+```
+
+#### PHP Template Pattern
+
+```php
+<?php
+// Container options
+$container_bg     = $attrs['ane_container_background'] ?? '';
+$container_radius = $attrs['ane_container_border_radius'] ?? 0;
+$container_padding = $attrs['ane_container_padding'] ?? 0;
+
+// Build container classes
+$container_classes = [];
+if ( $container_bg && ! str_starts_with( $container_bg, '#' ) && ! str_starts_with( $container_bg, 'rgb' ) ) {
+  $container_classes[] = 'bg-' . esc_attr( $container_bg );
+}
+
+// Build container inline styles
+$container_styles = [];
+
+// Custom background color (hex/rgba)
+if ( $container_bg ) {
+  if ( str_starts_with( $container_bg, '#' ) || str_starts_with( $container_bg, 'rgb' ) ) {
+    $container_styles[] = 'background-color: ' . esc_attr( $container_bg );
+  } elseif ( $container_bg === 'gradient-primary' ) {
+    $container_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%)';
+  } elseif ( $container_bg === 'gradient-dark' ) {
+    $container_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%)';
+  }
+}
+
+// Border radius (always inline style with px)
+if ( $container_radius > 0 ) {
+  $container_styles[] = 'border-radius: ' . esc_attr( $container_radius ) . 'px';
+}
+
+// Container padding (inline style with px)
+if ( $container_padding > 0 ) {
+  $container_styles[] = 'padding: ' . esc_attr( $container_padding ) . 'px';
+}
+
+// Convert to strings
+$container_class_str = implode( ' ', $container_classes );
+$container_style_str = implode( '; ', $container_styles );
+?>
+
+<div class="block-name__container <?php echo esc_attr( $container_class_str ); ?>"
+     <?php echo $container_style_str ? 'style="' . esc_attr( $container_style_str ) . '"' : ''; ?>>
+  <!-- Content -->
+</div>
+```
+
+---
+
+### 2. Image Responsive Pattern - STANDARDIZED
+
+**ALL blocks with images MUST use `<picture>` element:**
+
+#### Available Image Sizes
+
+| Size Name | Dimensions | Aspect | Usage |
+|-----------|------------|--------|-------|
+| `sarika-potret` | 600x750 | 4:5 Portrait | Desktop/Tablet portraits |
+| `sarika-news-sm` | 480x270 | 16:9 Landscape | Mobile (lightweight) |
+| `medium` | 640x360 | 16:9 Landscape | Desktop landscape |
+| `sarika-square` | 300x300 | 1:1 Square | Thumbnails |
+
+#### PHP Template Pattern
+
+```php
+<?php
+$image_id = $attrs['ane_image_id'] ?? 0;
+$image_url = $attrs['ane_image'] ?? '';
+
+if ( $image_id ) {
+  // Get responsive image URLs
+  $desktop_url = wp_get_attachment_image_url( $image_id, 'sarika-potret' ); // 600x750 portrait
+  $mobile_url  = wp_get_attachment_image_url( $image_id, 'sarika-news-sm' ); // 480x270 landscape
+  $image_alt   = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
+  $image_title = get_the_title( $image_id );
+
+  if ( $desktop_url && $mobile_url ) {
+    ?>
+    <picture>
+      <source media="(min-width: 768px)" srcset="<?php echo esc_url( $desktop_url ); ?>">
+      <source media="(max-width: 767px)" srcset="<?php echo esc_url( $mobile_url ); ?>">
+      <img
+        src="<?php echo esc_url( $desktop_url ); ?>"
+        alt="<?php echo esc_attr( $image_alt ?: $image_title ); ?>"
+        class="block-name__image"
+        loading="lazy"
+      >
+    </picture>
+    <?php
+  }
+}
+?>
+```
+
+#### SCSS Pattern
+
+```scss
+&__image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  border-radius: 10px;
+
+  // Desktop: Portrait aspect ratio (OPTIONAL)
+  @media (min-width: 768px) {
+    aspect-ratio: 4 / 5; // Remove if landscape desired
+  }
+  // Mobile: Natural aspect ratio (16:9 from news-sm)
+  // No aspect-ratio = uses natural dimensions
+}
+```
+
+---
+
+### 3. Complete Utility Classes
+
+#### Spacing (from _utilities.scss)
+
+```scss
+/* Padding Top/Bottom */
+.padding-top-none, .padding-bottom-none           // 0
+.padding-top-small, .padding-bottom-small         // 2rem (1rem mobile)
+.padding-top-medium, .padding-bottom-medium       // 3rem (1rem mobile)
+.padding-top-large, .padding-bottom-large         // 5rem (1rem mobile)
+.padding-top-xlarge, .padding-bottom-xlarge       // 7rem (2rem mobile)
+
+/* Margin Bottom */
+.margin-bottom-none                               // 0
+.margin-bottom-small                              // 2rem (1rem mobile)
+.margin-bottom-medium                             // 3rem (1rem mobile)
+.margin-bottom-large                              // 5rem (1rem mobile)
+.margin-bottom-xlarge                             // 7rem (2rem mobile)
+```
+
+#### Background Colors (from _utilities.scss)
+
+```scss
+/* Solid Colors */
+.bg-primary, .bg-secondary, .bg-light, .bg-dark, .bg-accent
+.bg-white, .bg-black, .bg-transparent
+
+/* Gradients */
+.gradient-primary     // Primary → Secondary (135deg)
+.gradient-dark        // Dark → Primary (135deg)
+```
+
+#### Text Colors (from _utilities.scss)
+
+```scss
+.text-primary, .text-secondary, .text-body, .text-light, .text-dark
+.text-accent, .text-white, .text-black
+```
+
+---
+
+### 4. Typography Scale (from _typography.scss)
+
+```scss
+/* Title Classes */
+.title-hero      // 32px → 40px → 56px (mobile → tablet → desktop)
+.title-body      // 28px → 32px → 40px
+.title-desc      // 18px → 20px → 24px
+.title-small     // 16px → 18px → 20px
+
+/* Description */
+.desc            // 16px → 18px
+
+/* Font Families */
+.title-tagline   // Poppins font family
+                 // Default: Inter
+```
+
+**SelectControl Options:**
+
+```javascript
+<SelectControl
+  label={__('Title Size', 'sarika')}
+  value={ane_title_size}
+  options={[
+    { label: __('Small (16-20px)', 'sarika'), value: 'small' },
+    { label: __('Description (18-24px)', 'sarika'), value: 'desc' },
+    { label: __('Body (28-40px)', 'sarika'), value: 'body' },
+    { label: __('Hero (32-56px)', 'sarika'), value: 'hero' },
+  ]}
+  onChange={(value) => setAttributes({ ane_title_size: value })}
+/>
+```
+
+---
+
+### 5. Standard SelectControl Options
+
+#### Spacing Options
+
+```javascript
+<SelectControl
+  label={__('Padding Top', 'sarika')}
+  value={ane_padding_top}
+  options={[
+    { label: __('None', 'sarika'), value: 'none' },
+    { label: __('Small', 'sarika'), value: 'small' },
+    { label: __('Medium', 'sarika'), value: 'medium' },
+    { label: __('Large', 'sarika'), value: 'large' },
+    { label: __('Extra Large', 'sarika'), value: 'xlarge' },
+  ]}
+  onChange={(value) => setAttributes({ ane_padding_top: value })}
+/>
+```
+
+#### Alignment Options
+
+```javascript
+<SelectControl
+  label={__('Alignment', 'sarika')}
+  value={ane_alignment}
+  options={[
+    { label: __('Left', 'sarika'), value: 'left' },
+    { label: __('Center', 'sarika'), value: 'center' },
+    { label: __('Right', 'sarika'), value: 'right' },
+  ]}
+  onChange={(value) => setAttributes({ ane_alignment: value })}
+/>
+```
+
+#### Grid Columns
+
+```javascript
+<SelectControl
+  label={__('Columns', 'sarika')}
+  value={ane_columns}
+  options={[
+    { label: __('1 Column', 'sarika'), value: '1' },
+    { label: __('2 Columns', 'sarika'), value: '2' },
+    { label: __('3 Columns', 'sarika'), value: '3' },
+    { label: __('4 Columns', 'sarika'), value: '4' },
+  ]}
+  onChange={(value) => setAttributes({ ane_columns: value })}
+/>
+```
+
+---
+
+### 6. RangeControl Pattern
+
+```javascript
+// Border Radius (0-50px, step 1)
+<RangeControl
+  label={__('Border Radius (px)', 'sarika')}
+  value={ane_border_radius}
+  onChange={(value) => setAttributes({ ane_border_radius: value })}
+  min={0}
+  max={50}
+  step={1}
+/>
+
+// Padding (0-100px, step 5)
+<RangeControl
+  label={__('Padding (px)', 'sarika')}
+  value={ane_padding}
+  onChange={(value) => setAttributes({ ane_padding: value })}
+  min={0}
+  max={100}
+  step={5}
+/>
+
+// Opacity (0-100%, step 5)
+<RangeControl
+  label={__('Opacity (%)', 'sarika')}
+  value={ane_opacity}
+  onChange={(value) => setAttributes({ ane_opacity: value })}
+  min={0}
+  max={100}
+  step={5}
+/>
+```
+
+**Attributes:**
+
+```javascript
+ane_border_radius: { type: 'number', default: 0 },
+ane_padding: { type: 'number', default: 0 },
+ane_opacity: { type: 'number', default: 50 },
+```
+
+**PHP Usage:**
+
+```php
+<?php
+$border_radius = $attrs['ane_border_radius'] ?? 0;
+
+if ( $border_radius > 0 ) {
+  echo 'style="border-radius: ' . esc_attr( $border_radius ) . 'px"';
+}
+?>
+```
+
+---
+
+## 🎯 COMPLETE WORKING EXAMPLE
+
+**Copy-paste ready code that matches _utilities.scss and _typography.scss exactly.**
+
+This is your **single source of truth** - copy this pattern for every new block.
+
+### Attributes Definition (index.js)
+
+```javascript
+attributes: {
+  // Header Content
+  ane_title: { type: 'string', default: '' },
+  ane_tagline: { type: 'string', default: '' },
+  ane_description: { type: 'string', default: '' },
+
+  // Section Options (STANDARD - matching _utilities.scss)
+  ane_section_background: { type: 'string', default: '' },
+  ane_padding_top: { type: 'string', default: 'large' },       // none, small, medium, large, xlarge
+  ane_padding_bottom: { type: 'string', default: 'large' },
+  ane_margin_bottom: { type: 'string', default: 'large' },
+
+  // Container Options (STANDARD)
+  ane_container_background: { type: 'string', default: '' },
+  ane_container_border_radius: { type: 'number', default: 0 },  // 0-50px
+  ane_container_padding: { type: 'number', default: 0 },        // 0-100px
+
+  // Title Options (matching _typography.scss)
+  ane_title_size: { type: 'string', default: 'small' },        // small, desc, body, hero
+  ane_title_color: { type: 'string', default: '' },
+
+  // Tagline Options (matching _typography.scss)
+  ane_tagline_size: { type: 'string', default: 'hero' },
+  ane_tagline_color: { type: 'string', default: 'primary' },
+
+  // Description Options
+  ane_description_color: { type: 'string', default: '' },
+
+  // Layout Options
+  ane_alignment: { type: 'string', default: 'center' },        // left, center, right
+}
+```
+
+### Complete Editor Component (edit.js) - 600 lines
+
+```javascript
+import { useState } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
+import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
+import {
+  PanelBody,
+  SelectControl,
+  RangeControl,
+  Button,
+  ColorPicker,
+  TextControl,
+  TextareaControl
+} from '@wordpress/components';
+
+export default function Edit({ attributes, setAttributes }) {
+  const {
+    ane_title,
+    ane_tagline,
+    ane_description,
+    ane_section_background,
+    ane_padding_top,
+    ane_padding_bottom,
+    ane_margin_bottom,
+    ane_container_background,
+    ane_container_border_radius,
+    ane_container_padding,
+    ane_title_size,
+    ane_title_color,
+    ane_tagline_size,
+    ane_tagline_color,
+    ane_description_color,
+    ane_alignment,
+  } = attributes;
+
+  // State for color pickers
+  const [showSectionColorPicker, setShowSectionColorPicker] = useState(false);
+  const [showContainerColorPicker, setShowContainerColorPicker] = useState(false);
+  const [showTitleColorPicker, setShowTitleColorPicker] = useState(false);
+  const [showTaglineColorPicker, setShowTaglineColorPicker] = useState(false);
+  const [showDescColorPicker, setShowDescColorPicker] = useState(false);
+
+  // Predefined colors (matching _utilities.scss exactly)
+  const predefinedColors = [
+    { label: __('Default', 'sarika'), value: '' },
+    { label: __('Primary', 'sarika'), value: 'primary' },
+    { label: __('Secondary', 'sarika'), value: 'secondary' },
+    { label: __('Light', 'sarika'), value: 'light' },
+    { label: __('Dark', 'sarika'), value: 'dark' },
+    { label: __('Accent', 'sarika'), value: 'accent' },
+    { label: __('White', 'sarika'), value: 'white' },
+    { label: __('Black', 'sarika'), value: 'black' },
+    { label: __('Gradient Primary', 'sarika'), value: 'gradient-primary' },
+    { label: __('Gradient Dark', 'sarika'), value: 'gradient-dark' },
+  ];
+
+  // BUILD SECTION CLASSES (matching _utilities.scss)
+  let sectionClasses = 'sarika-block-name';
+  sectionClasses += ` padding-top-${ane_padding_top}`;        // .padding-top-large
+  sectionClasses += ` padding-bottom-${ane_padding_bottom}`;  // .padding-bottom-large
+  sectionClasses += ` margin-bottom-${ane_margin_bottom}`;    // .margin-bottom-large
+
+  // Section background class (if predefined)
+  if (ane_section_background && !ane_section_background.startsWith('#') && !ane_section_background.startsWith('rgb')) {
+    sectionClasses += ` bg-${ane_section_background}`;  // .bg-primary, .bg-white, etc
+  }
+
+  // BUILD SECTION INLINE STYLES
+  const sectionStyle = { padding: '20px' };
+  if (ane_section_background) {
+    if (ane_section_background.startsWith('#') || ane_section_background.startsWith('rgb')) {
+      sectionStyle.backgroundColor = ane_section_background;
+    } else if (ane_section_background === 'gradient-primary') {
+      sectionStyle.background = 'linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%)';
+    } else if (ane_section_background === 'gradient-dark') {
+      sectionStyle.background = 'linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%)';
+    }
+  }
+
+  // BUILD CONTAINER CLASSES
+  let containerClasses = 'container';  // .container from _utilities.scss
+  if (ane_container_background && !ane_container_background.startsWith('#') && !ane_container_background.startsWith('rgb')) {
+    containerClasses += ` bg-${ane_container_background}`;
+  }
+
+  // BUILD CONTAINER INLINE STYLES
+  const containerStyle = {};
+  if (ane_container_background) {
+    if (ane_container_background.startsWith('#') || ane_container_background.startsWith('rgb')) {
+      containerStyle.backgroundColor = ane_container_background;
+    } else if (ane_container_background === 'gradient-primary') {
+      containerStyle.background = 'linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%)';
+    } else if (ane_container_background === 'gradient-dark') {
+      containerStyle.background = 'linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%)';
+    }
+  }
+  if (ane_container_border_radius > 0) {
+    containerStyle.borderRadius = `${ane_container_border_radius}px`;
+  }
+  if (ane_container_padding > 0) {
+    containerStyle.padding = `${ane_container_padding}px`;
+  }
+
+  // BUILD CONTENT CLASSES (matching _typography.scss)
+  let contentClasses = `text-${ane_alignment}`;  // .text-left, .text-center, .text-right
+
+  // TITLE CLASSES (matching _typography.scss)
+  let titleClasses = `title-${ane_title_size}`;  // .title-small, .title-desc, .title-body, .title-hero
+  if (ane_title_color && !ane_title_color.startsWith('#') && !ane_title_color.startsWith('rgb')) {
+    titleClasses += ` text-${ane_title_color}`;  // .text-primary, .text-dark, etc
+  }
+  const titleStyle = {};
+  if (ane_title_color && (ane_title_color.startsWith('#') || ane_title_color.startsWith('rgb'))) {
+    titleStyle.color = ane_title_color;
+  }
+
+  // TAGLINE CLASSES (matching _typography.scss)
+  let taglineClasses = `title-${ane_tagline_size} title-tagline`;  // .title-hero.title-tagline (Poppins font)
+  if (ane_tagline_color && !ane_tagline_color.startsWith('#') && !ane_tagline_color.startsWith('rgb')) {
+    taglineClasses += ` text-${ane_tagline_color}`;
+  }
+  const taglineStyle = {};
+  if (ane_tagline_color && (ane_tagline_color.startsWith('#') || ane_tagline_color.startsWith('rgb'))) {
+    taglineStyle.color = ane_tagline_color;
+  }
+
+  // DESCRIPTION CLASSES (matching _typography.scss)
+  let descClasses = 'desc';  // .desc (16-18px)
+  if (ane_description_color && !ane_description_color.startsWith('#') && !ane_description_color.startsWith('rgb')) {
+    descClasses += ` text-${ane_description_color}`;
+  }
+  const descStyle = {};
+  if (ane_description_color && (ane_description_color.startsWith('#') || ane_description_color.startsWith('rgb'))) {
+    descStyle.color = ane_description_color;
+  }
+
+  const blockProps = useBlockProps({ className: sectionClasses, style: sectionStyle });
+
+  return (
+    <>
+      <InspectorControls>
+        {/* Header Content */}
+        <PanelBody title={__('Header Content', 'sarika')} initialOpen={true}>
+          <TextControl
+            label={__('Title (Small Text)', 'sarika')}
+            value={ane_title}
+            onChange={(value) => setAttributes({ ane_title: value })}
+          />
+          <TextControl
+            label={__('Tagline (Large Text)', 'sarika')}
+            value={ane_tagline}
+            onChange={(value) => setAttributes({ ane_tagline: value })}
+          />
+          <TextareaControl
+            label={__('Description', 'sarika')}
+            value={ane_description}
+            onChange={(value) => setAttributes({ ane_description: value })}
+            rows={4}
+          />
+        </PanelBody>
+
+        {/* Section Options - matching _utilities.scss */}
+        <PanelBody title={__('Section Options', 'sarika')} initialOpen={false}>
+          <SelectControl
+            label={__('Section Background', 'sarika')}
+            value={ane_section_background}
+            options={predefinedColors}
+            onChange={(value) => setAttributes({ ane_section_background: value })}
+          />
+
+          {ane_section_background && (
+            <div style={{ marginTop: '12px' }}>
+              <Button
+                variant="secondary"
+                onClick={() => setShowSectionColorPicker(!showSectionColorPicker)}
+              >
+                {__('Custom Color Picker', 'sarika')}
+              </Button>
+
+              {showSectionColorPicker && (
+                <ColorPicker
+                  color={ane_section_background}
+                  onChangeComplete={(color) => {
+                    setAttributes({
+                      ane_section_background: `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})`
+                    });
+                  }}
+                  disableAlpha={false}
+                />
+              )}
+            </div>
+          )}
+
+          <SelectControl
+            label={__('Padding Top', 'sarika')}
+            value={ane_padding_top}
+            options={[
+              { label: __('None (0)', 'sarika'), value: 'none' },
+              { label: __('Small (2rem / 1rem mobile)', 'sarika'), value: 'small' },
+              { label: __('Medium (3rem / 1rem mobile)', 'sarika'), value: 'medium' },
+              { label: __('Large (5rem / 1rem mobile)', 'sarika'), value: 'large' },
+              { label: __('Extra Large (7rem / 2rem mobile)', 'sarika'), value: 'xlarge' },
+            ]}
+            onChange={(value) => setAttributes({ ane_padding_top: value })}
+          />
+
+          <SelectControl
+            label={__('Padding Bottom', 'sarika')}
+            value={ane_padding_bottom}
+            options={[
+              { label: __('None (0)', 'sarika'), value: 'none' },
+              { label: __('Small (2rem / 1rem mobile)', 'sarika'), value: 'small' },
+              { label: __('Medium (3rem / 1rem mobile)', 'sarika'), value: 'medium' },
+              { label: __('Large (5rem / 1rem mobile)', 'sarika'), value: 'large' },
+              { label: __('Extra Large (7rem / 2rem mobile)', 'sarika'), value: 'xlarge' },
+            ]}
+            onChange={(value) => setAttributes({ ane_padding_bottom: value })}
+          />
+
+          <SelectControl
+            label={__('Margin Bottom', 'sarika')}
+            value={ane_margin_bottom}
+            options={[
+              { label: __('None (0)', 'sarika'), value: 'none' },
+              { label: __('Small (2rem / 1rem mobile)', 'sarika'), value: 'small' },
+              { label: __('Medium (3rem / 1rem mobile)', 'sarika'), value: 'medium' },
+              { label: __('Large (5rem / 1rem mobile)', 'sarika'), value: 'large' },
+              { label: __('Extra Large (7rem / 2rem mobile)', 'sarika'), value: 'xlarge' },
+            ]}
+            onChange={(value) => setAttributes({ ane_margin_bottom: value })}
+          />
+        </PanelBody>
+
+        {/* Container Options */}
+        <PanelBody title={__('Container Settings', 'sarika')} initialOpen={false}>
+          <SelectControl
+            label={__('Container Background', 'sarika')}
+            value={ane_container_background}
+            options={predefinedColors}
+            onChange={(value) => setAttributes({ ane_container_background: value })}
+          />
+
+          {ane_container_background && (
+            <div style={{ marginTop: '12px' }}>
+              <Button
+                variant="secondary"
+                onClick={() => setShowContainerColorPicker(!showContainerColorPicker)}
+              >
+                {__('Custom Color Picker', 'sarika')}
+              </Button>
+
+              {showContainerColorPicker && (
+                <ColorPicker
+                  color={ane_container_background}
+                  onChangeComplete={(color) => {
+                    setAttributes({
+                      ane_container_background: `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})`
+                    });
+                  }}
+                  disableAlpha={false}
+                />
+              )}
+            </div>
+          )}
+
+          <RangeControl
+            label={__('Border Radius (px)', 'sarika')}
+            value={ane_container_border_radius}
+            onChange={(value) => setAttributes({ ane_container_border_radius: value })}
+            min={0}
+            max={50}
+            step={1}
+          />
+
+          <RangeControl
+            label={__('Container Padding (px)', 'sarika')}
+            value={ane_container_padding}
+            onChange={(value) => setAttributes({ ane_container_padding: value })}
+            min={0}
+            max={100}
+            step={5}
+          />
+        </PanelBody>
+
+        {/* Title Options - matching _typography.scss */}
+        <PanelBody title={__('Title Options', 'sarika')} initialOpen={false}>
+          <SelectControl
+            label={__('Title Size', 'sarika')}
+            value={ane_title_size}
+            options={[
+              { label: __('Small (16-20px)', 'sarika'), value: 'small' },
+              { label: __('Description (18-24px)', 'sarika'), value: 'desc' },
+              { label: __('Body (28-40px)', 'sarika'), value: 'body' },
+              { label: __('Hero (32-56px)', 'sarika'), value: 'hero' },
+            ]}
+            onChange={(value) => setAttributes({ ane_title_size: value })}
+          />
+
+          <SelectControl
+            label={__('Title Color', 'sarika')}
+            value={ane_title_color}
+            options={predefinedColors}
+            onChange={(value) => setAttributes({ ane_title_color: value })}
+          />
+
+          {ane_title_color && (
+            <div style={{ marginTop: '12px' }}>
+              <Button
+                variant="secondary"
+                onClick={() => setShowTitleColorPicker(!showTitleColorPicker)}
+              >
+                {__('Custom Color Picker', 'sarika')}
+              </Button>
+
+              {showTitleColorPicker && (
+                <ColorPicker
+                  color={ane_title_color}
+                  onChangeComplete={(color) => {
+                    setAttributes({
+                      ane_title_color: `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})`
+                    });
+                  }}
+                  disableAlpha={false}
+                />
+              )}
+            </div>
+          )}
+        </PanelBody>
+
+        {/* Tagline Options - matching _typography.scss */}
+        <PanelBody title={__('Tagline Options', 'sarika')} initialOpen={false}>
+          <SelectControl
+            label={__('Tagline Size', 'sarika')}
+            value={ane_tagline_size}
+            options={[
+              { label: __('Small (16-20px)', 'sarika'), value: 'small' },
+              { label: __('Description (18-24px)', 'sarika'), value: 'desc' },
+              { label: __('Body (28-40px)', 'sarika'), value: 'body' },
+              { label: __('Hero (32-56px)', 'sarika'), value: 'hero' },
+            ]}
+            onChange={(value) => setAttributes({ ane_tagline_size: value })}
+          />
+
+          <SelectControl
+            label={__('Tagline Color', 'sarika')}
+            value={ane_tagline_color}
+            options={predefinedColors}
+            onChange={(value) => setAttributes({ ane_tagline_color: value })}
+          />
+
+          {ane_tagline_color && (
+            <div style={{ marginTop: '12px' }}>
+              <Button
+                variant="secondary"
+                onClick={() => setShowTaglineColorPicker(!showTaglineColorPicker)}
+              >
+                {__('Custom Color Picker', 'sarika')}
+              </Button>
+
+              {showTaglineColorPicker && (
+                <ColorPicker
+                  color={ane_tagline_color}
+                  onChangeComplete={(color) => {
+                    setAttributes({
+                      ane_tagline_color: `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})`
+                    });
+                  }}
+                  disableAlpha={false}
+                />
+              )}
+            </div>
+          )}
+        </PanelBody>
+
+        {/* Description Options */}
+        <PanelBody title={__('Description Options', 'sarika')} initialOpen={false}>
+          <SelectControl
+            label={__('Description Color', 'sarika')}
+            value={ane_description_color}
+            options={predefinedColors}
+            onChange={(value) => setAttributes({ ane_description_color: value })}
+          />
+
+          {ane_description_color && (
+            <div style={{ marginTop: '12px' }}>
+              <Button
+                variant="secondary"
+                onClick={() => setShowDescColorPicker(!showDescColorPicker)}
+              >
+                {__('Custom Color Picker', 'sarika')}
+              </Button>
+
+              {showDescColorPicker && (
+                <ColorPicker
+                  color={ane_description_color}
+                  onChangeComplete={(color) => {
+                    setAttributes({
+                      ane_description_color: `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})`
+                    });
+                  }}
+                  disableAlpha={false}
+                />
+              )}
+            </div>
+          )}
+        </PanelBody>
+
+        {/* Layout Options - matching _typography.scss */}
+        <PanelBody title={__('Layout Options', 'sarika')} initialOpen={false}>
+          <SelectControl
+            label={__('Content Alignment', 'sarika')}
+            value={ane_alignment}
+            options={[
+              { label: __('Left', 'sarika'), value: 'left' },
+              { label: __('Center', 'sarika'), value: 'center' },
+              { label: __('Right', 'sarika'), value: 'right' },
+            ]}
+            onChange={(value) => setAttributes({ ane_alignment: value })}
+          />
+        </PanelBody>
+      </InspectorControls>
+
+      {/* EDITOR PREVIEW */}
+      <div {...blockProps}>
+        <div className={containerClasses} style={containerStyle}>
+          <div className={contentClasses}>
+            {ane_title && (
+              <p className={titleClasses} style={titleStyle}>
+                {ane_title}
+              </p>
+            )}
+            {ane_tagline && (
+              <h2 className={taglineClasses} style={taglineStyle}>
+                {ane_tagline}
+              </h2>
+            )}
+            {ane_description && (
+              <p className={descClasses} style={descStyle}>
+                {ane_description}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+```
+
+### Complete PHP Template (block-name.php) - Copy-Paste Ready
+
+```php
+<?php
+/**
+ * Block: Block Name
+ *
+ * @package sarika
+ */
+
+// Header content
+$title       = $attrs['ane_title'] ?? '';
+$tagline     = $attrs['ane_tagline'] ?? '';
+$description = $attrs['ane_description'] ?? '';
+
+// Section options
+$section_bg     = $attrs['ane_section_background'] ?? '';
+$padding_top    = $attrs['ane_padding_top'] ?? 'large';
+$padding_bottom = $attrs['ane_padding_bottom'] ?? 'large';
+$margin_bottom  = $attrs['ane_margin_bottom'] ?? 'large';
+
+// Container options
+$container_bg      = $attrs['ane_container_background'] ?? '';
+$container_radius  = $attrs['ane_container_border_radius'] ?? 0;
+$container_padding = $attrs['ane_container_padding'] ?? 0;
+
+// Title options
+$title_size  = $attrs['ane_title_size'] ?? 'small';
+$title_color = $attrs['ane_title_color'] ?? '';
+
+// Tagline options
+$tagline_size  = $attrs['ane_tagline_size'] ?? 'hero';
+$tagline_color = $attrs['ane_tagline_color'] ?? 'primary';
+
+// Description options
+$description_color = $attrs['ane_description_color'] ?? '';
+
+// Layout options
+$alignment = $attrs['ane_alignment'] ?? 'center';
+
+// =========================================
+// BUILD SECTION CLASSES (matching _utilities.scss)
+// =========================================
+$section_classes = [];
+$section_classes[] = 'sarika-block-name';
+$section_classes[] = 'padding-top-' . esc_attr( $padding_top );       // .padding-top-large
+$section_classes[] = 'padding-bottom-' . esc_attr( $padding_bottom ); // .padding-bottom-large
+$section_classes[] = 'margin-bottom-' . esc_attr( $margin_bottom );   // .margin-bottom-large
+
+// Section background (predefined color class)
+if ( $section_bg && ! str_starts_with( $section_bg, '#' ) && ! str_starts_with( $section_bg, 'rgb' ) ) {
+	$section_classes[] = 'bg-' . esc_attr( $section_bg );  // .bg-primary, .bg-dark, etc
+}
+
+// BUILD SECTION INLINE STYLES
+$section_styles = [];
+
+// Section custom background (hex/rgba or gradient)
+if ( $section_bg ) {
+	if ( str_starts_with( $section_bg, '#' ) || str_starts_with( $section_bg, 'rgb' ) ) {
+		$section_styles[] = 'background-color: ' . esc_attr( $section_bg );
+	} elseif ( $section_bg === 'gradient-primary' ) {
+		$section_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%)';
+	} elseif ( $section_bg === 'gradient-dark' ) {
+		$section_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%)';
+	}
+}
+
+// =========================================
+// BUILD CONTAINER CLASSES
+// =========================================
+$container_classes = [];
+$container_classes[] = 'container';  // .container from _utilities.scss (max-width: 1200px)
+
+// Container background (predefined color class)
+if ( $container_bg && ! str_starts_with( $container_bg, '#' ) && ! str_starts_with( $container_bg, 'rgb' ) ) {
+	$container_classes[] = 'bg-' . esc_attr( $container_bg );
+}
+
+// BUILD CONTAINER INLINE STYLES
+$container_styles = [];
+
+// Container custom background (hex/rgba or gradient)
+if ( $container_bg ) {
+	if ( str_starts_with( $container_bg, '#' ) || str_starts_with( $container_bg, 'rgb' ) ) {
+		$container_styles[] = 'background-color: ' . esc_attr( $container_bg );
+	} elseif ( $container_bg === 'gradient-primary' ) {
+		$container_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%)';
+	} elseif ( $container_bg === 'gradient-dark' ) {
+		$container_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%)';
+	}
+}
+
+// Container border radius
+if ( $container_radius > 0 ) {
+	$container_styles[] = 'border-radius: ' . esc_attr( $container_radius ) . 'px';
+}
+
+// Container padding
+if ( $container_padding > 0 ) {
+	$container_styles[] = 'padding: ' . esc_attr( $container_padding ) . 'px';
+}
+
+// =========================================
+// BUILD CONTENT CLASSES (matching _typography.scss)
+// =========================================
+$content_classes = [];
+$content_classes[] = 'text-' . esc_attr( $alignment );  // .text-left, .text-center, .text-right
+
+// TITLE CLASSES (matching _typography.scss)
+$title_class = 'title-' . esc_attr( $title_size );  // .title-small, .title-desc, .title-body, .title-hero
+if ( $title_color && ! str_starts_with( $title_color, '#' ) && ! str_starts_with( $title_color, 'rgb' ) ) {
+	$title_class .= ' text-' . esc_attr( $title_color );  // .text-primary, .text-dark, etc
+}
+$title_style = '';
+if ( $title_color && ( str_starts_with( $title_color, '#' ) || str_starts_with( $title_color, 'rgb' ) ) ) {
+	$title_style = 'color: ' . esc_attr( $title_color );
+}
+
+// TAGLINE CLASSES (matching _typography.scss)
+$tagline_class = 'title-' . esc_attr( $tagline_size ) . ' title-tagline';  // .title-hero.title-tagline (Poppins font)
+if ( $tagline_color && ! str_starts_with( $tagline_color, '#' ) && ! str_starts_with( $tagline_color, 'rgb' ) ) {
+	$tagline_class .= ' text-' . esc_attr( $tagline_color );
+}
+$tagline_style = '';
+if ( $tagline_color && ( str_starts_with( $tagline_color, '#' ) || str_starts_with( $tagline_color, 'rgb' ) ) ) {
+	$tagline_style = 'color: ' . esc_attr( $tagline_color );
+}
+
+// DESCRIPTION CLASSES (matching _typography.scss)
+$desc_class = 'desc';  // .desc (16-18px)
+if ( $description_color && ! str_starts_with( $description_color, '#' ) && ! str_starts_with( $description_color, 'rgb' ) ) {
+	$desc_class .= ' text-' . esc_attr( $description_color );
+}
+$desc_style = '';
+if ( $description_color && ( str_starts_with( $description_color, '#' ) || str_starts_with( $description_color, 'rgb' ) ) ) {
+	$desc_style = 'color: ' . esc_attr( $description_color );
+}
+
+// Convert arrays to strings
+$section_class_str   = implode( ' ', $section_classes );
+$section_style_str   = implode( '; ', $section_styles );
+$container_class_str = implode( ' ', $container_classes );
+$container_style_str = implode( '; ', $container_styles );
+$content_class_str   = implode( ' ', $content_classes );
+?>
+
+<section class="<?php echo esc_attr( $section_class_str ); ?>"
+		 <?php echo $section_style_str ? 'style="' . esc_attr( $section_style_str ) . '"' : ''; ?>>
+	<div class="<?php echo esc_attr( $container_class_str ); ?>"
+		 <?php echo $container_style_str ? 'style="' . esc_attr( $container_style_str ) . '"' : ''; ?>>
+		<div class="<?php echo esc_attr( $content_class_str ); ?>">
+
+			<?php if ( $title ) : ?>
+				<p class="<?php echo esc_attr( $title_class ); ?>"
+				   <?php echo $title_style ? 'style="' . esc_attr( $title_style ) . '"' : ''; ?>>
+					<?php echo esc_html( $title ); ?>
+				</p>
+			<?php endif; ?>
+
+			<?php if ( $tagline ) : ?>
+				<h2 class="<?php echo esc_attr( $tagline_class ); ?>"
+					<?php echo $tagline_style ? 'style="' . esc_attr( $tagline_style ) . '"' : ''; ?>>
+					<?php echo esc_html( $tagline ); ?>
+				</h2>
+			<?php endif; ?>
+
+			<?php if ( $description ) : ?>
+				<p class="<?php echo esc_attr( $desc_class ); ?>"
+				   <?php echo $desc_style ? 'style="' . esc_attr( $desc_style ) . '"' : ''; ?>>
+					<?php echo esc_html( $description ); ?>
+				</p>
+			<?php endif; ?>
+
+		</div>
+	</div>
+</section>
+```
+
+**✅ This example is 100% matching:**
+- `_utilities.scss` - padding-top/bottom-none/small/medium/large/xlarge, margin-bottom-*, bg-*, gradient-*
+- `_typography.scss` - title-small/desc/body/hero, title-tagline, desc, text-left/center/right, text-primary/secondary/etc
+
+**Copy this exact pattern for every new block!**
+
+---
+
 ### Attribute Naming Standard
 
 ```javascript

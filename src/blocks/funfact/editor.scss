@@ -1,0 +1,38 @@
+// Funfact Block - Editor Styles
+// Minimal styling for Gutenberg editor preview
+
+.sarika-funfact {
+	// Editor-only preview styling
+	.sarika-funfact-header {
+		margin-bottom: 40px;
+
+		p, h2 {
+			margin: 0 0 10px 0;
+		}
+	}
+
+	.sarika-funfact-grid {
+		// Grid layout handled by inline styles in edit.js
+
+		.sarika-funfact-item {
+			.sarika-funfact-number {
+				font-size: 48px;
+				font-weight: bold;
+				line-height: 1.2;
+				margin-bottom: 10px;
+			}
+
+			.sarika-funfact-label {
+				font-size: 20px;
+				font-weight: 600;
+				margin-bottom: 10px;
+			}
+
+			.sarika-funfact-description {
+				font-size: 14px;
+				opacity: 0.8;
+				margin: 0;
+			}
+		}
+	}
+}

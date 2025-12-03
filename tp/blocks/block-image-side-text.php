@@ -160,16 +160,31 @@ if ( $description_color ) {
 				<?php if ( $image ) : ?>
 					<div class="sarika-image-side-text__image-column">
 						<?php
-						// Get portrait image (4:5 ratio - Instagram portrait)
 						if ( $image_id ) {
-							$portrait_image = wp_get_attachment_image( $image_id, 'sarika-portrait', false, array( 'class' => 'sarika-image-side-text__image' ) );
-							if ( $portrait_image ) {
-								echo $portrait_image;
+							// Get image URLs for responsive loading
+							$desktop_url = wp_get_attachment_image_url( $image_id, 'sarika-potret' ); // 600x750 portrait for desktop/tablet
+							$mobile_url  = wp_get_attachment_image_url( $image_id, 'sarika-news-sm' ); // 480x270 for mobile
+							$image_alt   = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
+							$image_title = get_the_title( $image_id );
+
+							if ( $desktop_url && $mobile_url ) {
+								?>
+								<picture>
+									<source media="(min-width: 768px)" srcset="<?php echo esc_url( $desktop_url ); ?>">
+									<source media="(max-width: 767px)" srcset="<?php echo esc_url( $mobile_url ); ?>">
+									<img
+										src="<?php echo esc_url( $desktop_url ); ?>"
+										alt="<?php echo esc_attr( $image_alt ?: $image_title ); ?>"
+										class="sarika-image-side-text__image"
+										loading="lazy"
+									>
+								</picture>
+								<?php
 							} else {
-								echo '<img src="' . esc_url( $image ) . '" alt="' . esc_attr( get_the_title( $image_id ) ) . '" class="sarika-image-side-text__image">';
+								echo '<img src="' . esc_url( $image ) . '" alt="' . esc_attr( $image_alt ?: $image_title ) . '" class="sarika-image-side-text__image" loading="lazy">';
 							}
 						} else {
-							echo '<img src="' . esc_url( $image ) . '" alt="" class="sarika-image-side-text__image">';
+							echo '<img src="' . esc_url( $image ) . '" alt="" class="sarika-image-side-text__image" loading="lazy">';
 						}
 						?>
 					</div>
