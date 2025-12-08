@@ -18,17 +18,127 @@
 		padding: 0;
 	}
 
-	// Header with hidden title & breadcrumb
-	.page-custom__header {
-		// Title hidden visually but accessible for SEO & screen readers
-		.page-custom__title {
-			// Uses .sr-only utility class from _utilities.scss
-			// position: absolute; width: 1px; height: 1px; overflow: hidden;
+	// Header SEO-only (always hidden)
+	.page-custom__header-seo {
+		// Uses .sr-only utility class from _utilities.scss
+	}
+
+	// Header visible section (when toggled on)
+	.page-custom__header-visible {
+		padding: 2rem 0;
+		background-color: var(--sarika-color-white);
+
+		@media (min-width: 768px) {
+			padding: 3rem 0;
 		}
 
-		// Breadcrumb hidden visually but in DOM for SEO
-		.page-custom__breadcrumb {
-			// Uses .sr-only utility class from _utilities.scss
+		// Breadcrumb
+		.ane-breadcrumbs {
+			margin-bottom: 1.5rem;
+			font-size: 0.875rem;
+
+			ol {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5rem;
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+
+			li {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+
+				&::after {
+					content: '›';
+					color: var(--sarika-color-secondary);
+				}
+
+				&:last-child::after {
+					display: none;
+				}
+			}
+
+			a {
+				color: var(--sarika-color-body);
+				text-decoration: none;
+				transition: color 0.2s ease;
+
+				&:hover {
+					color: var(--sarika-color-primary);
+				}
+			}
+		}
+
+		// Title + Description (2 columns desktop)
+		.page-custom__header-content {
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 1.5rem;
+			margin-bottom: 2rem;
+
+			@media (min-width: 768px) {
+				grid-template-columns: 1fr 1fr;
+				gap: 3rem;
+			}
+		}
+
+		.page-custom__header-left {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.page-custom__title-visible {
+			font-size: 2rem;
+			font-weight: 700;
+			line-height: 1.2;
+			margin: 0;
+			color: var(--sarika-color-dark);
+
+			@media (min-width: 768px) {
+				font-size: 2.5rem;
+			}
+
+			@media (min-width: 1024px) {
+				font-size: 3rem;
+			}
+		}
+
+		.page-custom__header-right {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+		}
+
+		.page-custom__description {
+			font-size: 1rem;
+			line-height: 1.6;
+			color: var(--sarika-color-body);
+
+			@media (min-width: 768px) {
+				font-size: 1.125rem;
+			}
+
+			p {
+				margin: 0 0 1rem;
+
+				&:last-child {
+					margin-bottom: 0;
+				}
+			}
+		}
+
+		// Featured Image
+		.page-custom__featured-image {
+			margin-top: 2rem;
+
+			img {
+				width: 100%;
+				height: auto;
+				display: block;
+			}
 		}
 	}
 

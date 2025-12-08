@@ -18,6 +18,94 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.1.4] - 2025-12-08
+
+### Added
+
+#### Hero Block Enhancement
+- **Bottom Gradient Transition** - Optional gradient overlay di bagian bawah hero untuk smooth transition ke section berikutnya
+  - New attribute: `ane_gradient_bottom` (boolean, default: false)
+  - ToggleControl "Enable Bottom Gradient" di Background Settings panel
+  - Gradient direction: bottom to top (0deg)
+  - Height: 200px dengan `pointer-events: none`
+  - Color variants: dark, body, primary, secondary (mengikuti `ane_color`)
+  - Layer order: Background → Overlay (readability) → Gradient bottom (transition) → Content
+  - CSS class: `.sarika-hero__gradient-bottom--{color}`
+  - Gradient pattern: `rgba(color, 0.9) 0% → rgba(color, 0.6) 40% → transparent 100%`
+  - File: `src/blocks/hero/index.js`, `edit.js`, `tp/blocks/block-hero.php`, `scss/_blocks.scss` lines 98-124
+
+### Changed
+
+#### Button Standards Unification
+- **All blocks updated** - Standardisasi button implementation across 7 blocks
+  - **URLInput instead of TextControl** - Native WordPress page/post search dengan autocomplete
+  - **ToggleControl instead of SelectControl** - "Open in new tab" dengan better UX
+  - **10 button styles** - Expanded from 4-7 styles ke 10 variants matching `scss/_button.scss`:
+    - Primary, Primary Outline
+    - Secondary, Secondary Outline
+    - White, White Outline
+    - Dark, Dark Outline
+    - Accent, Accent Outline
+  - **Blocks updated:**
+    1. Video Background ✅
+    2. Block Image Side Text ✅
+    3. Block Post ✅
+    4. Block Profile ✅ (2 buttons rendered)
+    5. Block Text ✅
+    6. Icon Description ✅ (item links preview added)
+    7. Hero Banner ✅ (LinkControl retained, styles expanded)
+
+#### Block Naming Enhancement
+- **All block titles prefixed** - "Sarika -" prefix untuk easy search di block inserter
+  - Search "sarika" langsung muncul semua 12 custom blocks
+  - Blocks affected:
+    - Sarika - Hero Banner
+    - Sarika - Image Side Text
+    - Sarika - Block Post
+    - Sarika - Block Profile
+    - Sarika - Block Text
+    - Sarika - Client Logos
+    - Sarika - FAQ
+    - Sarika - Funfact
+    - Sarika - Gallery
+    - Sarika - Icon & Description
+    - Sarika - Container
+    - Sarika - Video Background
+  - Files: All `src/blocks/*/index.js` title properties
+
+### Fixed
+
+#### Icon Description Block
+- **Item link preview** - Link preview sekarang muncul di layout `icon-list`
+  - Sebelumnya hanya muncul di layout `icon-description`
+  - Preview link added after `</ul>` untuk consistency
+  - File: `src/blocks/icon-description/edit.js` lines 898-906
+
+#### Block Profile Button Rendering
+- **2-button support** - PHP template sekarang render kedua button
+  - Sebelumnya hanya render 1 button
+  - React editor sudah support 2 button, PHP template ketinggalan
+  - File: `tp/blocks/block-profile.php` lines 94-115
+
+### Technical
+
+#### SCSS Updates
+- Added `.sarika-hero__gradient-bottom` styles dengan 4 color variants
+- Position: `absolute`, `bottom: 0`, z-index: 2
+- Gradient pattern matching Video Background overlay style
+- File: `scss/_blocks.scss` lines 98-124
+
+#### Build Output
+- Hero block size: 22.5 KiB (increased from 22.1 KiB due to gradient toggle)
+- Icon Description block: 31.9 KiB (increased from 31.7 KiB due to link preview)
+- All other blocks: Size stable
+
+### Documentation
+- No documentation changes in this release
+- All changes backwards compatible
+
+---
+
 ## [0.1.3] - 2025-12-08
 
 ### Added

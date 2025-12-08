@@ -3,7 +3,7 @@ import './editor.scss';
 import Edit from './edit';
 
 registerBlockType('sarika/hero', {
-	title: 'Hero Banner',
+	title: 'Sarika - Hero Banner',
 	category: 'sarika-sections',
 	icon: 'cover-image',
 	description: 'Full-width hero section with background image, title, description, and CTA buttons - Live preview enabled.',
@@ -23,6 +23,7 @@ registerBlockType('sarika/hero', {
 		ane_overlay_enabled: { type: 'boolean', default: true },
 		ane_color: { type: 'string', default: 'dark' },
 		ane_overlay_opacity: { type: 'number', default: 50 },
+		ane_gradient_bottom: { type: 'boolean', default: false },
 		ane_size: { type: 'string', default: 'medium' },
 		ane_title_size: { type: 'string', default: 'hero' },
 		ane_text_color: { type: 'string', default: 'white' },

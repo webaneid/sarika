@@ -1,6 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps, MediaUpload, URLInput } from '@wordpress/block-editor';
-import { PanelBody, SelectControl, TextControl, TextareaControl, RangeControl, Button, ColorPicker, TabPanel } from '@wordpress/components';
+import { PanelBody, SelectControl, TextControl, TextareaControl, RangeControl, Button, ColorPicker, TabPanel, ToggleControl } from '@wordpress/components';
 
 export default function Edit({ attributes, setAttributes }) {
 	const {
@@ -334,36 +334,43 @@ export default function Edit({ attributes, setAttributes }) {
 										</PanelBody>
 									)}
 
-									{/* Buttons */}
-									<PanelBody title={__('Buttons', 'sarika')} initialOpen={false}>
-										<p style={{ marginBottom: '12px', fontWeight: 600 }}>{__('Button 1', 'sarika')}</p>
-
+									{/* Button 1 Link */}
+									<PanelBody title={__('Optional Link (Button 1)', 'sarika')} initialOpen={false}>
 										<TextControl
-											label={__('Button Title', 'sarika')}
-											value={ane_button_link.title || ''}
-											onChange={(title) => setAttributes({ ane_button_link: { ...ane_button_link, title } })}
+											label={__('Link Text', 'sarika')}
+											value={ane_button_link?.title || ''}
+											onChange={(value) => {
+												const newLink = { ...(ane_button_link || {}), title: value };
+												setAttributes({ ane_button_link: newLink });
+											}}
+											placeholder={__('e.g., Get Started', 'sarika')}
 										/>
 
-										<div style={{ marginBottom: '12px' }}>
+										<div style={{ marginTop: '12px' }}>
 											<label style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>
-												{__('Button URL', 'sarika')}
+												{__('Link URL', 'sarika')}
 											</label>
 											<URLInput
-												value={ane_button_link.url}
-												onChange={(url) => setAttributes({ ane_button_link: { ...ane_button_link, url } })}
+												value={ane_button_link?.url || ''}
+												onChange={(url) => {
+													const newLink = { ...(ane_button_link || {}), url };
+													setAttributes({ ane_button_link: newLink });
+												}}
 											/>
 										</div>
 
-										<SelectControl
-											label={__('Open in New Tab', 'sarika')}
-											value={ane_button_link.target || ''}
-											options={[
-												{ label: __('No', 'sarika'), value: '' },
-												{ label: __('Yes', 'sarika'), value: '_blank' }
-											]}
-											onChange={(target) => setAttributes({ ane_button_link: { ...ane_button_link, target } })}
+										<ToggleControl
+											label={__('Open in new tab', 'sarika')}
+											checked={ane_button_link?.target === '_blank'}
+											onChange={(checked) => {
+												const newLink = { ...(ane_button_link || {}), target: checked ? '_blank' : '' };
+												setAttributes({ ane_button_link: newLink });
+											}}
 										/>
+									</PanelBody>
 
+									{/* Button 1 Styles */}
+									<PanelBody title={__('Button 1 Styles', 'sarika')} initialOpen={false}>
 										<SelectControl
 											label={__('Button Style', 'sarika')}
 											value={ane_button_style}
@@ -372,52 +379,68 @@ export default function Edit({ attributes, setAttributes }) {
 												{ label: __('Primary Outline', 'sarika'), value: 'primary-outline' },
 												{ label: __('Secondary', 'sarika'), value: 'secondary' },
 												{ label: __('Secondary Outline', 'sarika'), value: 'secondary-outline' },
+												{ label: __('White', 'sarika'), value: 'white' },
+												{ label: __('White Outline', 'sarika'), value: 'white-outline' },
 												{ label: __('Dark', 'sarika'), value: 'dark' },
-												{ label: __('Light', 'sarika'), value: 'light' },
+												{ label: __('Dark Outline', 'sarika'), value: 'dark-outline' },
+												{ label: __('Accent', 'sarika'), value: 'accent' },
+												{ label: __('Accent Outline', 'sarika'), value: 'accent-outline' },
 											]}
 											onChange={(value) => setAttributes({ ane_button_style: value })}
 										/>
+									</PanelBody>
 
-										<hr style={{ margin: '24px 0', borderColor: '#ddd' }} />
-
-										<p style={{ marginBottom: '12px', fontWeight: 600 }}>{__('Button 2', 'sarika')}</p>
-
+									{/* Button 2 Link */}
+									<PanelBody title={__('Optional Link (Button 2)', 'sarika')} initialOpen={false}>
 										<TextControl
-											label={__('Button Title', 'sarika')}
-											value={ane_button2_link.title || ''}
-											onChange={(title) => setAttributes({ ane_button2_link: { ...ane_button2_link, title } })}
+											label={__('Link Text', 'sarika')}
+											value={ane_button2_link?.title || ''}
+											onChange={(value) => {
+												const newLink = { ...(ane_button2_link || {}), title: value };
+												setAttributes({ ane_button2_link: newLink });
+											}}
+											placeholder={__('e.g., Learn More', 'sarika')}
 										/>
 
-										<div style={{ marginBottom: '12px' }}>
+										<div style={{ marginTop: '12px' }}>
 											<label style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>
-												{__('Button URL', 'sarika')}
+												{__('Link URL', 'sarika')}
 											</label>
 											<URLInput
-												value={ane_button2_link.url}
-												onChange={(url) => setAttributes({ ane_button2_link: { ...ane_button2_link, url } })}
+												value={ane_button2_link?.url || ''}
+												onChange={(url) => {
+													const newLink = { ...(ane_button2_link || {}), url };
+													setAttributes({ ane_button2_link: newLink });
+												}}
 											/>
 										</div>
 
-										<SelectControl
-											label={__('Open in New Tab', 'sarika')}
-											value={ane_button2_link.target || ''}
-											options={[
-												{ label: __('No', 'sarika'), value: '' },
-												{ label: __('Yes', 'sarika'), value: '_blank' }
-											]}
-											onChange={(target) => setAttributes({ ane_button2_link: { ...ane_button2_link, target } })}
+										<ToggleControl
+											label={__('Open in new tab', 'sarika')}
+											checked={ane_button2_link?.target === '_blank'}
+											onChange={(checked) => {
+												const newLink = { ...(ane_button2_link || {}), target: checked ? '_blank' : '' };
+												setAttributes({ ane_button2_link: newLink });
+											}}
 										/>
+									</PanelBody>
 
+									{/* Button 2 Styles */}
+									<PanelBody title={__('Button 2 Styles', 'sarika')} initialOpen={false}>
 										<SelectControl
-											label={__('Button 2 Style', 'sarika')}
+											label={__('Button Style', 'sarika')}
 											value={ane_button2_style}
 											options={[
 												{ label: __('Primary', 'sarika'), value: 'primary' },
 												{ label: __('Primary Outline', 'sarika'), value: 'primary-outline' },
 												{ label: __('Secondary', 'sarika'), value: 'secondary' },
 												{ label: __('Secondary Outline', 'sarika'), value: 'secondary-outline' },
+												{ label: __('White', 'sarika'), value: 'white' },
+												{ label: __('White Outline', 'sarika'), value: 'white-outline' },
 												{ label: __('Dark', 'sarika'), value: 'dark' },
-												{ label: __('Light', 'sarika'), value: 'light' },
+												{ label: __('Dark Outline', 'sarika'), value: 'dark-outline' },
+												{ label: __('Accent', 'sarika'), value: 'accent' },
+												{ label: __('Accent Outline', 'sarika'), value: 'accent-outline' },
 											]}
 											onChange={(value) => setAttributes({ ane_button2_style: value })}
 										/>

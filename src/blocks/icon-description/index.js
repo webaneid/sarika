@@ -3,7 +3,7 @@ import './editor.scss';
 import Edit from './edit';
 
 registerBlockType('sarika/icon-description', {
-	title: 'Icon & Description Section',
+	title: 'Sarika - Icon & Description',
 	category: 'sarika-sections',
 	icon: 'grid-view',
 	description: 'Icon grid section with title, tagline, description, and repeatable icon items - Standard template for all sections.',

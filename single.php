@@ -24,7 +24,7 @@ get_header();
 
 		<div class="grid lg:grid-cols-2fr-1fr gap-8 lg:divide-x divide-gray-200">
 			<!-- Main Content -->
-			<article id="post-<?php the_ID(); ?>" <?php post_class( 'single-post lg:pr-8 min-w-0' ); ?> itemscope itemtype="https://schema.org/NewsArticle">
+			<article id="post-<?php the_ID(); ?>" <?php post_class( 'single-post single-post-mobile lg:pr-8 min-w-0' ); ?> itemscope itemtype="https://schema.org/NewsArticle">
 
 				<!-- Category & Reading Time -->
 				<div class="single-post__category-wrapper mb-4">

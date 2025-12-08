@@ -10,7 +10,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import Edit from './edit';
 
 registerBlockType('sarika/gallery', {
-	title: 'Gallery',
+	title: 'Sarika - Gallery',
 	description: 'Display image gallery with grid, masonry, or sliding layout',
 	icon: 'format-gallery',
 	category: 'sarika-sections',

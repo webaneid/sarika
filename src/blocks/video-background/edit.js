@@ -6,12 +6,14 @@ import { __ } from '@wordpress/i18n';
 import {
 	InspectorControls,
 	RichText,
+	URLInput,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
 	TextControl,
 	SelectControl,
 	TabPanel,
+	ToggleControl,
 } from '@wordpress/components';
 
 const Edit = ({ attributes, setAttributes }) => {
@@ -19,8 +21,10 @@ const Edit = ({ attributes, setAttributes }) => {
 		ane_youtube_url,
 		ane_title,
 		ane_description,
-		ane_button_text,
-		ane_button_url,
+		ane_button_link,
+		ane_button_style,
+		ane_button2_link,
+		ane_button2_style,
 		ane_alignment,
 		ane_overlay_color,
 		ane_padding_top,
@@ -81,17 +85,107 @@ const Edit = ({ attributes, setAttributes }) => {
 										</p>
 									</PanelBody>
 
-									<PanelBody title={__('Button', 'sarika')}>
+									<PanelBody title={__('Optional Link (Button 1)', 'sarika')} initialOpen={false}>
 										<TextControl
-											label={__('Button Text', 'sarika')}
-											value={ane_button_text}
-											onChange={(value) => setAttributes({ ane_button_text: value })}
+											label={__('Link Text', 'sarika')}
+											value={ane_button_link?.title || ''}
+											onChange={(value) => {
+												const newLink = { ...(ane_button_link || {}), title: value };
+												setAttributes({ ane_button_link: newLink });
+											}}
+											placeholder={__('e.g., Get Started', 'sarika')}
 										/>
+										<div style={{ marginTop: '12px' }}>
+											<label style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>
+												{__('Link URL', 'sarika')}
+											</label>
+											<URLInput
+												value={ane_button_link?.url || ''}
+												onChange={(url) => {
+													const newLink = { ...(ane_button_link || {}), url };
+													setAttributes({ ane_button_link: newLink });
+												}}
+											/>
+										</div>
+										<ToggleControl
+											label={__('Open in new tab', 'sarika')}
+											checked={ane_button_link?.target === '_blank'}
+											onChange={(checked) => {
+												const newLink = { ...(ane_button_link || {}), target: checked ? '_blank' : '' };
+												setAttributes({ ane_button_link: newLink });
+											}}
+										/>
+									</PanelBody>
+
+									<PanelBody title={__('Button 1 Styles', 'sarika')} initialOpen={false}>
+										<SelectControl
+											label={__('Button Style', 'sarika')}
+											value={ane_button_style}
+											options={[
+												{ label: __('Primary', 'sarika'), value: 'primary' },
+												{ label: __('Primary Outline', 'sarika'), value: 'primary-outline' },
+												{ label: __('Secondary', 'sarika'), value: 'secondary' },
+												{ label: __('Secondary Outline', 'sarika'), value: 'secondary-outline' },
+												{ label: __('White', 'sarika'), value: 'white' },
+												{ label: __('White Outline', 'sarika'), value: 'white-outline' },
+												{ label: __('Dark', 'sarika'), value: 'dark' },
+												{ label: __('Dark Outline', 'sarika'), value: 'dark-outline' },
+												{ label: __('Accent', 'sarika'), value: 'accent' },
+												{ label: __('Accent Outline', 'sarika'), value: 'accent-outline' },
+											]}
+											onChange={(value) => setAttributes({ ane_button_style: value })}
+										/>
+									</PanelBody>
+
+									<PanelBody title={__('Optional Link (Button 2)', 'sarika')} initialOpen={false}>
 										<TextControl
-											label={__('Button URL', 'sarika')}
-											value={ane_button_url}
-											onChange={(value) => setAttributes({ ane_button_url: value })}
-											placeholder="https://"
+											label={__('Link Text', 'sarika')}
+											value={ane_button2_link?.title || ''}
+											onChange={(value) => {
+												const newLink = { ...(ane_button2_link || {}), title: value };
+												setAttributes({ ane_button2_link: newLink });
+											}}
+											placeholder={__('e.g., Learn More', 'sarika')}
+										/>
+										<div style={{ marginTop: '12px' }}>
+											<label style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>
+												{__('Link URL', 'sarika')}
+											</label>
+											<URLInput
+												value={ane_button2_link?.url || ''}
+												onChange={(url) => {
+													const newLink = { ...(ane_button2_link || {}), url };
+													setAttributes({ ane_button2_link: newLink });
+												}}
+											/>
+										</div>
+										<ToggleControl
+											label={__('Open in new tab', 'sarika')}
+											checked={ane_button2_link?.target === '_blank'}
+											onChange={(checked) => {
+												const newLink = { ...(ane_button2_link || {}), target: checked ? '_blank' : '' };
+												setAttributes({ ane_button2_link: newLink });
+											}}
+										/>
+									</PanelBody>
+
+									<PanelBody title={__('Button 2 Styles', 'sarika')} initialOpen={false}>
+										<SelectControl
+											label={__('Button Style', 'sarika')}
+											value={ane_button2_style}
+											options={[
+												{ label: __('Primary', 'sarika'), value: 'primary' },
+												{ label: __('Primary Outline', 'sarika'), value: 'primary-outline' },
+												{ label: __('Secondary', 'sarika'), value: 'secondary' },
+												{ label: __('Secondary Outline', 'sarika'), value: 'secondary-outline' },
+												{ label: __('White', 'sarika'), value: 'white' },
+												{ label: __('White Outline', 'sarika'), value: 'white-outline' },
+												{ label: __('Dark', 'sarika'), value: 'dark' },
+												{ label: __('Dark Outline', 'sarika'), value: 'dark-outline' },
+												{ label: __('Accent', 'sarika'), value: 'accent' },
+												{ label: __('Accent Outline', 'sarika'), value: 'accent-outline' },
+											]}
+											onChange={(value) => setAttributes({ ane_button2_style: value })}
 										/>
 									</PanelBody>
 								</>
@@ -255,11 +349,18 @@ const Edit = ({ attributes, setAttributes }) => {
 							onChange={(value) => setAttributes({ ane_description: value })}
 							placeholder={__('Enter description...', 'sarika')}
 						/>
-						{ane_button_text && (
-							<div className="sarika-video-bg__button-wrapper">
-								<span className="sarika-video-bg__button">
-									{ane_button_text}
-								</span>
+						{(ane_button_link?.title || ane_button2_link?.title) && (
+							<div className="sarika-video-bg__buttons">
+								{ane_button_link?.title && (
+									<span className={`btn btn--${ane_button_style}`}>
+										{ane_button_link.title}
+									</span>
+								)}
+								{ane_button2_link?.title && (
+									<span className={`btn btn--${ane_button2_style}`}>
+										{ane_button2_link.title}
+									</span>
+								)}
 							</div>
 						)}
 					</div>

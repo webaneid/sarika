@@ -1,0 +1,95 @@
+<?php
+/**
+ * Block: Sarika Container
+ *
+ * Container wrapper for native Gutenberg blocks with styling options.
+ *
+ * @package sarika
+ */
+
+// Section options
+$section_bg     = $attrs['ane_section_background'] ?? '';
+$padding_top    = $attrs['ane_padding_top'] ?? 'large';
+$padding_bottom = $attrs['ane_padding_bottom'] ?? 'large';
+$margin_bottom  = $attrs['ane_margin_bottom'] ?? 'large';
+
+// Container options
+$container_bg      = $attrs['ane_container_background'] ?? '';
+$container_radius  = $attrs['ane_container_border_radius'] ?? 0;
+$container_padding = $attrs['ane_container_padding'] ?? 0;
+
+// Layout
+$alignment = $attrs['ane_alignment'] ?? 'left';
+
+// BUILD SECTION CLASSES
+$section_classes   = [];
+$section_classes[] = 'sarika-container';
+$section_classes[] = 'padding-top-' . esc_attr( $padding_top );
+$section_classes[] = 'padding-bottom-' . esc_attr( $padding_bottom );
+$section_classes[] = 'margin-bottom-' . esc_attr( $margin_bottom );
+
+if ( $section_bg && ! str_starts_with( $section_bg, '#' ) && ! str_starts_with( $section_bg, 'rgb' ) ) {
+	$section_classes[] = 'bg-' . esc_attr( $section_bg );
+}
+
+// BUILD SECTION INLINE STYLES
+$section_styles = [];
+if ( $section_bg ) {
+	if ( str_starts_with( $section_bg, '#' ) || str_starts_with( $section_bg, 'rgb' ) ) {
+		$section_styles[] = 'background-color: ' . esc_attr( $section_bg );
+	} elseif ( $section_bg === 'gradient-primary' ) {
+		$section_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%)';
+	} elseif ( $section_bg === 'gradient-dark' ) {
+		$section_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%)';
+	}
+}
+
+// BUILD CONTAINER CLASSES
+$container_classes = [];
+$container_classes[] = 'container';
+
+if ( $container_bg && ! str_starts_with( $container_bg, '#' ) && ! str_starts_with( $container_bg, 'rgb' ) ) {
+	$container_classes[] = 'bg-' . esc_attr( $container_bg );
+}
+
+// BUILD CONTAINER INLINE STYLES
+$container_styles = [];
+if ( $container_bg ) {
+	if ( str_starts_with( $container_bg, '#' ) || str_starts_with( $container_bg, 'rgb' ) ) {
+		$container_styles[] = 'background-color: ' . esc_attr( $container_bg );
+	} elseif ( $container_bg === 'gradient-primary' ) {
+		$container_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%)';
+	} elseif ( $container_bg === 'gradient-dark' ) {
+		$container_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%)';
+	}
+}
+
+if ( $container_radius > 0 ) {
+	$container_styles[] = 'border-radius: ' . esc_attr( $container_radius ) . 'px';
+}
+
+if ( $container_padding > 0 ) {
+	$container_styles[] = 'padding: ' . esc_attr( $container_padding ) . 'px';
+}
+
+// Content alignment
+$content_classes   = [];
+$content_classes[] = 'text-' . esc_attr( $alignment );
+
+// Convert to strings
+$section_class_str   = implode( ' ', $section_classes );
+$section_style_str   = implode( '; ', $section_styles );
+$container_class_str = implode( ' ', $container_classes );
+$container_style_str = implode( '; ', $container_styles );
+$content_class_str   = implode( ' ', $content_classes );
+?>
+
+<section class="<?php echo esc_attr( $section_class_str ); ?>"
+		 <?php echo $section_style_str ? 'style="' . esc_attr( $section_style_str ) . '"' : ''; ?>>
+	<div class="<?php echo esc_attr( $container_class_str ); ?> sarika-section-container"
+		 <?php echo $container_style_str ? 'style="' . esc_attr( $container_style_str ) . '"' : ''; ?>>
+		<div class="<?php echo esc_attr( $content_class_str ); ?> sarika-section-container__wrapper">
+			<?php echo $content; ?>
+		</div>
+	</div>
+</section>

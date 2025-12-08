@@ -9,7 +9,7 @@ import Edit from './edit';
 import './editor.scss';
 
 registerBlockType('sarika/faq', {
-	title: 'FAQ',
+	title: 'Sarika - FAQ',
 	description: 'Display frequently asked questions with accordion',
 	icon: 'editor-help',
 	category: 'sarika-sections',

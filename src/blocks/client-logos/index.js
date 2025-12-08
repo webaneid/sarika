@@ -9,7 +9,7 @@ import Edit from './edit';
 import './editor.scss';
 
 registerBlockType('sarika/client-logos', {
-	title: 'Client Logos',
+	title: 'Sarika - Client Logos',
 	description: 'Display client logos in an auto-sliding carousel',
 	icon: 'slides',
 	category: 'sarika-sections',

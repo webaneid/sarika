@@ -3,7 +3,7 @@ import './editor.scss';
 import Edit from './edit';
 
 registerBlockType('sarika/block-post', {
-	title: 'Sarika Block Post',
+	title: 'Sarika - Block Post',
 	category: 'sarika-sections',
 	icon: 'grid-view',
 	description: 'Display posts from any post type with grid or slider layout.',

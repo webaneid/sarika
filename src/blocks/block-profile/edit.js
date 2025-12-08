@@ -1,6 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps, URLInput, MediaUpload } from '@wordpress/block-editor';
-import { PanelBody, SelectControl, TextControl, TextareaControl, RangeControl, Button, ColorPicker, TabPanel, IconButton } from '@wordpress/components';
+import { PanelBody, SelectControl, TextControl, TextareaControl, RangeControl, Button, ColorPicker, TabPanel, IconButton, ToggleControl } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 
 export default function Edit({ attributes, setAttributes }) {
@@ -238,16 +238,16 @@ export default function Edit({ attributes, setAttributes }) {
 									</PanelBody>
 
 									{/* Button 1 */}
-									<PanelBody title={__('Button 1 (Optional)', 'sarika')} initialOpen={false}>
+									<PanelBody title={__('Optional Link (Button 1)', 'sarika')} initialOpen={false}>
 										<TextControl
-											label={__('Button Text', 'sarika')}
+											label={__('Link Text', 'sarika')}
 											value={ane_button_link.title}
 											onChange={(title) => setAttributes({ ane_button_link: { ...ane_button_link, title } })}
 										/>
 
 										<div style={{ marginBottom: '12px' }}>
-											<label style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>
-												{__('Button URL', 'sarika')}
+											<label style={{ display: 'block', marginBottom: '8px', fontSize: '11px', fontWeight: 500, lineHeight: '1.4', textTransform: 'uppercase', color: '#1e1e1e' }}>
+												{__('Link URL', 'sarika')}
 											</label>
 											<URLInput
 												value={ane_button_link.url}
@@ -255,16 +255,17 @@ export default function Edit({ attributes, setAttributes }) {
 											/>
 										</div>
 
-										<SelectControl
-											label={__('Open in New Tab', 'sarika')}
-											value={ane_button_link.target || ''}
-											options={[
-												{ label: __('No', 'sarika'), value: '' },
-												{ label: __('Yes', 'sarika'), value: '_blank' }
-											]}
-											onChange={(target) => setAttributes({ ane_button_link: { ...ane_button_link, target } })}
+										<ToggleControl
+											label={__('Open in new tab', 'sarika')}
+											checked={ane_button_link.target === '_blank'}
+											onChange={(checked) => {
+												const target = checked ? '_blank' : '';
+												setAttributes({ ane_button_link: { ...ane_button_link, target } });
+											}}
 										/>
+									</PanelBody>
 
+									<PanelBody title={__('Button 1 Styles', 'sarika')} initialOpen={false}>
 										<SelectControl
 											label={__('Button Style', 'sarika')}
 											value={ane_button_style}
@@ -273,24 +274,28 @@ export default function Edit({ attributes, setAttributes }) {
 												{ label: __('Primary Outline', 'sarika'), value: 'primary-outline' },
 												{ label: __('Secondary', 'sarika'), value: 'secondary' },
 												{ label: __('Secondary Outline', 'sarika'), value: 'secondary-outline' },
+												{ label: __('White', 'sarika'), value: 'white' },
+												{ label: __('White Outline', 'sarika'), value: 'white-outline' },
 												{ label: __('Dark', 'sarika'), value: 'dark' },
-												{ label: __('Light', 'sarika'), value: 'light' },
+												{ label: __('Dark Outline', 'sarika'), value: 'dark-outline' },
+												{ label: __('Accent', 'sarika'), value: 'accent' },
+												{ label: __('Accent Outline', 'sarika'), value: 'accent-outline' },
 											]}
 											onChange={(value) => setAttributes({ ane_button_style: value })}
 										/>
 									</PanelBody>
 
 									{/* Button 2 */}
-									<PanelBody title={__('Button 2 (Optional)', 'sarika')} initialOpen={false}>
+									<PanelBody title={__('Optional Link (Button 2)', 'sarika')} initialOpen={false}>
 										<TextControl
-											label={__('Button Text', 'sarika')}
+											label={__('Link Text', 'sarika')}
 											value={ane_button2_link.title}
 											onChange={(title) => setAttributes({ ane_button2_link: { ...ane_button2_link, title } })}
 										/>
 
 										<div style={{ marginBottom: '12px' }}>
-											<label style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>
-												{__('Button URL', 'sarika')}
+											<label style={{ display: 'block', marginBottom: '8px', fontSize: '11px', fontWeight: 500, lineHeight: '1.4', textTransform: 'uppercase', color: '#1e1e1e' }}>
+												{__('Link URL', 'sarika')}
 											</label>
 											<URLInput
 												value={ane_button2_link.url}
@@ -298,16 +303,17 @@ export default function Edit({ attributes, setAttributes }) {
 											/>
 										</div>
 
-										<SelectControl
-											label={__('Open in New Tab', 'sarika')}
-											value={ane_button2_link.target || ''}
-											options={[
-												{ label: __('No', 'sarika'), value: '' },
-												{ label: __('Yes', 'sarika'), value: '_blank' }
-											]}
-											onChange={(target) => setAttributes({ ane_button2_link: { ...ane_button2_link, target } })}
+										<ToggleControl
+											label={__('Open in new tab', 'sarika')}
+											checked={ane_button2_link.target === '_blank'}
+											onChange={(checked) => {
+												const target = checked ? '_blank' : '';
+												setAttributes({ ane_button2_link: { ...ane_button2_link, target } });
+											}}
 										/>
+									</PanelBody>
 
+									<PanelBody title={__('Button 2 Styles', 'sarika')} initialOpen={false}>
 										<SelectControl
 											label={__('Button Style', 'sarika')}
 											value={ane_button2_style}
@@ -316,8 +322,12 @@ export default function Edit({ attributes, setAttributes }) {
 												{ label: __('Primary Outline', 'sarika'), value: 'primary-outline' },
 												{ label: __('Secondary', 'sarika'), value: 'secondary' },
 												{ label: __('Secondary Outline', 'sarika'), value: 'secondary-outline' },
+												{ label: __('White', 'sarika'), value: 'white' },
+												{ label: __('White Outline', 'sarika'), value: 'white-outline' },
 												{ label: __('Dark', 'sarika'), value: 'dark' },
-												{ label: __('Light', 'sarika'), value: 'light' },
+												{ label: __('Dark Outline', 'sarika'), value: 'dark-outline' },
+												{ label: __('Accent', 'sarika'), value: 'accent' },
+												{ label: __('Accent Outline', 'sarika'), value: 'accent-outline' },
 											]}
 											onChange={(value) => setAttributes({ ane_button2_style: value })}
 										/>

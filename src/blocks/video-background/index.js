@@ -9,7 +9,7 @@ import Edit from './edit';
 import './editor.scss';
 
 registerBlockType('sarika/video-background', {
-	title: 'Video Background',
+	title: 'Sarika - Video Background',
 	description: 'Fullscreen section with YouTube video background',
 	icon: 'video-alt3',
 	category: 'sarika-sections',
@@ -28,13 +28,23 @@ registerBlockType('sarika/video-background', {
 			type: 'string',
 			default: '',
 		},
-		ane_button_text: {
-			type: 'string',
-			default: '',
+
+		// Buttons (Standard pattern - 2 buttons)
+		ane_button_link: {
+			type: 'object',
+			default: { title: '', url: '', target: '' },
 		},
-		ane_button_url: {
+		ane_button_style: {
 			type: 'string',
-			default: '',
+			default: 'primary',
+		},
+		ane_button2_link: {
+			type: 'object',
+			default: { title: '', url: '', target: '' },
+		},
+		ane_button2_style: {
+			type: 'string',
+			default: 'primary-outline',
 		},
 
 		// Alignment

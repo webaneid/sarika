@@ -1,6 +1,6 @@
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
+import { useBlockProps, InspectorControls, URLInput } from '@wordpress/block-editor';
 import { PanelBody, SelectControl, RangeControl, Button, ColorPicker, TextControl, TextareaControl, ToggleControl } from '@wordpress/components';
 
 export default function Edit({ attributes, setAttributes }) {
@@ -95,7 +95,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 				<PanelBody title={__('Optional Link', 'sarika')} initialOpen={false}>
 					<TextControl
-						label={__('LINK TEXT', 'sarika')}
+						label={__('Link Text', 'sarika')}
 						value={ane_button_link?.title || ''}
 						onChange={(value) => {
 							const newLink = { ...(ane_button_link || {}), title: value };
@@ -103,15 +103,18 @@ export default function Edit({ attributes, setAttributes }) {
 						}}
 						placeholder={__('e.g., View More', 'sarika')}
 					/>
-					<TextControl
-						label={__('LINK URL', 'sarika')}
-						value={ane_button_link?.url || ''}
-						onChange={(value) => {
-							const newLink = { ...(ane_button_link || {}), url: value };
-							setAttributes({ ane_button_link: newLink });
-						}}
-						placeholder={__('e.g., https://example.com', 'sarika')}
-					/>
+					<div style={{ marginBottom: '12px' }}>
+						<label style={{ display: 'block', marginBottom: '8px', fontSize: '11px', fontWeight: 500, lineHeight: '1.4', textTransform: 'uppercase', color: '#1e1e1e' }}>
+							{__('Link URL', 'sarika')}
+						</label>
+						<URLInput
+							value={ane_button_link?.url || ''}
+							onChange={(url) => {
+								const newLink = { ...(ane_button_link || {}), url };
+								setAttributes({ ane_button_link: newLink });
+							}}
+						/>
+					</div>
 					<ToggleControl
 						label={__('Open in new tab', 'sarika')}
 						checked={ane_button_link?.target === '_blank'}
@@ -131,6 +134,12 @@ export default function Edit({ attributes, setAttributes }) {
 							{ label: __('Primary Outline', 'sarika'), value: 'primary-outline' },
 							{ label: __('Secondary', 'sarika'), value: 'secondary' },
 							{ label: __('Secondary Outline', 'sarika'), value: 'secondary-outline' },
+							{ label: __('White', 'sarika'), value: 'white' },
+							{ label: __('White Outline', 'sarika'), value: 'white-outline' },
+							{ label: __('Dark', 'sarika'), value: 'dark' },
+							{ label: __('Dark Outline', 'sarika'), value: 'dark-outline' },
+							{ label: __('Accent', 'sarika'), value: 'accent' },
+							{ label: __('Accent Outline', 'sarika'), value: 'accent-outline' },
 						]}
 						onChange={(v) => setAttributes({ ane_button_style: v })}
 					/>

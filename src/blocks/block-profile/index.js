@@ -3,7 +3,7 @@ import './editor.scss';
 import Edit from './edit';
 
 registerBlockType('sarika/block-profile', {
-	title: 'Block Profile',
+	title: 'Sarika - Block Profile',
 	category: 'sarika-sections',
 	icon: 'id-alt',
 	description: 'Company profile section with vision, mission, and values.',

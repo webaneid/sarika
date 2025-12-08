@@ -9,8 +9,10 @@
 $youtube_url        = $block['attrs']['ane_youtube_url'] ?? '';
 $title              = $block['attrs']['ane_title'] ?? '';
 $description        = $block['attrs']['ane_description'] ?? '';
-$button_text        = $block['attrs']['ane_button_text'] ?? '';
-$button_url         = $block['attrs']['ane_button_url'] ?? '';
+$button_link        = $block['attrs']['ane_button_link'] ?? array( 'title' => '', 'url' => '', 'target' => '' );
+$button_style       = $block['attrs']['ane_button_style'] ?? 'primary';
+$button2_link       = $block['attrs']['ane_button2_link'] ?? array( 'title' => '', 'url' => '', 'target' => '' );
+$button2_style      = $block['attrs']['ane_button2_style'] ?? 'primary-outline';
 $alignment          = $block['attrs']['ane_alignment'] ?? 'left';
 $overlay_color      = $block['attrs']['ane_overlay_color'] ?? 'dark';
 $padding_top        = $block['attrs']['ane_padding_top'] ?? 'none';
@@ -79,17 +81,37 @@ $desc_class  = 'desc text-' . $description_color;
 				</p>
 			<?php endif; ?>
 
-			<?php if ( $button_text && $button_url ) : ?>
-				<div class="sarika-video-bg__button-wrapper">
-					<a
-						href="<?php echo esc_url( $button_url ); ?>"
-						class="sarika-video-bg__button"
-						<?php if ( strpos( $button_url, home_url() ) === false ) : ?>
-							target="_blank" rel="noopener noreferrer"
-						<?php endif; ?>
-					>
-						<?php echo esc_html( $button_text ); ?>
-					</a>
+			<?php
+			$button_url    = $button_link['url'] ?? '';
+			$button_title  = $button_link['title'] ?? '';
+			$button_target = $button_link['target'] ?? '';
+
+			$button2_url    = $button2_link['url'] ?? '';
+			$button2_title  = $button2_link['title'] ?? '';
+			$button2_target = $button2_link['target'] ?? '';
+			?>
+
+			<?php if ( $button_url || $button2_url ) : ?>
+				<div class="sarika-video-bg__buttons">
+					<?php if ( $button_url ) : ?>
+						<a
+							href="<?php echo esc_url( $button_url ); ?>"
+							class="btn btn--<?php echo esc_attr( $button_style ); ?>"
+							<?php echo $button_target === '_blank' ? 'target="_blank" rel="noopener noreferrer"' : ''; ?>
+						>
+							<?php echo esc_html( $button_title ?: __( 'Learn More', 'sarika' ) ); ?>
+						</a>
+					<?php endif; ?>
+
+					<?php if ( $button2_url ) : ?>
+						<a
+							href="<?php echo esc_url( $button2_url ); ?>"
+							class="btn btn--<?php echo esc_attr( $button2_style ); ?>"
+							<?php echo $button2_target === '_blank' ? 'target="_blank" rel="noopener noreferrer"' : ''; ?>
+						>
+							<?php echo esc_html( $button2_title ?: __( 'Learn More', 'sarika' ) ); ?>
+						</a>
+					<?php endif; ?>
 				</div>
 			<?php endif; ?>
 		</div>

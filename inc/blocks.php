@@ -114,6 +114,19 @@ function sarika_register_block_post() : void {
 add_action( 'init', 'sarika_register_block_post' );
 
 /**
+ * Register server-side rendering for Sarika Container.
+ */
+function sarika_register_sarika_container_block() : void {
+	register_block_type(
+		'sarika/sarika-container',
+		array(
+			'render_callback' => 'sarika_render_sarika_container_block',
+		)
+	);
+}
+add_action( 'init', 'sarika_register_sarika_container_block' );
+
+/**
  * Register server-side rendering for FAQ block.
  */
 function sarika_register_faq_block() : void {
@@ -334,6 +347,23 @@ function sarika_render_block_post( array $attributes ) : string {
 	);
 
 	require SARIKA_PATH . '/tp/blocks/block-post.php';
+
+	return ob_get_clean();
+}
+
+/**
+ * Render Sarika Container - Container wrapper for Gutenberg blocks.
+ *
+ * @param array $attributes Block attributes.
+ * @param string $content Inner blocks content.
+ * @return string Block HTML.
+ */
+function sarika_render_sarika_container_block( array $attributes, string $content ) : string {
+	ob_start();
+
+	$attrs = $attributes;
+
+	require SARIKA_PATH . '/tp/blocks/block-sarika-container.php';
 
 	return ob_get_clean();
 }
@@ -593,6 +623,21 @@ function sarika_enqueue_block_editor_assets() : void {
 		wp_enqueue_script(
 			'sarika-block-post-editor',
 			SARIKA_URI . '/build/block-post/index.js',
+			$asset['dependencies'],
+			$asset['version'],
+			true
+		);
+	}
+
+	// Sarika Container.
+	$sarika_container_asset_file = SARIKA_PATH . '/build/sarika-container/index.asset.php';
+
+	if ( file_exists( $sarika_container_asset_file ) ) {
+		$asset = require $sarika_container_asset_file;
+
+		wp_enqueue_script(
+			'sarika-container-editor',
+			SARIKA_URI . '/build/sarika-container/index.js',
 			$asset['dependencies'],
 			$asset['version'],
 			true

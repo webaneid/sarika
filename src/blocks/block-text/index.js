@@ -3,7 +3,7 @@ import './editor.scss';
 import Edit from './edit';
 
 registerBlockType('sarika/block-text', {
-	title: 'Block Text',
+	title: 'Sarika - Block Text',
 	category: 'sarika-sections',
 	icon: 'text',
 	description: 'Flexible text block with title, tagline, description, and buttons - Highly customizable container and content options.',

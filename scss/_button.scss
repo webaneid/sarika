@@ -151,7 +151,7 @@
 .btn--secondary {
 	background: var(--sarika-color-secondary);
 	color: var(--sarika-color-light) !important;
-	border-color: var(--sarika-color-secondary);
+	border-color: var(--sarika-color-secondary) !important;
 
 	&:hover {
 		background: rgba(var(--sarika-color-secondary-rgb), 0.9);
@@ -163,8 +163,8 @@
 // Secondary Outline Button
 .btn--secondary-outline {
 	background: transparent;
-	color: var(--sarika-color-secondary);
-	border-color: var(--sarika-color-secondary);
+	color: var(--sarika-color-secondary) !important;
+	border-color: var(--sarika-color-secondary) !important;
 
 	&:hover {
 		background: var(--sarika-color-secondary);

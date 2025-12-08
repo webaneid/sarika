@@ -3,7 +3,7 @@ import './editor.scss';
 import Edit from './edit';
 
 registerBlockType('sarika/funfact', {
-	title: 'Funfact',
+	title: 'Sarika - Funfact',
 	category: 'sarika-sections',
 	icon: 'chart-bar',
 	description: 'Animated statistics with counting numbers - Perfect for showcasing achievements.',

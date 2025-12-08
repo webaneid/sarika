@@ -23,6 +23,7 @@ $content_alignment = $attrs['ane_alignment'] ?? 'left';
 $overlay_enabled   = $attrs['ane_overlay_enabled'] ?? true;
 $overlay_color     = $attrs['ane_color'] ?? 'dark';
 $overlay_opacity   = $attrs['ane_overlay_opacity'] ?? 50;
+$gradient_bottom   = $attrs['ane_gradient_bottom'] ?? false;
 $min_height        = $attrs['ane_size'] ?? 'medium';
 $title_size        = $attrs['ane_title_size'] ?? 'hero';
 $text_color        = $attrs['ane_text_color'] ?? 'white';
@@ -57,6 +58,10 @@ $class_name .= ' sarika-hero--height-' . esc_attr( $min_height );
 		<div class="sarika-hero__background" style="background-image: url('<?php echo esc_url( $background_url ); ?>');">
 			<?php if ( $overlay_enabled ) : ?>
 				<div class="sarika-hero__overlay sarika-hero__overlay--<?php echo esc_attr( $overlay_color ); ?>" style="opacity: <?php echo esc_attr( $overlay_opacity / 100 ); ?>;"></div>
+			<?php endif; ?>
+
+			<?php if ( $gradient_bottom ) : ?>
+				<div class="sarika-hero__gradient-bottom sarika-hero__gradient-bottom--<?php echo esc_attr( $overlay_color ); ?>"></div>
 			<?php endif; ?>
 		</div>
 	<?php endif; ?>

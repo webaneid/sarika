@@ -95,6 +95,34 @@
 	}
 }
 
+// Gradient Bottom (for transition to next section)
+.sarika-hero__gradient-bottom {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 200px;
+	z-index: 2;
+	pointer-events: none;
+
+	// Gradient bottom to top (solid at bottom, transparent at top)
+	&--dark {
+		background: linear-gradient(0deg, rgba(var(--sarika-color-dark-rgb), 0.9) 0%, rgba(var(--sarika-color-dark-rgb), 0.6) 40%, transparent 100%);
+	}
+
+	&--body {
+		background: linear-gradient(0deg, rgba(var(--sarika-color-body-rgb), 0.9) 0%, rgba(var(--sarika-color-body-rgb), 0.6) 40%, transparent 100%);
+	}
+
+	&--primary {
+		background: linear-gradient(0deg, rgba(var(--sarika-color-primary-rgb), 1) 0%, rgba(var(--sarika-color-primary-rgb), 0) 40%, transparent 100%);
+	}
+
+	&--secondary {
+		background: linear-gradient(0deg, rgba(var(--sarika-color-secondary-rgb), 0.9) 0%, rgba(var(--sarika-color-secondary-rgb), 0.6) 40%, transparent 100%);
+	}
+}
+
 // Container
 .sarika-hero__container {
 	position: relative;
@@ -2205,3 +2233,36 @@
 		color: var(--sarika-color-secondary);
 	}
 }
+
+/**
+ * Sarika Container Block - Frontend
+ * Container wrapper for native Gutenberg blocks
+ * Uses global utility classes (padding-top-*, bg-*, margin-bottom-*, container, etc)
+ */
+
+ .sarika-section-container {
+	&__wrapper {
+		width: 80%;
+		margin: auto;
+		display: block;
+		
+		img {
+			border-radius: 8px;
+			width: 100%;
+		}
+
+
+	}
+
+ }
+
+ // Sarika Container wrapper
+ .sarika-section-container__wrapper {
+	width: 100%;
+	display: block;
+
+	@media (min-width: 768px) {
+		width: 80%;
+		margin: auto;
+	}
+ }

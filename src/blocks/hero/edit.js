@@ -15,6 +15,7 @@ export default function Edit({ attributes, setAttributes }) {
 		ane_overlay_enabled,
 		ane_color,
 		ane_overlay_opacity,
+		ane_gradient_bottom,
 		ane_size,
 		ane_title_size,
 		ane_text_color,
@@ -106,6 +107,13 @@ export default function Edit({ attributes, setAttributes }) {
 							/>
 						</>
 					)}
+
+					<ToggleControl
+						label={__('Enable Bottom Gradient', 'sarika')}
+						checked={ane_gradient_bottom}
+						onChange={(value) => setAttributes({ ane_gradient_bottom: value })}
+						help={__('Add gradient transition to next section', 'sarika')}
+					/>
 
 					<SelectControl
 						label={__('Minimum Height', 'sarika')}
@@ -231,11 +239,14 @@ export default function Edit({ attributes, setAttributes }) {
 						options={[
 							{ label: __('Primary', 'sarika'), value: 'primary' },
 							{ label: __('Primary Outline', 'sarika'), value: 'primary-outline' },
+							{ label: __('Secondary', 'sarika'), value: 'secondary' },
+							{ label: __('Secondary Outline', 'sarika'), value: 'secondary-outline' },
+							{ label: __('White', 'sarika'), value: 'white' },
+							{ label: __('White Outline', 'sarika'), value: 'white-outline' },
 							{ label: __('Dark', 'sarika'), value: 'dark' },
 							{ label: __('Dark Outline', 'sarika'), value: 'dark-outline' },
-							{ label: __('Secondary', 'sarika'), value: 'secondary' },
-							{ label: __('White', 'sarika'), value: 'white' },
-							{ label: __('White Outline', 'sarika'), value: 'white-outline' }
+							{ label: __('Accent', 'sarika'), value: 'accent' },
+							{ label: __('Accent Outline', 'sarika'), value: 'accent-outline' }
 						]}
 						onChange={(value) => setAttributes({ ane_button_style: value })}
 					/>
@@ -303,11 +314,14 @@ export default function Edit({ attributes, setAttributes }) {
 						options={[
 							{ label: __('Primary', 'sarika'), value: 'primary' },
 							{ label: __('Primary Outline', 'sarika'), value: 'primary-outline' },
+							{ label: __('Secondary', 'sarika'), value: 'secondary' },
+							{ label: __('Secondary Outline', 'sarika'), value: 'secondary-outline' },
+							{ label: __('White', 'sarika'), value: 'white' },
+							{ label: __('White Outline', 'sarika'), value: 'white-outline' },
 							{ label: __('Dark', 'sarika'), value: 'dark' },
 							{ label: __('Dark Outline', 'sarika'), value: 'dark-outline' },
-							{ label: __('Secondary', 'sarika'), value: 'secondary' },
-							{ label: __('White', 'sarika'), value: 'white' },
-							{ label: __('White Outline', 'sarika'), value: 'white-outline' }
+							{ label: __('Accent', 'sarika'), value: 'accent' },
+							{ label: __('Accent Outline', 'sarika'), value: 'accent-outline' }
 						]}
 						onChange={(value) => setAttributes({ ane_button2_style: value })}
 					/>
@@ -328,6 +342,10 @@ export default function Edit({ attributes, setAttributes }) {
 							className={`sarika-hero__overlay sarika-hero__overlay--${ane_color}`}
 							style={{ opacity: ane_overlay_opacity / 100 }}
 						></div>
+					)}
+
+					{ane_gradient_bottom && (
+						<div className={`sarika-hero__gradient-bottom sarika-hero__gradient-bottom--${ane_color}`}></div>
 					)}
 				</div>
 

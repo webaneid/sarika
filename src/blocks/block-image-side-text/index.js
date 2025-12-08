@@ -3,7 +3,7 @@ import './editor.scss';
 import Edit from './edit';
 
 registerBlockType('sarika/block-image-side-text', {
-	title: 'Block Image Side Text',
+	title: 'Sarika - Image Side Text',
 	category: 'sarika-sections',
 	icon: 'align-pull-left',
 	description: '2-column layout with image and text content (description or list).',

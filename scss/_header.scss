@@ -13,6 +13,10 @@
 	border-bottom: 1px solid rgba(var(--sarika-color-dark-rgb), 0.08);
 	font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	transition: all 0.3s ease;
+	margin-bottom: 20px;
+		@media (max-width: 768px) {
+			margin-bottom: 15px;
+		}
 
 	// Header Overlay Mode - Position absolute over first section
 	.has-header-overlay & {

@@ -1670,6 +1670,328 @@ attributes: {
 }
 ```
 
+---
+
+## 🎯 BUTTON STANDARD PATTERN (CRITICAL!)
+
+**This is the OFFICIAL button pattern - use this EXACTLY in all blocks!**
+
+### 1. Button Attributes (index.js)
+
+```javascript
+attributes: {
+  // Button 1 (REQUIRED - 2 attributes)
+  ane_button_link: {
+    type: 'object',
+    default: { title: '', url: '', target: '' }
+  },
+  ane_button_style: {
+    type: 'string',
+    default: 'primary'  // Default style
+  },
+
+  // Button 2 (OPTIONAL - 2 attributes)
+  ane_button2_link: {
+    type: 'object',
+    default: { title: '', url: '', target: '' }
+  },
+  ane_button2_style: {
+    type: 'string',
+    default: 'primary-outline'  // Default style
+  },
+}
+```
+
+**IMPORTANT:**
+- ❌ NEVER use `ane_button_text` and `ane_button_url` (OLD pattern!)
+- ✅ ALWAYS use `ane_button_link` object with `{ title, url, target }`
+- ❌ NEVER use single string for button style
+- ✅ ALWAYS use `ane_button_style` and `ane_button2_style` separately
+
+### 2. Button Controls - Editor (edit.js)
+
+**Import required components:**
+```javascript
+import { URLInput } from '@wordpress/block-editor';
+import {
+  PanelBody,
+  TextControl,
+  SelectControl,
+  ToggleControl
+} from '@wordpress/components';
+```
+
+**Button 1 Controls:**
+```javascript
+<PanelBody title={__('Optional Link (Button 1)', 'sarika')} initialOpen={false}>
+  <TextControl
+    label={__('Link Text', 'sarika')}
+    value={ane_button_link?.title || ''}
+    onChange={(value) => {
+      const newLink = { ...(ane_button_link || {}), title: value };
+      setAttributes({ ane_button_link: newLink });
+    }}
+    placeholder={__('e.g., Get Started', 'sarika')}
+  />
+
+  <div style={{ marginTop: '12px' }}>
+    <label style={{ display: 'block', marginBottom: '4px', fontWeight: 600 }}>
+      {__('Link URL', 'sarika')}
+    </label>
+    <URLInput
+      value={ane_button_link?.url || ''}
+      onChange={(url) => {
+        const newLink = { ...(ane_button_link || {}), url };
+        setAttributes({ ane_button_link: newLink });
+      }}
+    />
+  </div>
+
+  <ToggleControl
+    label={__('Open in new tab', 'sarika')}
+    checked={ane_button_link?.target === '_blank'}
+    onChange={(checked) => {
+      const newLink = { ...(ane_button_link || {}), target: checked ? '_blank' : '' };
+      setAttributes({ ane_button_link: newLink });
+    }}
+  />
+</PanelBody>
+
+<PanelBody title={__('Button 1 Styles', 'sarika')} initialOpen={false}>
+  <SelectControl
+    label={__('Button Style', 'sarika')}
+    value={ane_button_style}
+    options={[
+      { label: __('Primary', 'sarika'), value: 'primary' },
+      { label: __('Primary Outline', 'sarika'), value: 'primary-outline' },
+      { label: __('Secondary', 'sarika'), value: 'secondary' },
+      { label: __('Secondary Outline', 'sarika'), value: 'secondary-outline' },
+      { label: __('White', 'sarika'), value: 'white' },
+      { label: __('White Outline', 'sarika'), value: 'white-outline' },
+      { label: __('Dark', 'sarika'), value: 'dark' },
+      { label: __('Dark Outline', 'sarika'), value: 'dark-outline' },
+      { label: __('Accent', 'sarika'), value: 'accent' },
+      { label: __('Accent Outline', 'sarika'), value: 'accent-outline' },
+    ]}
+    onChange={(value) => setAttributes({ ane_button_style: value })}
+  />
+</PanelBody>
+```
+
+**Button 2 Controls (same pattern):**
+```javascript
+<PanelBody title={__('Optional Link (Button 2)', 'sarika')} initialOpen={false}>
+  {/* Same as Button 1, but use ane_button2_link */}
+</PanelBody>
+
+<PanelBody title={__('Button 2 Styles', 'sarika')} initialOpen={false}>
+  <SelectControl
+    label={__('Button Style', 'sarika')}
+    value={ane_button2_style}
+    options={[
+      { label: __('Primary', 'sarika'), value: 'primary' },
+      { label: __('Primary Outline', 'sarika'), value: 'primary-outline' },
+      { label: __('Secondary', 'sarika'), value: 'secondary' },
+      { label: __('Secondary Outline', 'sarika'), value: 'secondary-outline' },
+      { label: __('White', 'sarika'), value: 'white' },
+      { label: __('White Outline', 'sarika'), value: 'white-outline' },
+      { label: __('Dark', 'sarika'), value: 'dark' },
+      { label: __('Dark Outline', 'sarika'), value: 'dark-outline' },
+      { label: __('Accent', 'sarika'), value: 'accent' },
+      { label: __('Accent Outline', 'sarika'), value: 'accent-outline' },
+    ]}
+    onChange={(value) => setAttributes({ ane_button2_style: value })}
+  />
+</PanelBody>
+```
+
+### 3. Button Preview - Editor (edit.js)
+
+```javascript
+{/* Button Preview in Editor */}
+{(ane_button_link?.title || ane_button2_link?.title) && (
+  <div className="block-name__buttons">
+    {ane_button_link?.title && (
+      <span className={`btn btn--${ane_button_style}`}>
+        {ane_button_link.title}
+      </span>
+    )}
+    {ane_button2_link?.title && (
+      <span className={`btn btn--${ane_button2_style}`}>
+        {ane_button2_link.title}
+      </span>
+    )}
+  </div>
+)}
+```
+
+### 4. Button Rendering - PHP Template
+
+```php
+<?php
+// Extract button 1 data
+$button_link   = $attrs['ane_button_link'] ?? [];
+$button_style  = $attrs['ane_button_style'] ?? 'primary';
+$button_url    = $button_link['url'] ?? '';
+$button_title  = $button_link['title'] ?? '';
+$button_target = $button_link['target'] ?? '';
+
+// Extract button 2 data
+$button2_link   = $attrs['ane_button2_link'] ?? [];
+$button2_style  = $attrs['ane_button2_style'] ?? 'primary-outline';
+$button2_url    = $button2_link['url'] ?? '';
+$button2_title  = $button2_link['title'] ?? '';
+$button2_target = $button2_link['target'] ?? '';
+?>
+
+<?php if ( $button_url || $button2_url ) : ?>
+  <div class="block-name__buttons">
+    <?php if ( $button_url ) : ?>
+      <a href="<?php echo esc_url( $button_url ); ?>"
+         class="btn btn--<?php echo esc_attr( $button_style ); ?>"
+         <?php echo $button_target === '_blank' ? 'target="_blank" rel="noopener noreferrer"' : ''; ?>>
+        <?php echo esc_html( $button_title ?: __( 'Learn More', 'sarika' ) ); ?>
+      </a>
+    <?php endif; ?>
+
+    <?php if ( $button2_url ) : ?>
+      <a href="<?php echo esc_url( $button2_url ); ?>"
+         class="btn btn--<?php echo esc_attr( $button2_style ); ?>"
+         <?php echo $button2_target === '_blank' ? 'target="_blank" rel="noopener noreferrer"' : ''; ?>>
+        <?php echo esc_html( $button2_title ?: __( 'Learn More', 'sarika' ) ); ?>
+      </a>
+    <?php endif; ?>
+  </div>
+<?php endif; ?>
+```
+
+### 5. Available Button Styles (from scss/_button.scss)
+
+**10 Style Options (ALWAYS use these exact values):**
+
+| Value | Description | Usage |
+|-------|-------------|-------|
+| `primary` | Primary filled button | Default, main CTA |
+| `primary-outline` | Primary outline button | Secondary CTA |
+| `secondary` | Secondary filled button | Alternative CTA |
+| `secondary-outline` | Secondary outline button | Tertiary CTA |
+| `white` | White filled button | On dark backgrounds |
+| `white-outline` | White outline button | On dark backgrounds |
+| `dark` | Dark filled button | On light backgrounds |
+| `dark-outline` | Dark outline button | On light backgrounds |
+| `accent` | Accent filled button | Special actions |
+| `accent-outline` | Accent outline button | Special actions |
+
+### 6. Common Button Mistakes - AVOID THESE!
+
+❌ **WRONG - Old Pattern:**
+```javascript
+// DON'T USE SEPARATE TEXT/URL FIELDS!
+ane_button_text: { type: 'string', default: '' },
+ane_button_url: { type: 'string', default: '' },
+
+<TextControl
+  label="Button Text"
+  value={ane_button_text}
+/>
+<TextControl
+  label="Button URL"
+  value={ane_button_url}
+/>
+```
+
+✅ **CORRECT - New Pattern:**
+```javascript
+// USE LINK OBJECT!
+ane_button_link: {
+  type: 'object',
+  default: { title: '', url: '', target: '' }
+},
+
+<URLInput
+  value={ane_button_link?.url || ''}
+  onChange={(url) => {
+    const newLink = { ...(ane_button_link || {}), url };
+    setAttributes({ ane_button_link: newLink });
+  }}
+/>
+```
+
+❌ **WRONG - Limited Style Options:**
+```javascript
+options={[
+  { label: 'Primary', value: 'primary' },
+  { label: 'Secondary', value: 'secondary' },
+  // Missing 8 other styles!
+]}
+```
+
+✅ **CORRECT - All 10 Style Options:**
+```javascript
+options={[
+  { label: __('Primary', 'sarika'), value: 'primary' },
+  { label: __('Primary Outline', 'sarika'), value: 'primary-outline' },
+  { label: __('Secondary', 'sarika'), value: 'secondary' },
+  { label: __('Secondary Outline', 'sarika'), value: 'secondary-outline' },
+  { label: __('White', 'sarika'), value: 'white' },
+  { label: __('White Outline', 'sarika'), value: 'white-outline' },
+  { label: __('Dark', 'sarika'), value: 'dark' },
+  { label: __('Dark Outline', 'sarika'), value: 'dark-outline' },
+  { label: __('Accent', 'sarika'), value: 'accent' },
+  { label: __('Accent Outline', 'sarika'), value: 'accent-outline' },
+]}
+```
+
+❌ **WRONG - TextControl for URL:**
+```javascript
+<TextControl
+  label="Button URL"
+  value={ane_button_link?.url}
+/>
+```
+
+✅ **CORRECT - URLInput with Search:**
+```javascript
+<URLInput
+  value={ane_button_link?.url || ''}
+  onChange={(url) => {
+    const newLink = { ...(ane_button_link || {}), url };
+    setAttributes({ ane_button_link: newLink });
+  }}
+/>
+```
+
+### 7. Button Styling (SCSS)
+
+**Frontend styles already defined in `scss/_button.scss` - DO NOT duplicate!**
+
+Just use the classes in your block:
+```scss
+.block-name__buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    width: 100%;
+
+    .btn {
+      width: 100%;
+    }
+  }
+}
+```
+
+### 8. Complete Copy-Paste Button Implementation
+
+**Reference:** `src/blocks/video-background/edit.js` and `tp/blocks/video-background.php`
+
+These files have the PERFECT button implementation. Copy from there!
+
+---
+
 ### Color Picker Pattern
 
 **ALWAYS use this pattern for color selection:**

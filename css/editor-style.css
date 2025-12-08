@@ -141,7 +141,7 @@
 .btn--secondary {
   background: var(--sarika-color-secondary);
   color: var(--sarika-color-light) !important;
-  border-color: var(--sarika-color-secondary);
+  border-color: var(--sarika-color-secondary) !important;
 }
 .btn--secondary:hover {
   background: rgba(var(--sarika-color-secondary-rgb), 0.9);
@@ -151,8 +151,8 @@
 
 .btn--secondary-outline {
   background: transparent;
-  color: var(--sarika-color-secondary);
-  border-color: var(--sarika-color-secondary);
+  color: var(--sarika-color-secondary) !important;
+  border-color: var(--sarika-color-secondary) !important;
 }
 .btn--secondary-outline:hover {
   background: var(--sarika-color-secondary);
@@ -1855,6 +1855,14 @@
   margin-top: 2rem;
 }
 
+/**
+ * Sarika Container - Editor Styles
+ *
+ * NOTE: Global utilities loaded from editor-style.scss.
+ * Only block-specific styles here.
+ *
+ * @package sarika
+ */
 /* Google Fonts sudah di-enqueue via PHP */
 /* Editor wrapper */
 .editor-styles-wrapper {
