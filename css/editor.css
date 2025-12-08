@@ -1,119 +1,128 @@
+@charset "UTF-8";
 /**
- * Sarika Container - Editor Styles
- *
- * NOTE: Global utilities loaded from editor-style.scss.
- * Only block-specific styles here.
+ * Icon & Description Block - Editor Styles
  *
  * @package sarika
- *//*# sourceMappingURL=editor.css.map */ntent: center;
+ */
+/**
+ * NOTE: Global utilities (text colors, backgrounds, typography, spacing)
+ * are now loaded from editor-style.scss to avoid duplication.
+ * This file only contains block-specific styles.
+ */
+.sarika-icon-description {
+  padding: 4rem 0;
+  margin-bottom: 4rem;
 }
-.sarika-video-bg__background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-.sarika-video-bg__overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-}
-.sarika-video-bg__overlay--dark {
-  background: linear-gradient(0deg, rgba(var(--sarika-color-dark-rgb), 0.9) 0%, rgba(var(--sarika-color-dark-rgb), 0.6) 40%, transparent 100%);
-}
-.sarika-video-bg__overlay--body {
-  background: linear-gradient(0deg, rgba(var(--sarika-color-body-rgb), 0.9) 0%, rgba(var(--sarika-color-body-rgb), 0.6) 40%, transparent 100%);
-}
-.sarika-video-bg__overlay--primary {
-  background: linear-gradient(0deg, rgba(var(--sarika-color-primary-rgb), 0.9) 0%, rgba(var(--sarika-color-primary-rgb), 0.6) 40%, transparent 100%);
-}
-.sarika-video-bg__overlay--secondary {
-  background: linear-gradient(0deg, rgba(var(--sarika-color-secondary-rgb), 0.9) 0%, rgba(var(--sarika-color-secondary-rgb), 0.6) 40%, transparent 100%);
-}
-.sarika-video-bg__container {
-  position: relative;
-  z-index: 3;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 4rem 2rem;
-}
-.sarika-video-bg__content {
+.sarika-icon-description__header {
   max-width: 800px;
+  margin: 0 auto 3rem;
 }
-.sarika-video-bg--align-left .sarika-video-bg__content {
+.sarika-icon-description__header.text-left {
+  text-align: left;
   margin-left: 0;
   margin-right: auto;
-  text-align: left;
 }
-.sarika-video-bg--align-center .sarika-video-bg__content {
-  margin-left: auto;
-  margin-right: auto;
+.sarika-icon-description__header.text-center {
   text-align: center;
 }
-.sarika-video-bg--align-right .sarika-video-bg__content {
+.sarika-icon-description__header.text-right {
+  text-align: right;
   margin-left: auto;
   margin-right: 0;
-  text-align: right;
 }
-.sarika-video-bg__title {
-  margin: 0 0 1.5rem;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  font-family: "Poppins", sans-serif;
-  font-weight: 700;
+.sarika-icon-description__title {
+  margin-bottom: 1rem;
 }
-.sarika-video-bg__title:focus {
-  outline: 2px solid var(--sarika-color-primary);
-  outline-offset: 4px;
+.sarika-icon-description__tagline {
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-top: 0 !important;
 }
-.sarika-video-bg__description {
-  margin: 0 0 2rem;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-  font-family: "Inter", sans-serif;
-  line-height: 1.6;
+.sarika-icon-description__description {
+  margin-bottom: 2rem;
+  max-width: 700px;
 }
-.sarika-video-bg__description:focus {
-  outline: 2px solid var(--sarika-color-primary);
-  outline-offset: 4px;
+.text-center .sarika-icon-description__description {
+  margin-left: auto;
+  margin-right: auto;
 }
-.sarika-video-bg__button-wrapper {
+.sarika-icon-description__buttons {
   display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
-.sarika-video-bg--align-left .sarika-video-bg__button-wrapper {
+.text-left .sarika-icon-description__buttons {
   justify-content: flex-start;
 }
-.sarika-video-bg--align-center .sarika-video-bg__button-wrapper {
+.text-center .sarika-icon-description__buttons {
   justify-content: center;
 }
-.sarika-video-bg--align-right .sarika-video-bg__button-wrapper {
+.text-right .sarika-icon-description__buttons {
   justify-content: flex-end;
 }
-.sarika-video-bg__button {
-  display: inline-flex;
+.sarika-icon-description__grid {
+  display: grid;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+.sarika-icon-description__grid.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.sarika-icon-description__grid.grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.sarika-icon-description__grid.grid-cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+@media (max-width: 1024px) {
+  .sarika-icon-description__grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.5rem;
+  }
+}
+@media (max-width: 768px) {
+  .sarika-icon-description__grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem;
+  }
+}
+.sarika-icon-description__item {
+  padding: 2.5rem 2rem;
+  background: rgba(var(--sarika-color-white-rgb), 0.7);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(var(--sarika-color-dark-rgb), 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+.sarika-icon-description__item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 32px rgba(var(--sarika-color-dark-rgb), 0.12);
+}
+.sarika-icon-description__item:has(.sarika-icon-description__item-link) {
+  cursor: pointer;
+}
+@media (max-width: 768px) {
+  .sarika-icon-description__item {
+    padding: 2rem 1.5rem;
+  }
+}
+.sarika-icon-description__icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 2rem;
+  display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem 2rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-decoration: none;
-  background: #f4c542;
-  color: #000;
-  border: 2px solid #f4c542;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-family: "Poppins", sans-serif;
-  transition: all 0.3s ease;
-  cursor: default;
+  background: var(--sarika-color-primary);
+  border-radius: 50%;
+  color: var(--sarika-color-white);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.sarika-video-bg__button:hover {
-  background: #e5b630;
-  border-color: #e5b630;
-}/*# sourceMappingURL=editor.css.map */(1.1);
+.sarika-icon-description__item:hover .sarika-icon-description__icon {
+  background: var(--sarika-color-secondary);
+  transform: scale(1.1);
 }
 .sarika-icon-description__icon .dashicons {
   width: 48px;

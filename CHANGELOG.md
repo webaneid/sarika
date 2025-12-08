@@ -17,11 +17,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Team Members Custom Post Type
 
 ---
+## [0.1.6] - 2025-12-09
+
+### Added
+#### Fixing mobile menu
+- **Mobile Menu** - Perbaikan mobile menu overlay position
+- tambah background dan border radius
 
 ## [0.1.5] - 2025-12-09
 
 ### Added
-
 #### Client Logos Block - Grid Layout Option
 - **Layout Toggle** - Tambah opsi grid layout selain sliding carousel
   - New attribute: `ane_layout` (string, default: 'sliding')
