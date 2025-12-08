@@ -1,0 +1,221 @@
+@charset "UTF-8";
+/**
+ * Icon & Description Block - Editor Styles
+ *
+ * @package sarika
+ */
+/**
+ * NOTE: Global utilities (text colors, backgrounds, typography, spacing)
+ * are now loaded from editor-style.scss to avoid duplication.
+ * This file only contains block-specific styles.
+ */
+.sarika-icon-description {
+  padding: 4rem 0;
+  margin-bottom: 4rem;
+}
+.sarika-icon-description__header {
+  max-width: 800px;
+  margin: 0 auto 3rem;
+}
+.sarika-icon-description__header.text-left {
+  text-align: left;
+  margin-left: 0;
+  margin-right: auto;
+}
+.sarika-icon-description__header.text-center {
+  text-align: center;
+}
+.sarika-icon-description__header.text-right {
+  text-align: right;
+  margin-left: auto;
+  margin-right: 0;
+}
+.sarika-icon-description__title {
+  margin-bottom: 1rem;
+}
+.sarika-icon-description__tagline {
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-top: 0 !important;
+}
+.sarika-icon-description__description {
+  margin-bottom: 2rem;
+  max-width: 700px;
+}
+.text-center .sarika-icon-description__description {
+  margin-left: auto;
+  margin-right: auto;
+}
+.sarika-icon-description__buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.text-left .sarika-icon-description__buttons {
+  justify-content: flex-start;
+}
+.text-center .sarika-icon-description__buttons {
+  justify-content: center;
+}
+.text-right .sarika-icon-description__buttons {
+  justify-content: flex-end;
+}
+.sarika-icon-description__grid {
+  display: grid;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+.sarika-icon-description__grid.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.sarika-icon-description__grid.grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.sarika-icon-description__grid.grid-cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+@media (max-width: 1024px) {
+  .sarika-icon-description__grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.5rem;
+  }
+}
+@media (max-width: 768px) {
+  .sarika-icon-description__grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem;
+  }
+}
+.sarika-icon-description__item {
+  padding: 2.5rem 2rem;
+  background: rgba(var(--sarika-color-white-rgb), 0.7);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(var(--sarika-color-dark-rgb), 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+.sarika-icon-description__item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 32px rgba(var(--sarika-color-dark-rgb), 0.12);
+}
+.sarika-icon-description__item:has(.sarika-icon-description__item-link) {
+  cursor: pointer;
+}
+@media (max-width: 768px) {
+  .sarika-icon-description__item {
+    padding: 2rem 1.5rem;
+  }
+}
+.sarika-icon-description__icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--sarika-color-primary);
+  border-radius: 50%;
+  color: var(--sarika-color-white);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.sarika-icon-description__item:hover .sarika-icon-description__icon {
+  background: var(--sarika-color-secondary);
+  transform: scale(1.1);
+}
+.sarika-icon-description__icon .dashicons {
+  width: 48px;
+  height: 48px;
+  font-size: 48px;
+}
+.sarika-icon-description__icon img {
+  width: 48px;
+  height: 48px;
+  -o-object-fit: contain;
+     object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+.sarika-icon-description__item-title {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--sarika-color-dark);
+  transition: color 0.3s ease;
+}
+.sarika-icon-description__item:hover .sarika-icon-description__item-title {
+  color: var(--sarika-color-primary);
+}
+.sarika-icon-description__item-description {
+  margin-bottom: 1.25rem;
+  color: var(--sarika-color-body);
+  line-height: 1.7;
+  font-size: 0.9375rem;
+}
+.sarika-icon-description__item-link {
+  display: inline-block;
+  color: var(--sarika-color-primary);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+.sarika-icon-description__item-link:hover {
+  color: var(--sarika-color-secondary);
+}
+.sarika-icon-description__item-link::after {
+  content: " →";
+  display: inline-block;
+  margin-left: 4px;
+  transition: transform 0.3s ease;
+}
+.sarika-icon-description__item-link:hover::after {
+  transform: translateX(4px);
+}
+.sarika-icon-description__icon--circle {
+  border-radius: 50%;
+}
+.sarika-icon-description__icon--rounded {
+  border-radius: 12px;
+}
+.sarika-icon-description__icon--square {
+  border-radius: 0;
+}
+.sarika-icon-description__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.sarika-icon-description__list li {
+  position: relative;
+  padding-left: 1.75rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+  color: var(--sarika-color-body);
+}
+.sarika-icon-description__list li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--sarika-color-primary);
+  font-weight: 700;
+  font-size: 1.1em;
+}
+.sarika-icon-description__list li:last-child {
+  margin-bottom: 0;
+}
+.sarika-icon-description--align-left .sarika-icon-description__item {
+  text-align: left;
+}
+.sarika-icon-description--align-left .sarika-icon-description__icon {
+  margin-left: 0;
+  margin-right: auto;
+}
+.sarika-icon-description--align-center .sarika-icon-description__item {
+  text-align: center;
+}
+.sarika-icon-description--align-center .sarika-icon-description__icon {
+  margin-left: auto;
+  margin-right: auto;
+}/*# sourceMappingURL=editor.css.map */

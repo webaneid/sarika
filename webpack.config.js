@@ -20,5 +20,6 @@ module.exports = {
 		'video-background/index': path.resolve( process.cwd(), 'src/blocks/video-background', 'index.js' ),
 		'gallery/index': path.resolve( process.cwd(), 'src/blocks/gallery', 'index.js' ),
 		'funfact/index': path.resolve( process.cwd(), 'src/blocks/funfact', 'index.js' ),
+		'block-post/index': path.resolve( process.cwd(), 'src/blocks/block-post', 'index.js' ),
 	},
 };

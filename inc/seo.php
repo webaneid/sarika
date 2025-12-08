@@ -392,3 +392,305 @@ function sarika_yoast_og_image_size( $image_url ) {
 }
 add_filter( 'wpseo_opengraph_image', 'sarika_yoast_og_image_size' );
 add_filter( 'wpseo_twitter_image', 'sarika_yoast_og_image_size' );
+
+/**
+ * Add Organization Schema for Testimonial Archive.
+ *
+ * Testimonial archive is company-focused, so use Organization schema
+ * with aggregateRating based on testimonials.
+ */
+function sarika_testimonial_archive_schema() : void {
+	if ( ! is_post_type_archive( 'ane-testimoni' ) ) {
+		return;
+	}
+
+	// Query testimonials to calculate aggregate rating.
+	$args = array(
+		'post_type'      => 'ane-testimoni',
+		'posts_per_page' => -1,
+		'post_status'    => 'publish',
+	);
+
+	$testimonials = get_posts( $args );
+
+	if ( empty( $testimonials ) ) {
+		return;
+	}
+
+	$total_rating = 0;
+	$count        = 0;
+
+	foreach ( $testimonials as $testimonial ) {
+		$rating = get_field( 'ane_rating', $testimonial->ID );
+		if ( $rating ) {
+			$total_rating += (int) $rating;
+			$count++;
+		}
+	}
+
+	if ( $count === 0 ) {
+		return;
+	}
+
+	$average_rating = round( $total_rating / $count, 1 );
+
+	// Get company info.
+	$company_name = get_option( 'ane_company_name', get_bloginfo( 'name' ) );
+	$site_url     = home_url( '/' );
+	$logo_url     = get_site_icon_url( 512 );
+
+	$schema = array(
+		'@context'        => 'https://schema.org',
+		'@type'           => 'Organization',
+		'name'            => $company_name,
+		'url'             => $site_url,
+		'logo'            => $logo_url,
+		'aggregateRating' => array(
+			'@type'       => 'AggregateRating',
+			'ratingValue' => $average_rating,
+			'reviewCount' => $count,
+			'bestRating'  => 5,
+			'worstRating' => 1,
+		),
+	);
+
+	echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT ) . '</script>' . "\n";
+}
+add_action( 'wp_head', 'sarika_testimonial_archive_schema' );
+
+/**
+ * Add Review Schema for Single Testimonial.
+ *
+ * Each testimonial is a review, so add Review schema.
+ */
+function sarika_testimonial_single_schema() : void {
+	if ( ! is_singular( 'ane-testimoni' ) ) {
+		return;
+	}
+
+	$post_id = get_the_ID();
+
+	// Get ACF fields.
+	$rating  = get_field( 'ane_rating', $post_id );
+	$company = get_field( 'ane_company', $post_id );
+
+	if ( ! $rating ) {
+		$rating = 5; // Default.
+	}
+
+	if ( ! $company ) {
+		$company = get_bloginfo( 'name' );
+	}
+
+	$schema = array(
+		'@context'      => 'https://schema.org',
+		'@type'         => 'Review',
+		'itemReviewed'  => array(
+			'@type' => 'Organization',
+			'name'  => $company,
+			'url'   => home_url( '/' ),
+		),
+		'reviewRating'  => array(
+			'@type'       => 'Rating',
+			'ratingValue' => $rating,
+			'bestRating'  => 5,
+			'worstRating' => 1,
+		),
+		'author'        => array(
+			'@type' => 'Person',
+			'name'  => get_the_title( $post_id ),
+		),
+		'reviewBody'    => get_the_excerpt( $post_id ),
+		'datePublished' => get_the_date( 'c', $post_id ),
+	);
+
+	echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT ) . '</script>' . "\n";
+}
+add_action( 'wp_head', 'sarika_testimonial_single_schema' );
+
+/**
+ * Customize meta title for testimonial archive.
+ *
+ * @param string $title Original title.
+ * @return string Modified title.
+ */
+function sarika_testimonial_archive_title( string $title ) : string {
+	if ( is_post_type_archive( 'ane-testimoni' ) ) {
+		$company_name = get_option( 'ane_company_name', get_bloginfo( 'name' ) );
+		return sprintf( __( 'Client Testimonials - %s', 'sarika' ), $company_name );
+	}
+	return $title;
+}
+add_filter( 'wpseo_title', 'sarika_testimonial_archive_title' );
+add_filter( 'wp_title', 'sarika_testimonial_archive_title' );
+
+/**
+ * Customize meta description for testimonial archive.
+ *
+ * @param string $description Original description.
+ * @return string Modified description.
+ */
+function sarika_testimonial_archive_description( string $description ) : string {
+	if ( is_post_type_archive( 'ane-testimoni' ) ) {
+		$company_name = get_option( 'ane_company_name', get_bloginfo( 'name' ) );
+
+		// Count testimonials.
+		$count = wp_count_posts( 'ane-testimoni' )->publish;
+
+		return sprintf(
+			/* translators: 1: number of testimonials, 2: company name */
+			__( 'Read %1$d authentic client testimonials and reviews about %2$s. See why our customers trust us and choose our services.', 'sarika' ),
+			$count,
+			$company_name
+		);
+	}
+	return $description;
+}
+add_filter( 'wpseo_metadesc', 'sarika_testimonial_archive_description' );
+
+/**
+ * Add Open Graph tags for testimonial archive.
+ */
+function sarika_testimonial_archive_og_tags() : void {
+	if ( ! is_post_type_archive( 'ane-testimoni' ) ) {
+		return;
+	}
+
+	$company_name = get_option( 'ane_company_name', get_bloginfo( 'name' ) );
+	$archive_url  = get_post_type_archive_link( 'ane-testimoni' );
+	$logo_url     = get_site_icon_url( 1200 );
+	$count        = wp_count_posts( 'ane-testimoni' )->publish;
+
+	$description = sprintf(
+		/* translators: 1: number of testimonials, 2: company name */
+		__( 'Read %1$d authentic client testimonials and reviews about %2$s.', 'sarika' ),
+		$count,
+		$company_name
+	);
+
+	echo '<meta property="og:type" content="website" />' . "\n";
+	echo '<meta property="og:title" content="' . esc_attr( sprintf( __( 'Client Testimonials - %s', 'sarika' ), $company_name ) ) . '" />' . "\n";
+	echo '<meta property="og:description" content="' . esc_attr( $description ) . '" />' . "\n";
+	echo '<meta property="og:url" content="' . esc_url( $archive_url ) . '" />' . "\n";
+
+	if ( $logo_url ) {
+		echo '<meta property="og:image" content="' . esc_url( $logo_url ) . '" />' . "\n";
+		echo '<meta property="og:image:width" content="1200" />' . "\n";
+		echo '<meta property="og:image:height" content="1200" />' . "\n";
+	}
+
+	echo '<meta name="twitter:card" content="summary" />' . "\n";
+	echo '<meta name="twitter:title" content="' . esc_attr( sprintf( __( 'Client Testimonials - %s', 'sarika' ), $company_name ) ) . '" />' . "\n";
+	echo '<meta name="twitter:description" content="' . esc_attr( $description ) . '" />' . "\n";
+
+	if ( $logo_url ) {
+		echo '<meta name="twitter:image" content="' . esc_url( $logo_url ) . '" />' . "\n";
+	}
+}
+add_action( 'wp_head', 'sarika_testimonial_archive_og_tags' );
+
+/**
+ * Add dynamic schema for Page Custom template based on Page Type selection.
+ *
+ * User can select page type in Page Custom Settings sidebar.
+ */
+function sarika_page_custom_schema() : void {
+	if ( ! is_page_template( 'page-custom.php' ) ) {
+		return;
+	}
+
+	$page_type = get_field( 'ane_page_type' );
+
+	if ( ! $page_type ) {
+		$page_type = 'webpage'; // Default.
+	}
+
+	$post_id = get_the_ID();
+
+	// Base schema data.
+	$schema = array(
+		'@context'    => 'https://schema.org',
+		'name'        => get_the_title( $post_id ),
+		'description' => get_the_excerpt( $post_id ),
+		'url'         => get_permalink( $post_id ),
+	);
+
+	// Add featured image if exists.
+	$image_url = get_the_post_thumbnail_url( $post_id, 'large' );
+	if ( $image_url ) {
+		$schema['image'] = $image_url;
+	}
+
+	// Add author organization.
+	$company_name = get_option( 'ane_company_name', get_bloginfo( 'name' ) );
+	$schema['author'] = array(
+		'@type' => 'Organization',
+		'name'  => $company_name,
+		'url'   => home_url( '/' ),
+	);
+
+	// Set @type based on page type selection.
+	switch ( $page_type ) {
+		case 'about':
+			$schema['@type'] = 'AboutPage';
+			$schema['mainEntity'] = array(
+				'@type' => 'Organization',
+				'name'  => $company_name,
+				'url'   => home_url( '/' ),
+			);
+			break;
+
+		case 'contact':
+			$schema['@type'] = 'ContactPage';
+			// Add organization contact info if available.
+			$schema['mainEntity'] = array(
+				'@type' => 'Organization',
+				'name'  => $company_name,
+				'url'   => home_url( '/' ),
+			);
+			break;
+
+		case 'service':
+			$schema['@type'] = 'Service';
+			$schema['provider'] = array(
+				'@type' => 'Organization',
+				'name'  => $company_name,
+				'url'   => home_url( '/' ),
+			);
+			$schema['serviceType'] = get_the_title( $post_id );
+			break;
+
+		case 'product':
+			$schema['@type'] = 'Product';
+			$schema['name'] = get_the_title( $post_id );
+			$schema['brand'] = array(
+				'@type' => 'Organization',
+				'name'  => $company_name,
+			);
+			break;
+
+		case 'faq':
+			$schema['@type'] = 'FAQPage';
+			// Note: Individual FAQ items should be added via FAQ block schema.
+			break;
+
+		case 'team':
+		case 'portfolio':
+		case 'testimonial':
+			$schema['@type'] = 'CollectionPage';
+			$schema['about'] = array(
+				'@type' => 'Organization',
+				'name'  => $company_name,
+			);
+			break;
+
+		case 'landing':
+		case 'webpage':
+		default:
+			$schema['@type'] = 'WebPage';
+			break;
+	}
+
+	echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT ) . '</script>' . "\n";
+}
+add_action( 'wp_head', 'sarika_page_custom_schema' );

@@ -101,6 +101,19 @@ function sarika_register_client_logos_block() : void {
 add_action( 'init', 'sarika_register_client_logos_block' );
 
 /**
+ * Register server-side rendering for Block Post.
+ */
+function sarika_register_block_post() : void {
+	register_block_type(
+		'sarika/block-post',
+		array(
+			'render_callback' => 'sarika_render_block_post',
+		)
+	);
+}
+add_action( 'init', 'sarika_register_block_post' );
+
+/**
  * Register server-side rendering for FAQ block.
  */
 function sarika_register_faq_block() : void {
@@ -303,6 +316,25 @@ function sarika_render_client_logos_block( array $attributes ) : string {
 	require SARIKA_PATH . '/tp/blocks/client-logos.php';
 
 	// Return buffered content.
+	return ob_get_clean();
+}
+
+/**
+ * Render Block Post - Universal post display block.
+ *
+ * @param array $attributes Block attributes.
+ * @return string Block HTML.
+ */
+function sarika_render_block_post( array $attributes ) : string {
+	ob_start();
+
+	$block = array(
+		'attrs' => $attributes,
+		'id'    => uniqid(),
+	);
+
+	require SARIKA_PATH . '/tp/blocks/block-post.php';
+
 	return ob_get_clean();
 }
 
@@ -546,6 +578,21 @@ function sarika_enqueue_block_editor_assets() : void {
 		wp_enqueue_script(
 			'sarika-funfact-editor',
 			SARIKA_URI . '/build/funfact/index.js',
+			$asset['dependencies'],
+			$asset['version'],
+			true
+		);
+	}
+
+	// Block Post.
+	$block_post_asset_file = SARIKA_PATH . '/build/block-post/index.asset.php';
+
+	if ( file_exists( $block_post_asset_file ) ) {
+		$asset = require $block_post_asset_file;
+
+		wp_enqueue_script(
+			'sarika-block-post-editor',
+			SARIKA_URI . '/build/block-post/index.js',
 			$asset['dependencies'],
 			$asset['version'],
 			true

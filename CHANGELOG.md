@@ -14,9 +14,53 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Multi-language support enhancement
 - Lottie animation playback component
 - Portfolio Custom Post Type
-- Services Custom Post Type
 - Team Members Custom Post Type
-- Testimonials Custom Post Type
+
+---
+
+## [0.1.3] - 2025-12-08
+
+### Added
+
+#### New Gutenberg Block
+- **Block Post** - Universal post display block untuk semua post types
+  - Mendukung post types: `post`, `ane-service`, `ane-testimoni`, dan custom post types lainnya
+  - Layout options: Grid atau Slider (carousel dengan auto-slide 4 detik)
+  - Auto-load template berdasarkan post type:
+    - `ane-service` → `tp/content-service.php`
+    - `ane-testimoni` → `tp/content-ane-testimoni.php`
+    - `post` → `tp/content-post.php` (blog dengan overlay style)
+    - Custom post types → `tp/content-{post_type}.php`
+  - Query options: posts per page, order by, order (ASC/DESC)
+  - Header content: Title, Tagline, Description dengan color customization
+  - Optional button/link: Link text, URL, target (_blank), button styles (4 variants)
+  - Section & container options: Background colors, padding, margin, border radius
+  - Alignment options: left, center, right
+  - Slider menggunakan existing carousel system (`data-category-carousel`)
+  - 2-wrapper pattern untuk overflow control (container + track)
+  - Responsive: 4 columns desktop, 2 columns tablet, 1 column mobile
+
+#### New Template Parts
+- **tp/content-post.php** - Blog post template dengan overlay style
+  - Background image dengan gradient overlay (bottom to top)
+  - Responsive image sizes: `sarika-news-lg` (desktop), `sarika-news-md` (mobile)
+  - Displays: post title, category, post time
+  - White text dengan text-shadow untuk readability
+  - Min-height: 400px desktop, 320px mobile
+  - Border-radius: 12px (khusus dalam slider context)
+
+### Technical
+
+#### SCSS Architecture
+- Added complete `.post-overlay` styles dalam Block Post context (`scss/_blocks.scss` lines 2086-2183)
+  - Full styling: gradient, content positioning, typography, meta, responsive breakpoints
+  - Context-specific: Hanya apply dalam `.sarika-block-post__slider-track`
+  - Tidak mengganggu default `.post-overlay` styles di `_post.scss`
+
+#### Block Development
+- Webpack entry: `block-post/index` added to `webpack.config.js`
+- Editor styles: `@import '../src/blocks/block-post/editor.scss'` in `editor-style.scss`
+- PHP render template: `tp/blocks/block-post.php` dengan WP_Query integration
 
 ---
 

@@ -258,16 +258,6 @@ if ( $description_color ) {
 									<?php echo esc_html( $item_description ); ?>
 								</p>
 							<?php endif; ?>
-
-							<?php if ( $item_link_url ) : ?>
-								<a
-									href="<?php echo esc_url( $item_link_url ); ?>"
-									class="sarika-icon-description__item-link"
-									<?php echo $item_link_target === '_blank' ? 'target="_blank" rel="noopener noreferrer"' : ''; ?>
-								>
-									<?php echo esc_html( $item_link_text ?: __( 'Learn More', 'sarika' ) ); ?>
-								</a>
-							<?php endif; ?>
 						<?php else : ?>
 							<?php if ( ! empty( $item_list_items ) && is_array( $item_list_items ) ) : ?>
 								<ul class="sarika-icon-description__list">
@@ -278,6 +268,19 @@ if ( $description_color ) {
 									<?php endforeach; ?>
 								</ul>
 							<?php endif; ?>
+						<?php endif; ?>
+
+						<?php if ( $item_link_url ) : ?>
+							<a
+								href="<?php echo esc_url( $item_link_url ); ?>"
+								class="sarika-icon-description__item-link"
+								<?php echo $item_link_target === '_blank' ? 'target="_blank" rel="noopener noreferrer"' : ''; ?>
+							>
+								<?php echo esc_html( $item_link_text ?: __( 'Learn More', 'sarika' ) ); ?>
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-left: 4px;">
+									<polyline points="9 18 15 12 9 6"></polyline>
+								</svg>
+							</a>
 						<?php endif; ?>
 					</div>
 

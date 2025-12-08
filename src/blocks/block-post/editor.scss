@@ -1,0 +1,22 @@
+/**
+ * Block Post - Editor Styles
+ *
+ * NOTE: Global utilities loaded from editor-style.scss.
+ * Only block-specific styles here.
+ *
+ * @package sarika
+ */
+
+.sarika-block-post {
+	&__preview {
+		margin: 2rem 0;
+		padding: 2rem;
+		background: #f5f5f5;
+		border-radius: 8px;
+		text-align: center;
+	}
+
+	&__button {
+		margin-top: 2rem;
+	}
+}

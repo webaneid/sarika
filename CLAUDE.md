@@ -122,46 +122,64 @@ sarika/
 - `inc/seo.php` - Schema adjustments
 - `inc/admin.php` - Admin panel labels
 
-### Phase 3: Company Profile Sections (Planned - v0.3.0+)
-**Status:** 📋 Planning
+### Phase 3: Company Profile Sections (In Progress - v0.1.2+)
+**Status:** ✅ Partially Complete
 
-**To Be Decided:**
-- Portfolio implementation (CPT vs ACF vs custom?)
-- Services section (ACF Flexible vs Gutenberg blocks?)
-- Team members (CPT vs ACF?)
-- Testimonials (CPT vs ACF?)
+**Implemented (Custom Post Types Approach):**
+- ✅ **Services CPT** - `inc/cpt-service.php`
+  - Post type slug: `ane-service`
+  - Taxonomy: `service-category` (hierarchical)
+  - Archive template: `archive-ane-service.php`
+  - Category template: `taxonomy-service-category.php`
+  - Single template: `tp/content-service.php`
+  - Supports: title, editor, thumbnail, excerpt
+  - REST API enabled for Gutenberg
 
-**Guidelines for Development:**
+- ✅ **Testimonials CPT** - `inc/cpt-testimoni.php`
+  - Post type slug: `ane-testimoni`
+  - Archive template: `archive-ane-testimoni.php`
+  - Single template: `tp/content-ane-testimoni.php`
+  - Supports: title, editor, thumbnail
+  - REST API enabled
 
-**Option A: Custom Post Types (CPT)**
+**Still To Decide:**
+- Portfolio implementation (CPT recommended following service pattern)
+- Team members (CPT vs ACF flexible?)
+
+**Implementation Pattern (PROVEN):**
+
+**Custom Post Types (CHOSEN APPROACH)**
 ```php
-// Example: Portfolio CPT
-register_post_type('sarika_portfolio', [
-    'label' => 'Portfolio',
+// Pattern: See inc/cpt-service.php and inc/cpt-testimoni.php
+register_post_type('ane-service', [
+    'label' => 'Service',
     'public' => true,
     'has_archive' => true,
-    'supports' => ['title', 'editor', 'thumbnail'],
+    'supports' => ['title', 'editor', 'thumbnail', 'excerpt'],
+    'rewrite' => ['slug' => 'service', 'with_front' => false],
+    'show_in_rest' => true, // Gutenberg support
 ]);
 ```
-**Pros:** Native WordPress, archive pages, SEO-friendly URLs
-**Cons:** More files, more complexity
+**Why CPT was chosen:**
+- ✅ Native WordPress, SEO-friendly URLs
+- ✅ Archive pages automatic (service/*, testimonial/*)
+- ✅ Taxonomies support (service-category)
+- ✅ REST API integration for Gutenberg blocks
+- ✅ Flexible template system (archive, taxonomy, single)
+
+**Alternative Options (Not Chosen):**
 
 **Option B: ACF Flexible Content**
-```php
-// Already have: inc/acf-layouts.php
-// Add new layouts: portfolio_section, services_grid, team_grid, testimonials_slider
-```
-**Pros:** Reuse existing system, flexible, page builder style
-**Cons:** Tied to ACF Pro, not indexable separately
+- Available via: `inc/acf-layouts.php`
+- Good for: One-off page sections
+- Not chosen for: Services/Testimonials (need archives)
 
-**Option C: Gutenberg Blocks**
-```php
-// Create custom blocks: sarika/portfolio, sarika/services, etc.
-```
-**Pros:** Modern, native WordPress, reusable
-**Cons:** Learning curve, requires block development
+**Option C: Gutenberg Blocks Only**
+- Available via: `src/blocks/*`
+- Good for: Content blocks (Hero, FAQ, Gallery)
+- Not chosen for: Services/Testimonials (need data management)
 
-**RECOMMENDATION:** Start dengan ACF Flexible (extend `inc/acf-layouts.php`), evaluate CPT later if needed.
+**RECOMMENDATION:** Use CPT for data-driven content (services, testimonials, portfolio, team), use Gutenberg blocks for layout sections (hero, FAQ, funfact).
 
 ### Phase 4: Homepage Template (Planned - v0.4.0)
 **Status:** 📋 Planning
@@ -227,23 +245,84 @@ register_post_type('sarika_portfolio', [
 | **Primary Use** | News/Magazine | Company Profile + Blog | ✅ Defined |
 | **Schema Type** | NewsArticle | Organization/LocalBusiness | ⏳ Pending |
 | **Google News** | Yes (sitemap, optimization) | No | ⏳ To remove |
-| **Custom Blocks** | No | Hero + Icon Description | ✅ Complete |
+| **Custom Blocks** | No | 11 blocks (Hero, Video BG, Icon, FAQ, Gallery, Funfact, etc.) | ✅ Complete |
 | **SVG Upload** | No | Yes (sanitized) | ✅ Complete |
 | **JSON/Lottie Upload** | No | Yes (validated) | ✅ Complete |
+| **Services CPT** | No | Yes (with categories) | ✅ Complete |
+| **Testimonials CPT** | No | Yes | ✅ Complete |
 | **Portfolio** | No | Yes | 📋 Planning |
-| **Services** | No | Yes | 📋 Planning |
 | **Team** | No | Yes | 📋 Planning |
-| **Testimonials** | No | Yes | 📋 Planning |
 | **Blog System** | Full featured | Same (inherited) | ✅ Complete |
 | **Admin Custom** | Full featured | Same (inherited) | ✅ Complete |
 | **Translation** | Indonesian ready | Needs regeneration | ⏳ Pending |
+| **Build System** | No npm | Webpack for blocks only | ✅ Complete |
+
+## Common Development Commands
+
+### SCSS Compilation (CRITICAL - Must run after CSS changes!)
+
+```bash
+# Frontend Theme Styles
+npx sass scss/sarika.scss css/sarika.min.css --style=compressed
+
+# Admin Styles
+npx sass scss/admin.scss css/admin.min.css --style=compressed
+
+# Gutenberg Editor Styles
+npx sass scss/editor-style.scss css/editor-style.min.css --style=compressed
+
+# Watch Mode (auto-compile on save) - Recommended during development
+npx sass scss/sarika.scss css/sarika.min.css --style=compressed --watch
+npx sass scss/admin.scss css/admin.min.css --style=compressed --watch
+npx sass scss/editor-style.scss css/editor-style.min.css --style=compressed --watch
+```
+
+### Gutenberg Block Development
+
+```bash
+# Install dependencies (first time only)
+npm install
+
+# Development mode with watch (auto-rebuild blocks on save)
+npm run start
+
+# Production build (minified, optimized)
+npm run build
+
+# Lint JavaScript
+npm run lint:js
+
+# Format code
+npm run format
+```
+
+### Translation Generation
+
+```bash
+# Generate POT template
+wp i18n make-pot . languages/sarika.pot --domain=sarika
+
+# Compile PO to MO files
+wp i18n make-mo languages/
+```
+
+### Testing & Debugging
+
+```bash
+# Check WordPress coding standards (requires PHP CodeSniffer)
+phpcs --standard=WordPress inc/ functions.php
+
+# Auto-fix coding standards
+phpcbf --standard=WordPress inc/ functions.php
+```
 
 ## Development Environment
 
 ### Prerequisites
 - **PHP:** 7.4+ (specified in style.css)
 - **WordPress:** 6.0+ (tested up to 6.4)
-- **Node.js:** For SCSS compilation via `npx sass`
+- **Node.js:** 16+ (for Gutenberg block development)
+- **npx:** Bundled with Node.js (for SCSS compilation)
 - **ACF Pro:** Required for ACF Flexible Content layouts and color customization
 - **Local Server:** MAMP, XAMPP, Local by Flywheel, or similar
 
@@ -278,12 +357,28 @@ npx sass scss/editor-style.scss css/editor-style.min.css --style=compressed
 5. Check browser console for errors
 6. Test with ACF Pro activated
 
-### No Build System
-**Note:** This theme does NOT use npm/webpack/gulp. It uses:
-- Tailwind CSS Play CDN (loaded via CDN in header)
+### Build System
+
+**SCSS Compilation (No npm required):**
 - Direct SCSS compilation with `npx sass`
-- No package.json or node_modules
-- No JavaScript bundling (vanilla JS loaded directly)
+- No build process for theme CSS
+- Vanilla JS loaded directly for theme scripts
+
+**Gutenberg Blocks (Webpack required):**
+- Theme HAS package.json for block development
+- Uses `@wordpress/scripts` for block bundling
+- Multi-entry webpack config for multiple blocks
+- Build commands:
+  ```bash
+  npm run build    # Production build (minified)
+  npm run start    # Development build with watch mode
+  ```
+
+**Key Files:**
+- `package.json` - Block development dependencies
+- `webpack.config.js` - Multi-entry block compilation
+- `src/blocks/*/index.js` - Block source files (React/JSX)
+- `build/*/index.js` - Compiled block output
 
 ## Coding Standards
 
@@ -326,12 +421,69 @@ npx sass scss/admin.scss css/admin.min.css --style=compressed --watch
 - Admin files: `inc/admin/*.php`
 - JavaScript files: `js/feature-name.js`
 
+### Gutenberg Blocks Implemented
+
+**Location:** `src/blocks/*/` (React/JSX source) → `build/*/` (compiled output)
+
+**All Custom Blocks (11 total):**
+
+1. **Hero Block** (`src/blocks/hero/`)
+   - Fullscreen hero with image background, title, description, CTA button
+   - Supports alignment options
+
+2. **Video Background Block** (`src/blocks/video-background/`)
+   - YouTube video as fullscreen background
+   - Overlay gradient (bottom to top), autoplay, loop, muted
+   - Alignment options (left, center, right)
+   - Overlay color options (dark, body, primary, secondary)
+
+3. **Icon & Description Block** (`src/blocks/icon-description/`)
+   - Services/features showcase with SVG icon upload
+   - Grid layout (1-4 columns), alignment options
+   - Icon size customization
+
+4. **Block Text** (`src/blocks/block-text/`)
+   - Flexible text content block with typography controls
+
+5. **Block Profile** (`src/blocks/block-profile/`)
+   - Team member or testimonial profiles with image (4:5 portrait aspect ratio)
+
+6. **Block Image Side Text** (`src/blocks/block-image-side-text/`)
+   - Content with image left/right, glassmorphism list items
+
+7. **Client Logos Block** (`src/blocks/client-logos/`)
+   - Logo carousel, responsive grid, grayscale with hover effect
+
+8. **FAQ Block** (`src/blocks/faq/`)
+   - Accordion-style FAQ with expand/collapse, repeater items (JSON storage)
+
+9. **Gallery Block** (`src/blocks/gallery/`)
+   - Lightbox photo gallery, responsive grid (2-5 columns)
+   - Keyboard navigation (← → ESC), image counter
+
+10. **Funfact Block** (`src/blocks/funfact/`)
+    - Animated statistics counter, Intersection Observer trigger
+    - Number counter animation, suffix support (%, K, M, +)
+    - Grid layout (2-5 columns), repeater items (JSON storage)
+
+11. **Video Background Block** (duplicate entry removed)
+
+**Block Development Pattern:**
+- All blocks use React/JSX
+- Compiled via `@wordpress/scripts` (webpack)
+- Editor styles in `scss/editor-style.scss` (NOT individual CSS files)
+- Frontend styles in `scss/_blocks.scss`
+- PHP render templates in `tp/blocks/block-{name}.php`
+- Repeater fields stored as JSON strings (see BLOCK-DEVELOPMENT-STANDARD.md)
+
+**CRITICAL:** See [BLOCK-DEVELOPMENT-STANDARD.md](BLOCK-DEVELOPMENT-STANDARD.md) for complete development guidelines.
+
 ### SCSS Architecture
 
 **Main Files (entry points):**
 - `scss/sarika.scss` - Frontend theme styles (imports: tokens, utilities, setup, header, footer, post, landingpage, contact, wordpress)
 - `scss/admin.scss` - Backend admin styles (imports 13 partials)
-- `scss/editor-style.scss` - Gutenberg editor styles (standalone)
+- `scss/editor-style.scss` - Gutenberg editor styles (imports ALL block editor styles)
 
 **Import Order in sarika.scss:**
 ```scss
@@ -584,10 +736,12 @@ wp i18n make-mo languages
 - ✅ Maintain ALL inherited Tempone features
 - ✅ Use `sarika_` prefix for functions
 - ✅ Use `sarika` text domain
-- ✅ Compile SCSS after CSS changes
+- ✅ Compile SCSS after CSS changes (CRITICAL!)
+- ✅ Run `npm run build` after editing block JavaScript
 - ✅ Test on mobile (≤782px) and desktop
 - ✅ Keep monochrome design aesthetic
 - ✅ Preserve admin customization
+- ✅ Follow block development standards (see BLOCK-DEVELOPMENT-STANDARD.md)
 - ✅ Ask before removing inherited features
 
 **DO NOT:**
@@ -598,12 +752,39 @@ wp i18n make-mo languages
 - ❌ Create new files without user approval
 - ❌ Add border-radius (sharp vertical design)
 - ❌ Skip SCSS compilation
+- ❌ Create individual CSS files per block (use editor-style.scss)
+- ❌ Hardcode colors (always use CSS variables)
+
+### Custom Post Types Pattern
+
+When creating new CPTs, follow the established pattern:
+
+**File Location:** `inc/cpt-{name}.php`
+
+**Post Type Slug Convention:** `ane-{name}` (e.g., `ane-service`, `ane-testimoni`)
+
+**Required Steps:**
+1. Create CPT registration file in `inc/cpt-{name}.php`
+2. Include in `functions.php`: `require_once SARIKA_PATH . '/inc/cpt-{name}.php';`
+3. Create archive template: `archive-ane-{name}.php`
+4. Create single template: `tp/content-{name}.php`
+5. Create taxonomy if needed: `register_taxonomy('service-category', ['ane-service'])`
+6. Create taxonomy template if needed: `taxonomy-{tax-name}.php`
+7. Always set `'show_in_rest' => true` for Gutenberg support
+8. Add flush rewrite hook: `add_action('after_switch_theme', 'sarika_flush_{name}_rewrites')`
+
+**Reference Implementations:**
+- Services: `inc/cpt-service.php` (with taxonomy)
+- Testimonials: `inc/cpt-testimoni.php` (simple)
 
 ### Decision Points (Ask User)
 
 When user requests company profile features, ask:
 
-1. **Implementation method:** CPT, ACF Flexible, or Gutenberg blocks?
+1. **Implementation method:**
+   - CPT (recommended for: services, testimonials, portfolio, team)
+   - Gutenberg blocks (recommended for: layout sections, one-off content)
+   - ACF Flexible (recommended for: page builder sections)
 2. **Layout preference:** Grid, masonry, slider, or custom?
 3. **Data source:** Manual input, ACF fields, or custom fields?
 4. **Archive needed:** Separate archive pages or just homepage sections?
@@ -654,32 +835,44 @@ When user requests company profile features, ask:
 
 ## Version History
 
+See [CHANGELOG.md](CHANGELOG.md) for detailed version history.
+
+### v0.1.2 (2025-01-30) - Current
+**Company Profile Features**
+
+- Added Gallery Block with lightbox functionality
+- Added Funfact Block with counter animation
+- Added Services Custom Post Type with categories
+- Added Testimonials Custom Post Type
+- Fixed mobile search button visibility
+- Fixed block image aspect ratios (4:5 portrait)
+- Added glassmorphism effects to Block Image Side Text
+- Updated BLOCK-DEVELOPMENT-STANDARD.md with repeater patterns
+
 ### v0.1.0 (2025-01-29)
 **Initial Release - Fork from Tempone**
 
 - Forked from Tempone v0.1.9
 - All `tempone` strings replaced with `sarika`
-- Theme Name: Sarika
-- Description: Company Profile theme
-- Tags updated: business, corporate, company-profile, portfolio
-- Text domain: `sarika`
-- Function prefix: `sarika_`
-- Constants: `SARIKA_PATH`, `SARIKA_URI`, `SARIKA_VERSION`
-- Clean slate: No git history, no translation files
+- 11 custom Gutenberg blocks
+- SVG and JSON upload support
+- Header overlay mode for glassmorphism effect
+- Custom utility classes (no Tailwind runtime)
 - All Tempone features retained (100% inheritance)
 
-**Known Issues:**
-- Admin panel still shows "Tempone" in some labels
-- Admin page slugs still use `tempone-*` prefix
-- Logo file still `logo-tempone.svg`
-- Screenshot is Tempone screenshot
-
-**Next Release:** v0.1.1 - Admin panel cleanup
+**See CHANGELOG.md for complete details.**
 
 ## Additional Documentation
 
 **Internal Docs:**
 - `CLAUDE.md` (this file) - Main theme documentation
+- `README.md` - User-facing documentation (installation, features, troubleshooting)
+- `CHANGELOG.md` - Complete version history with detailed changes
+- `BLOCK-DEVELOPMENT-STANDARD.md` - Gutenberg block development standards
+  - CSS architecture (editor-style.scss pattern)
+  - File structure for new blocks
+  - Repeater field data persistence patterns
+  - Visual parity guidelines
 - `inc/admin/README.md` - Complete admin customization system guide (1,045 lines)
   - Chart.js integration patterns
   - ACF color system integration
@@ -691,14 +884,15 @@ When user requests company profile features, ask:
 **External Resources:**
 - WordPress Codex: https://codex.wordpress.org/
 - ACF Documentation: https://www.advancedcustomfields.com/resources/
-- Tailwind CSS: https://tailwindcss.com/docs
 - Chart.js v4.4.0: https://www.chartjs.org/docs/latest/
 - SASS/SCSS: https://sass-lang.com/documentation/
+- @wordpress/scripts: https://developer.wordpress.org/block-editor/reference-guides/packages/packages-scripts/
 
 **Webane:**
 - Company: https://webane.com
 - Theme URI: https://webane.com/sarika
-- Support: (to be defined)
+- GitHub: https://github.com/webaneid/sarika
+- Support: support@webane.com
 
 ## Contact
 

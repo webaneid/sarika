@@ -34,6 +34,8 @@ require_once SARIKA_PATH . '/inc/acf-layouts.php';
 require_once SARIKA_PATH . '/inc/acf-fields.php';
 require_once SARIKA_PATH . '/inc/blocks.php';
 require_once SARIKA_PATH . '/inc/wordpress.php';
+require_once SARIKA_PATH . '/inc/cpt-testimoni.php';
+require_once SARIKA_PATH . '/inc/cpt-service.php';
 
 // Admin customization (new modular structure).
 require_once SARIKA_PATH . '/inc/admin.php';

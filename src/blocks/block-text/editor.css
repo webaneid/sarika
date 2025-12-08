@@ -1,0 +1,55 @@
+/**
+ * Block Text - Editor Styles
+ *
+ * @package sarika
+ */
+/**
+ * NOTE: Global utilities (text colors, backgrounds, typography, spacing)
+ * are now loaded from editor-style.scss to avoid duplication.
+ * This file only contains block-specific styles.
+ */
+.sarika-block-text__container {
+  width: 100%;
+  transition: all 0.3s ease;
+}
+.sarika-block-text__content.content-width-medium {
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.sarika-block-text__content.content-width-full {
+  width: 100%;
+}
+.sarika-block-text__title {
+  margin-bottom: 1rem;
+}
+.sarika-block-text__tagline {
+  margin-bottom: 1.5rem;
+  margin-top: 0 !important;
+}
+.sarika-block-text__description {
+  margin-bottom: 2rem;
+}
+.sarika-block-text__buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.text-left .sarika-block-text__buttons {
+  justify-content: flex-start;
+}
+.text-center .sarika-block-text__buttons {
+  justify-content: center;
+}
+.text-right .sarika-block-text__buttons {
+  justify-content: flex-end;
+}
+.sarika-block-text--align-left .sarika-block-text__content {
+  text-align: left;
+}
+.sarika-block-text--align-center .sarika-block-text__content {
+  text-align: center;
+}
+.sarika-block-text--align-right .sarika-block-text__content {
+  text-align: right;
+}/*# sourceMappingURL=editor.css.map */

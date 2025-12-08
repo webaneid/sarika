@@ -83,7 +83,7 @@ function sarika_get_category_section_data() {
 /**
  * Output accessible pagination.
  */
-function sarika_pagination( WP_Query $query = null ) : void {
+function sarika_pagination( ?WP_Query $query = null ) : void {
 	$query = $query ?: $GLOBALS['wp_query'];
 	$links = paginate_links(
 		array(

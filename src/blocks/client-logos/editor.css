@@ -1,0 +1,55 @@
+/**
+ * Client Logos Block - Editor Styles
+ *
+ * @package sarika
+ */
+.sarika-client-logos__container {
+  width: 100%;
+  transition: all 0.3s ease;
+}
+.sarika-client-logos__placeholder {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background: rgba(var(--sarika-color-light-rgb), 0.3);
+  border: 2px dashed rgba(var(--sarika-color-dark-rgb), 0.2);
+}
+.sarika-client-logos__placeholder p {
+  margin-bottom: 1rem;
+  color: var(--sarika-color-body);
+}
+.sarika-client-logos__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  align-items: center;
+}
+@media (min-width: 768px) {
+  .sarika-client-logos__grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+.sarika-client-logos__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: var(--sarika-color-white);
+  border: 1px solid rgba(var(--sarika-color-dark-rgb), 0.1);
+  transition: all 0.3s ease;
+}
+.sarika-client-logos__item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(var(--sarika-color-dark-rgb), 0.1);
+}
+.sarika-client-logos__image {
+  width: 100%;
+  height: auto;
+  max-height: 60px;
+  -o-object-fit: contain;
+     object-fit: contain;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+.sarika-client-logos__image:hover {
+  opacity: 1;
+}/*# sourceMappingURL=editor.css.map */

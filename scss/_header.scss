@@ -35,6 +35,7 @@
 		}
 
 		// Change text color to white for better contrast
+		
 		.header-menu > li > a {
 			color: rgba(255, 255, 255, 0.95);
 			// 3D text shadow effect - layered shadows for depth
@@ -70,6 +71,15 @@
 		// .site-header__logo img {
 		// 	filter: brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 		// }
+		.header-menu > li.current-menu-item,
+		.header-menu > li.current_page_item {
+			background: rgba(var(--sarika-color-white-rgb),0.2);
+			border: 1px solid rgba(255, 255, 255, 0.3);
+		}
+		.header-menu > li.current-menu-item > a,
+		.header-menu > li.current_page_item > a {
+			color: var(--sarika-color-white);
+		}
 	}
 
 	// Main wrapper - Flexbox one line
@@ -142,10 +152,10 @@
 
 			&.current-menu-item,
 			&.current_page_item {
-				background: rgba(255,255,255,0.2);
+				background: rgba(var(--sarika-color-primary-rgb),0.8);
 				border-radius: 40px;
 				padding: 0 10px;
-				border: 1px solid rgba(255, 255, 255, 0.3);
+				border: 1px solid rgba(var(--sarika-color-primary-rgb), 0.3);
 			}
 			&.current-menu-item > a,
 			&.current_page_item > a {

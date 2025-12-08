@@ -41,8 +41,12 @@
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: inherit;
-  user-select: none;
-  appearance: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
   background-image: none;
   outline: none;
 }
@@ -798,7 +802,9 @@
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: inherit;
-  user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 .btn:hover {
   transform: translateY(-2px);
@@ -1010,7 +1016,8 @@
 .sarika-icon-description__item {
   padding: 2.5rem 2rem;
   background: rgba(var(--sarika-color-white-rgb), 0.7);
-  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
   box-shadow: 0 2px 8px rgba(var(--sarika-color-dark-rgb), 0.06);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
@@ -1051,7 +1058,8 @@
 .sarika-icon-description__icon img {
   width: 48px;
   height: 48px;
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
   filter: brightness(0) invert(1);
 }
 .sarika-icon-description__item-title {
@@ -1244,7 +1252,8 @@
 .sarika-block-profile__image {
   width: 100%;
   height: auto;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   display: block;
   border-radius: 10px;
   overflow: hidden;
@@ -1302,7 +1311,8 @@
 .sarika-block-profile__misi-icon img {
   width: 24px;
   height: 24px;
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
   filter: brightness(0) invert(1);
 }
 .sarika-block-profile__misi-icon .dashicons {
@@ -1400,7 +1410,8 @@
 .sarika-image-side-text__image {
   width: 100%;
   height: auto;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   display: block;
   border-radius: 10px;
   aspect-ratio: 4/5;
@@ -1449,7 +1460,8 @@
 .sarika-image-side-text__list-icon img {
   width: 24px;
   height: 24px;
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
   filter: brightness(0) invert(1);
 }
 .sarika-image-side-text__list-icon .dashicons {
@@ -1559,7 +1571,8 @@
   width: 100%;
   height: auto;
   max-height: 60px;
-  object-fit: contain;
+  -o-object-fit: contain;
+     object-fit: contain;
   opacity: 0.7;
   transition: opacity 0.3s ease;
 }
@@ -1610,7 +1623,8 @@
 .sarika-faq__image {
   width: 100%;
   height: auto;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   display: block;
   border-radius: 10px;
   aspect-ratio: 4/5;
@@ -1820,6 +1834,25 @@
 .sarika-video-bg__button:hover {
   background: #e5b630;
   border-color: #e5b630;
+}
+
+/**
+ * Block Post - Editor Styles
+ *
+ * NOTE: Global utilities loaded from editor-style.scss.
+ * Only block-specific styles here.
+ *
+ * @package sarika
+ */
+.sarika-block-post__preview {
+  margin: 2rem 0;
+  padding: 2rem;
+  background: #f5f5f5;
+  border-radius: 8px;
+  text-align: center;
+}
+.sarika-block-post__button {
+  margin-top: 2rem;
 }
 
 /* Google Fonts sudah di-enqueue via PHP */
@@ -2076,6 +2109,10 @@
 }
 
 /* Selection color */
+.editor-styles-wrapper ::-moz-selection {
+  background: var(--sarika-color-accent);
+  color: var(--sarika-color-primary);
+}
 .editor-styles-wrapper ::selection {
   background: var(--sarika-color-accent);
   color: var(--sarika-color-primary);

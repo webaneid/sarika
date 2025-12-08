@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import { useBlockProps, InspectorControls, __experimentalLinkControl as LinkControl, MediaUpload, MediaUploadCheck, PanelColorSettings } from '@wordpress/block-editor';
+import { useBlockProps, InspectorControls, MediaUpload, MediaUploadCheck, PanelColorSettings } from '@wordpress/block-editor';
 import {
 	PanelBody,
 	TextControl,
@@ -37,10 +37,7 @@ export default function Edit({ attributes, setAttributes }) {
 		ane_items
 	} = attributes;
 
-	// State untuk popup link pickers
-	const [isButton1LinkOpen, setIsButton1LinkOpen] = useState(false);
-	const [isButton2LinkOpen, setIsButton2LinkOpen] = useState(false);
-	const [activeItemLinkIndex, setActiveItemLinkIndex] = useState(null);
+	// No state needed - buttons always visible
 
 	// Build block classes with all options
 	let blockClasses = `sarika-icon-description sarika-icon-description--align-${ane_alignment} sarika-icon-description--cols-${ane_columns} sarika-icon-description--layout-${ane_item_layout}`;
@@ -222,53 +219,71 @@ export default function Edit({ attributes, setAttributes }) {
 
 									{/* Buttons */}
 									<PanelBody title={__('Call-to-Action Buttons', 'sarika')} initialOpen={false}>
-										<p style={{ marginBottom: '12px', fontWeight: 600 }}>{__('Button 1', 'sarika')}</p>
-										<Button
-											variant="secondary"
-											onClick={() => setIsButton1LinkOpen(!isButton1LinkOpen)}
-											style={{ width: '100%' }}
-										>
-											{ane_button_link?.url ? __('Edit Link', 'sarika') : __('Add Link', 'sarika')}
-										</Button>
-										{isButton1LinkOpen && (
-											<div style={{ marginTop: '8px' }}>
-												<LinkControl
-													value={ane_button_link}
-													onChange={(value) => setAttributes({ ane_button_link: value })}
-													settings={[
-														{
-															id: 'opensInNewTab',
-															title: __('Open in new tab', 'sarika'),
-														},
-													]}
+										<div style={{ marginBottom: '24px' }}>
+											<strong style={{ display: 'block', marginBottom: '12px' }}>{__('Button 1', 'sarika')}</strong>
+											<TextControl
+												label={__('Button Text', 'sarika')}
+												value={ane_button_link?.title || ''}
+												onChange={(value) => {
+													setAttributes({ ane_button_link: { ...(ane_button_link || {}), title: value } });
+												}}
+												placeholder={__('e.g., Get Started', 'sarika')}
+											/>
+											<TextControl
+												label={__('Button URL', 'sarika')}
+												value={ane_button_link?.url || ''}
+												onChange={(value) => {
+													setAttributes({ ane_button_link: { ...(ane_button_link || {}), url: value } });
+												}}
+												placeholder="https://"
+												type="url"
+											/>
+											<label style={{ display: 'flex', alignItems: 'center', marginTop: '8px', fontSize: '13px' }}>
+												<input
+													type="checkbox"
+													checked={ane_button_link?.target === '_blank'}
+													onChange={(e) => {
+														setAttributes({ ane_button_link: { ...(ane_button_link || {}), target: e.target.checked ? '_blank' : '' } });
+													}}
+													style={{ marginRight: '8px' }}
 												/>
-											</div>
-										)}
+												{__('Open in new tab', 'sarika')}
+											</label>
+										</div>
 
 										<hr style={{ margin: '24px 0', borderColor: '#ddd' }} />
 
-										<p style={{ marginBottom: '12px', fontWeight: 600 }}>{__('Button 2', 'sarika')}</p>
-										<Button
-											variant="secondary"
-											onClick={() => setIsButton2LinkOpen(!isButton2LinkOpen)}
-											style={{ width: '100%' }}
-										>
-											{ane_button2_link?.url ? __('Edit Link', 'sarika') : __('Add Link', 'sarika')}
-										</Button>
-										{isButton2LinkOpen && (
-											<div style={{ marginTop: '8px' }}>
-												<LinkControl
-													value={ane_button2_link}
-													onChange={(value) => setAttributes({ ane_button2_link: value })}
-													settings={[
-														{
-															id: 'opensInNewTab',
-															title: __('Open in new tab', 'sarika'),
-														},
-													]}
+										<div>
+											<strong style={{ display: 'block', marginBottom: '12px' }}>{__('Button 2', 'sarika')}</strong>
+											<TextControl
+												label={__('Button Text', 'sarika')}
+												value={ane_button2_link?.title || ''}
+												onChange={(value) => {
+													setAttributes({ ane_button2_link: { ...(ane_button2_link || {}), title: value } });
+												}}
+												placeholder={__('e.g., Learn More', 'sarika')}
+											/>
+											<TextControl
+												label={__('Button URL', 'sarika')}
+												value={ane_button2_link?.url || ''}
+												onChange={(value) => {
+													setAttributes({ ane_button2_link: { ...(ane_button2_link || {}), url: value } });
+												}}
+												placeholder="https://"
+												type="url"
+											/>
+											<label style={{ display: 'flex', alignItems: 'center', marginTop: '8px', fontSize: '13px' }}>
+												<input
+													type="checkbox"
+													checked={ane_button2_link?.target === '_blank'}
+													onChange={(e) => {
+														setAttributes({ ane_button2_link: { ...(ane_button2_link || {}), target: e.target.checked ? '_blank' : '' } });
+													}}
+													style={{ marginRight: '8px' }}
 												/>
-											</div>
-										)}
+												{__('Open in new tab', 'sarika')}
+											</label>
+										</div>
 									</PanelBody>
 
 									{/* Repeater Items */}
@@ -431,24 +446,40 @@ export default function Edit({ attributes, setAttributes }) {
 													</>
 												)}
 
-												<p style={{ marginTop: '10px', marginBottom: '8px', fontWeight: 600 }}>
-													{__('Optional Link', 'sarika')}
-												</p>
-												<Button
-													variant="secondary"
-													isSmall
-													onClick={() => setActiveItemLinkIndex(activeItemLinkIndex === index ? null : index)}
-												>
-													{item.ane_link?.url ? __('Edit Link', 'sarika') : __('Add Link', 'sarika')}
-												</Button>
-												{activeItemLinkIndex === index && (
-													<div style={{ marginTop: '8px' }}>
-														<LinkControl
-															value={item.ane_link}
-															onChange={(value) => updateItem(index, 'ane_link', value)}
+												<div style={{ marginTop: '15px', padding: '12px', border: '1px solid #ddd', borderRadius: '4px', backgroundColor: '#f9f9f9' }}>
+													<strong style={{ display: 'block', marginBottom: '12px' }}>{__('Optional Link', 'sarika')}</strong>
+													<TextControl
+														label={__('Link Text', 'sarika')}
+														value={item.ane_link?.title || ''}
+														onChange={(value) => {
+															const newLink = { ...(item.ane_link || {}), title: value };
+															updateItem(index, 'ane_link', newLink);
+														}}
+														placeholder={__('e.g., Learn More', 'sarika')}
+													/>
+													<TextControl
+														label={__('Link URL', 'sarika')}
+														value={item.ane_link?.url || ''}
+														onChange={(value) => {
+															const newLink = { ...(item.ane_link || {}), url: value };
+															updateItem(index, 'ane_link', newLink);
+														}}
+														placeholder="https://"
+														type="url"
+													/>
+													<label style={{ display: 'flex', alignItems: 'center', marginTop: '8px', fontSize: '13px' }}>
+														<input
+															type="checkbox"
+															checked={item.ane_link?.target === '_blank'}
+															onChange={(e) => {
+																const newLink = { ...(item.ane_link || {}), target: e.target.checked ? '_blank' : '' };
+																updateItem(index, 'ane_link', newLink);
+															}}
+															style={{ marginRight: '8px' }}
 														/>
-													</div>
-												)}
+														{__('Open in new tab', 'sarika')}
+													</label>
+												</div>
 											</div>
 										))}
 
