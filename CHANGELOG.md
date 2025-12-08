@@ -17,6 +17,53 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Team Members Custom Post Type
 
 ---
+
+## [0.1.7] - 2025-12-09
+
+### Added
+
+#### Floating Chat Customer Care
+- **WhatsApp Chat Widget** - Floating chat button di bottom-right corner
+  - ACF Options integration:
+    - `ane_cs_aktif` - Toggle untuk enable/disable chat
+    - `ane_cs_label` - Label header chat box
+    - `ane_cs_welcome` - Welcome message
+    - `ane_cs` (repeater) - Multiple admin contacts dengan foto, nama, area, WhatsApp number
+  - Features:
+    - Auto-show setelah 1 detik dengan animation
+    - Click floating button untuk expand chat box
+    - Input message dengan WhatsApp integration
+    - Round-robin WhatsApp number selection (localStorage)
+    - Direct chat buttons untuk setiap admin
+    - Close button dengan stop propagation
+  - Design:
+    - Bubble icon (chat SVG mask)
+    - Glassmorphism chat box dengan backdrop-filter
+    - Avatar photos (150x150 square small)
+    - Responsive mobile layout
+    - Primary color theme integration
+  - File: `tp/footer-site.php` lines 181-292, `js/main.js` lines 530-560, `scss/_bottomchat.scss`
+
+### Fixed
+
+#### Image Size Warning
+- **Footer Chat Avatar** - Fixed undefined array key 'kotak' warning
+  - Problem: Custom image size `'kotak'` tidak terdaftar
+  - Solution: Ganti ke `'sarika-square-sm'` (150x150) dari `inc/image.php`
+  - Added fallback: `?? $image['url']` untuk backward compatibility
+  - File: `tp/footer-site.php` line 228
+
+### Changed
+
+#### JavaScript Migration
+- **Floating Chat** - Convert dari jQuery ke Vanilla JS
+  - Removed jQuery dependencies: `$()`, `.addClass()`, `.removeClass()`, `.on()`, `.find()`
+  - Replaced with native DOM API: `querySelector()`, `classList`, `addEventListener()`
+  - Better performance dan consistency dengan seluruh `main.js`
+  - File: `js/main.js` lines 530-560
+
+---
+
 ## [0.1.6] - 2025-12-09
 
 ### Added

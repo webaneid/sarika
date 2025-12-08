@@ -526,4 +526,36 @@ document.addEventListener('DOMContentLoaded', () => {
 			window.onYouTubeIframeAPIReady();
 		}
 	}
+
+	// Floating Chat - Vanilla JS
+	const floatingChat = document.querySelector('.floating-chat');
+
+	if (floatingChat) {
+		const chatBox = floatingChat.querySelector('.chat');
+		const closeButton = floatingChat.querySelector('.ane-tutup');
+
+		// Tampilkan chat setelah 1 detik
+		setTimeout(() => {
+			floatingChat.classList.add('enter');
+		}, 1000);
+
+		// Klik floating chat untuk membuka chat
+		floatingChat.addEventListener('click', () => {
+			floatingChat.classList.add('expand');
+			if (chatBox) {
+				chatBox.classList.add('enter');
+			}
+		});
+
+		// Klik close button untuk menutup chat
+		if (closeButton) {
+			closeButton.addEventListener('click', (event) => {
+				event.stopPropagation(); // Mencegah event klik dari bubble ke parent
+				floatingChat.classList.remove('expand');
+				if (chatBox) {
+					chatBox.classList.remove('enter');
+				}
+			});
+		}
+	}
 });
