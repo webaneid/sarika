@@ -1,14 +1,11 @@
 /**
- * Video Background Block - Editor Styles
- */
-.sarika-video-bg {
-  position: relative;
-  width: 100%;
-  min-height: 500px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+ * Sarika Container - Editor Styles
+ *
+ * NOTE: Global utilities loaded from editor-style.scss.
+ * Only block-specific styles here.
+ *
+ * @package sarika
+ *//*# sourceMappingURL=editor.css.map */ntent: center;
 }
 .sarika-video-bg__background {
   position: absolute;

@@ -26,6 +26,7 @@ registerBlockType('sarika/block-post', {
 		ane_posts_per_page: { type: 'number', default: 4 },
 		ane_order_by: { type: 'string', default: 'date' },
 		ane_order: { type: 'string', default: 'DESC' },
+		ane_taxonomy_terms: { type: 'array', default: [] },
 
 		// Layout Options
 		ane_layout: { type: 'string', default: 'grid' },

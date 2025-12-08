@@ -1,13 +1,15 @@
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls, URLInput } from '@wordpress/block-editor';
-import { PanelBody, SelectControl, RangeControl, Button, ColorPicker, TextControl, TextareaControl, ToggleControl } from '@wordpress/components';
+import { PanelBody, SelectControl, RangeControl, Button, ColorPicker, TextControl, TextareaControl, ToggleControl, CheckboxControl } from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
+import { store as coreStore } from '@wordpress/core-data';
 
 export default function Edit({ attributes, setAttributes }) {
 	const {
 		ane_title, ane_tagline, ane_description,
 		ane_button_link, ane_button_style,
-		ane_post_type, ane_posts_per_page, ane_order_by, ane_order,
+		ane_post_type, ane_posts_per_page, ane_order_by, ane_order, ane_taxonomy_terms,
 		ane_layout,
 		ane_section_background, ane_padding_top, ane_padding_bottom, ane_margin_bottom,
 		ane_container_background, ane_container_border_radius, ane_container_padding,
@@ -22,6 +24,30 @@ export default function Edit({ attributes, setAttributes }) {
 	const [showTitleColorPicker, setShowTitleColorPicker] = useState(false);
 	const [showTaglineColorPicker, setShowTaglineColorPicker] = useState(false);
 	const [showDescColorPicker, setShowDescColorPicker] = useState(false);
+
+	// Determine taxonomy based on post type
+	const getTaxonomy = () => {
+		if (ane_post_type === 'post') return 'category';
+		if (ane_post_type === 'ane-service') return 'service-category';
+		return null; // ane-testimoni has no taxonomy
+	};
+
+	const taxonomy = getTaxonomy();
+
+	// Fetch taxonomy terms
+	const { terms } = useSelect(
+		(select) => {
+			if (!taxonomy) return { terms: [] };
+			return {
+				terms: select(coreStore).getEntityRecords('taxonomy', taxonomy, {
+					per_page: -1,
+					orderby: 'name',
+					order: 'asc',
+				}) || [],
+			};
+		},
+		[taxonomy]
+	);
 
 	const predefinedColors = [
 		{ label: __('Default', 'sarika'), value: '' },
@@ -156,6 +182,31 @@ export default function Edit({ attributes, setAttributes }) {
 						]}
 						onChange={(v) => setAttributes({ ane_post_type: v })}
 					/>
+
+					{taxonomy && terms.length > 0 && (
+						<>
+							<p style={{ marginTop: '16px', marginBottom: '8px', fontSize: '11px', fontWeight: 500, lineHeight: '1.4', textTransform: 'uppercase', color: '#1e1e1e' }}>
+								{taxonomy === 'category' ? __('Filter by Category', 'sarika') : __('Filter by Service Category', 'sarika')}
+							</p>
+							<p style={{ marginTop: '0', marginBottom: '8px', fontSize: '12px', color: '#757575' }}>
+								{__('Leave all unchecked to show all posts', 'sarika')}
+							</p>
+							{terms.map((term) => (
+								<CheckboxControl
+									key={term.id}
+									label={term.name}
+									checked={ane_taxonomy_terms.includes(term.id)}
+									onChange={(checked) => {
+										const newTerms = checked
+											? [...ane_taxonomy_terms, term.id]
+											: ane_taxonomy_terms.filter((id) => id !== term.id);
+										setAttributes({ ane_taxonomy_terms: newTerms });
+									}}
+								/>
+							))}
+						</>
+					)}
+
 					<RangeControl
 						label={__('Posts Per Page', 'sarika')}
 						value={ane_posts_per_page}

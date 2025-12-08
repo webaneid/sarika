@@ -18,7 +18,14 @@ get_header();
 					<?php esc_html_e( 'Our Services', 'sarika' ); ?>
 				</h1>
 				<?php
-				$description = get_the_archive_description();
+				$deskripsi = get_field('ane_archive_description', 'option');
+				if(!empty($deskripsi)) {
+					$description = $deskripsi;
+				} else {
+					$description = get_the_archive_description();
+				}
+				
+
 				if ( $description ) :
 					?>
 					<div class="archive-description desc">

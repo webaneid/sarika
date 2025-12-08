@@ -13,15 +13,22 @@ get_header();
 
 		<?php if ( have_posts() ) : ?>
 
-			<header class="page-header mb-6">
-				<h1 class="page-title text-3xl font-bold text-primary">
-					<?php esc_html_e( 'Client Testimonials', 'sarika' ); ?>
+			<header class="page-header mb-6 text-center">
+				<h1 class="title-body">
+					<?php esc_html_e( 'Our Services', 'sarika' ); ?>
 				</h1>
 				<?php
-				$description = get_the_archive_description();
+				$deskripsi = get_field('ane_testimoni_description', 'option');
+				if(!empty($deskripsi)) {
+					$description = $deskripsi;
+				} else {
+					$description = get_the_archive_description();
+				}
+				
+
 				if ( $description ) :
 					?>
-					<div class="archive-description text-body mt-2">
+					<div class="archive-description desc">
 						<?php echo wp_kses_post( $description ); ?>
 					</div>
 				<?php endif; ?>

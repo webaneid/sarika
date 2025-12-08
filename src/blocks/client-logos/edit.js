@@ -11,6 +11,7 @@ import { PanelBody, SelectControl, RangeControl, Button } from '@wordpress/compo
 export default function Edit({ attributes, setAttributes }) {
 	const {
 		ane_client_logos,
+		ane_layout,
 		ane_section_background,
 		ane_padding_top,
 		ane_padding_bottom,
@@ -85,8 +86,22 @@ export default function Edit({ attributes, setAttributes }) {
 	return (
 		<>
 			<InspectorControls>
+				{/* Layout Panel */}
+				<PanelBody title={__('Layout', 'sarika')} initialOpen={true}>
+					<SelectControl
+						label={__('Display Layout', 'sarika')}
+						value={ane_layout}
+						options={[
+							{ label: __('Sliding Carousel', 'sarika'), value: 'sliding' },
+							{ label: __('Grid', 'sarika'), value: 'grid' },
+						]}
+						onChange={(value) => setAttributes({ ane_layout: value })}
+						help={__('Sliding: Auto-scrolling carousel. Grid: Desktop 6 cols, Tablet 4 cols, Mobile 2 cols.', 'sarika')}
+					/>
+				</PanelBody>
+
 				{/* Logos Panel */}
-				<PanelBody title={__('Logos', 'sarika')} initialOpen={true}>
+				<PanelBody title={__('Logos', 'sarika')} initialOpen={false}>
 					<MediaUpload
 						onSelect={(media) => {
 							const logoIds = media.map(item => ({

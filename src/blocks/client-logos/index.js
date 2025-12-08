@@ -20,6 +20,12 @@ registerBlockType('sarika/client-logos', {
 			default: [],
 		},
 
+		// Layout
+		ane_layout: {
+			type: 'string',
+			default: 'sliding', // sliding or grid
+		},
+
 		// Section Options
 		ane_section_background: {
 			type: 'string',

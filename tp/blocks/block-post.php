@@ -24,6 +24,7 @@ $post_type      = $attrs['ane_post_type'] ?? 'post';
 $posts_per_page = $attrs['ane_posts_per_page'] ?? 4;
 $order_by       = $attrs['ane_order_by'] ?? 'date';
 $order          = $attrs['ane_order'] ?? 'DESC';
+$taxonomy_terms = $attrs['ane_taxonomy_terms'] ?? array();
 
 // Layout
 $layout = $attrs['ane_layout'] ?? 'grid';
@@ -155,6 +156,27 @@ $query_args = array(
 	'order'          => $order,
 	'post_status'    => 'publish',
 );
+
+// Add taxonomy query if terms are selected
+if ( ! empty( $taxonomy_terms ) && is_array( $taxonomy_terms ) ) {
+	// Determine taxonomy based on post type
+	$taxonomy = '';
+	if ( $post_type === 'post' ) {
+		$taxonomy = 'category';
+	} elseif ( $post_type === 'ane-service' ) {
+		$taxonomy = 'service-category';
+	}
+
+	if ( $taxonomy ) {
+		$query_args['tax_query'] = array(
+			array(
+				'taxonomy' => $taxonomy,
+				'field'    => 'term_id',
+				'terms'    => $taxonomy_terms,
+			),
+		);
+	}
+}
 
 $query = new WP_Query( $query_args );
 ?>

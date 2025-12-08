@@ -16,6 +16,9 @@ $attrs = $block['attrs'] ?? array();
 // Logos
 $client_logos = $attrs['ane_client_logos'] ?? array();
 
+// Layout
+$layout = $attrs['ane_layout'] ?? 'sliding';
+
 // Section options
 $section_bg     = $attrs['ane_section_background'] ?? '';
 $padding_top    = $attrs['ane_padding_top'] ?? 'large';
@@ -88,25 +91,47 @@ if ( empty( $client_logos ) || ! is_array( $client_logos ) ) {
 	<div class="container">
 		<div class="<?php echo esc_attr( $container_class ); ?>" <?php echo $container_style ? 'style="' . esc_attr( $container_style ) . '"' : ''; ?>>
 
-			<!-- Carousel track with data-flexi-carousel attribute for JS initialization -->
-			<div class="sarika-client-logos__track" data-flexi-carousel>
-				<?php foreach ( $client_logos as $logo ) : ?>
-					<?php
-					$logo_id  = $logo['id'] ?? 0;
-					$logo_url = $logo['url'] ?? '';
-					$logo_alt = $logo['alt'] ?? '';
-					?>
-					<?php if ( $logo_url ) : ?>
-						<div class="sarika-client-logos__item">
-							<img
-								src="<?php echo esc_url( $logo_url ); ?>"
-								alt="<?php echo esc_attr( $logo_alt ); ?>"
-								class="sarika-client-logos__image"
-							>
-						</div>
-					<?php endif; ?>
-				<?php endforeach; ?>
-			</div>
+			<?php if ( $layout === 'grid' ) : ?>
+				<!-- Grid layout -->
+				<div class="sarika-client-logos__grid">
+					<?php foreach ( $client_logos as $logo ) : ?>
+						<?php
+						$logo_id  = $logo['id'] ?? 0;
+						$logo_url = $logo['url'] ?? '';
+						$logo_alt = $logo['alt'] ?? '';
+						?>
+						<?php if ( $logo_url ) : ?>
+							<div class="sarika-client-logos__item">
+								<img
+									src="<?php echo esc_url( $logo_url ); ?>"
+									alt="<?php echo esc_attr( $logo_alt ); ?>"
+									class="sarika-client-logos__image"
+								>
+							</div>
+						<?php endif; ?>
+					<?php endforeach; ?>
+				</div>
+			<?php else : ?>
+				<!-- Carousel track with data-flexi-carousel attribute for JS initialization -->
+				<div class="sarika-client-logos__track" data-flexi-carousel>
+					<?php foreach ( $client_logos as $logo ) : ?>
+						<?php
+						$logo_id  = $logo['id'] ?? 0;
+						$logo_url = $logo['url'] ?? '';
+						$logo_alt = $logo['alt'] ?? '';
+						?>
+						<?php if ( $logo_url ) : ?>
+							<div class="sarika-client-logos__item">
+								<img
+									src="<?php echo esc_url( $logo_url ); ?>"
+									alt="<?php echo esc_attr( $logo_alt ); ?>"
+									class="sarika-client-logos__image"
+								>
+							</div>
+						<?php endif; ?>
+					<?php endforeach; ?>
+				</div>
+			<?php endif; ?>
 
 		</div>
 	</div>

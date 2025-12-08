@@ -18,6 +18,66 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.1.5] - 2025-12-09
+
+### Added
+
+#### Client Logos Block - Grid Layout Option
+- **Layout Toggle** - Tambah opsi grid layout selain sliding carousel
+  - New attribute: `ane_layout` (string, default: 'sliding')
+  - SelectControl "Display Layout" di Layout panel dengan 2 opsi:
+    - **Sliding Carousel** - Auto-scrolling carousel (existing)
+    - **Grid** - Responsive grid layout (new)
+  - Grid responsive breakpoints:
+    - Mobile: 2 columns
+    - Tablet (≥768px): 4 columns
+    - Desktop (≥1024px): 6 columns
+  - CSS class: `.sarika-client-logos__grid`
+  - Conditional rendering di PHP template based on `$layout`
+  - File: `src/blocks/client-logos/index.js`, `edit.js`, `tp/blocks/client-logos.php`, `scss/_blocks.scss` lines 1103-1116
+
+#### Block Post - Taxonomy Filter
+- **Category Filter** - Filter posts by category/taxonomy dengan multi-select checkboxes
+  - New attribute: `ane_taxonomy_terms` (array, default: [])
+  - Dynamic taxonomy detection:
+    - Post (blog) → `category` taxonomy
+    - Service → `service-category` taxonomy
+    - Testimonial → no taxonomy (tidak ada filter)
+  - Multi-select CheckboxControl dengan label conditional
+  - Help text: "Leave all unchecked to show all posts"
+  - WP_Query integration dengan `tax_query` parameter
+  - Auto-fetch terms dengan `useSelect` + `@wordpress/core-data`
+  - File: `src/blocks/block-post/index.js`, `edit.js`, `tp/blocks/block-post.php` lines 27, 160-179
+
+### Fixed
+
+#### Mobile Container Width
+- **Sarika Container Wrapper** - Fixed mobile width rendering issue
+  - Problem: `.sarika-section-container__wrapper` appearing inline instead of full width on mobile
+  - Solution: Added mobile-first base styles (width: 100%, display: block)
+  - Desktop override: 80% width with auto margin (≥768px)
+  - File: `scss/_blocks.scss` lines 2263-2270
+
+#### Header Submenu Blur Effect
+- **Submenu Glassmorphism** - Improved dropdown background blur
+  - Increased background opacity: 0.4 → 0.85
+  - Standardized backdrop-filter: blur(10px) → blur(20px)
+  - Added `isolation: isolate` for stacking context fix
+  - File: `scss/_header.scss` lines 176-181
+
+### Technical
+
+#### Dependencies
+- Import `CheckboxControl` from `@wordpress/components`
+- Import `useSelect` from `@wordpress/data`
+- Import `store as coreStore` from `@wordpress/core-data`
+
+#### Build
+- All blocks recompiled with npm run build
+- SCSS compiled: `scss/sarika.scss` → `css/sarika.min.css`
+
+---
+
 ## [0.1.4] - 2025-12-08
 
 ### Added
