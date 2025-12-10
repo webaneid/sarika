@@ -5,6 +5,7 @@ import {
 	TextControl,
 	TextareaControl,
 	SelectControl,
+	RangeControl,
 	Button,
 	TabPanel,
 	Dashicon,
@@ -20,10 +21,13 @@ export default function Edit({ attributes, setAttributes }) {
 		ane_description,
 		ane_button_link,
 		ane_button2_link,
-		ane_background_color,
+		ane_section_background,
 		ane_padding_top,
 		ane_padding_bottom,
 		ane_margin_bottom,
+		ane_container_background,
+		ane_container_border_radius,
+		ane_container_padding,
 		ane_title_size,
 		ane_title_color,
 		ane_tagline_size,
@@ -38,30 +42,66 @@ export default function Edit({ attributes, setAttributes }) {
 		ane_items
 	} = attributes;
 
-	// No state needed - buttons always visible
+	// State for color pickers
+	const [showSectionColorPicker, setShowSectionColorPicker] = useState(false);
+	const [showContainerColorPicker, setShowContainerColorPicker] = useState(false);
 
-	// Build block classes with all options
-	let blockClasses = `sarika-icon-description sarika-icon-description--align-${ane_alignment} sarika-icon-description--cols-${ane_columns} sarika-icon-description--layout-${ane_item_layout}`;
-	blockClasses += ` padding-top-${ane_padding_top}`;
-	blockClasses += ` padding-bottom-${ane_padding_bottom}`;
-	blockClasses += ` margin-bottom-${ane_margin_bottom}`;
+	// Build section classes with all options
+	let sectionClasses = `sarika-icon-description sarika-icon-description--align-${ane_alignment} sarika-icon-description--cols-${ane_columns} sarika-icon-description--layout-${ane_item_layout}`;
+	sectionClasses += ` padding-top-${ane_padding_top}`;
+	sectionClasses += ` padding-bottom-${ane_padding_bottom}`;
+	sectionClasses += ` margin-bottom-${ane_margin_bottom}`;
 
-	// Add predefined background color class
-	if (ane_background_color && !ane_background_color.startsWith('#') && !ane_background_color.startsWith('rgb')) {
-		blockClasses += ` bg-${ane_background_color}`;
+	// Add section background class (using _utilities.scss classes)
+	if (ane_section_background) {
+		if (ane_section_background.startsWith('#') || ane_section_background.startsWith('rgb')) {
+			// Custom color - will use inline style
+		} else if (ane_section_background.startsWith('gradient-')) {
+			// Gradient classes: bg-gradient-primary, bg-gradient-dark, bg-gradient-light, bg-gradient-accent
+			sectionClasses += ` bg-${ane_section_background}`;
+		} else if (ane_section_background) {
+			// Predefined color classes: bg-primary, bg-secondary, bg-light, bg-dark, bg-accent, bg-white, bg-black
+			sectionClasses += ` bg-${ane_section_background}`;
+		}
 	}
 
-	// Build inline styles for editor
-	let blockStyles = {};
+	// Build section inline styles (only for custom colors)
+	let sectionStyles = {};
+	if (ane_section_background && (ane_section_background.startsWith('#') || ane_section_background.startsWith('rgb'))) {
+		sectionStyles.backgroundColor = ane_section_background;
+	}
 
-	// Custom background color
-	if (ane_background_color && (ane_background_color.startsWith('#') || ane_background_color.startsWith('rgb'))) {
-		blockStyles.backgroundColor = ane_background_color;
+	// Build container classes
+	let containerClasses = 'container';
+	if (ane_container_background) {
+		if (ane_container_background.startsWith('#') || ane_container_background.startsWith('rgb')) {
+			// Custom color - will use inline style
+		} else if (ane_container_background.startsWith('gradient-')) {
+			// Gradient classes
+			containerClasses += ` bg-${ane_container_background}`;
+		} else if (ane_container_background) {
+			// Predefined color classes
+			containerClasses += ` bg-${ane_container_background}`;
+		}
+	}
+
+	// Build container inline styles (only for custom colors, border-radius, padding)
+	let containerStyles = {};
+	if (ane_container_background && (ane_container_background.startsWith('#') || ane_container_background.startsWith('rgb'))) {
+		containerStyles.backgroundColor = ane_container_background;
+	}
+
+	if (ane_container_border_radius > 0) {
+		containerStyles.borderRadius = `${ane_container_border_radius}px`;
+	}
+
+	if (ane_container_padding > 0) {
+		containerStyles.padding = `${ane_container_padding}px`;
 	}
 
 	const blockProps = useBlockProps({
-		className: blockClasses,
-		style: blockStyles
+		className: sectionClasses,
+		style: sectionStyles
 	});
 
 	// Add new item to repeater
@@ -394,8 +434,37 @@ export default function Edit({ attributes, setAttributes }) {
 													value={item.ane_icon}
 													onChange={(value) => updateItem(index, 'ane_icon', value)}
 													placeholder="dashicons-star-filled"
-													help={__('Only used if no image uploaded. e.g., dashicons-admin-site', 'sarika')}
 												/>
+												<p style={{
+													marginTop: '-8px',
+													marginBottom: '12px',
+													fontSize: '12px',
+													fontStyle: 'normal',
+													color: '#757575'
+												}}>
+													{__('Only used if no image uploaded. e.g., ', 'sarika')}
+													<code style={{
+														padding: '2px 6px',
+														background: 'rgba(0,0,0,0.05)',
+														borderRadius: '3px',
+														fontSize: '11px'
+													}}>
+														dashicons-admin-site
+													</code>
+													<br />
+													<a
+														href="https://developer.wordpress.org/resource/dashicons/"
+														target="_blank"
+														rel="noopener noreferrer"
+														style={{
+															color: 'var(--sarika-color-primary, #007cba)',
+															textDecoration: 'none',
+															fontWeight: '500'
+														}}
+													>
+														{__('View all Dashicons →', 'sarika')}
+													</a>
+												</p>
 
 												<div style={{ marginTop: '12px', marginBottom: '12px' }}>
 													<p style={{ marginBottom: '8px', fontWeight: 600 }}>
@@ -491,16 +560,22 @@ export default function Edit({ attributes, setAttributes }) {
 														}}
 														placeholder={__('e.g., Learn More', 'sarika')}
 													/>
-													<TextControl
-														label={__('Link URL', 'sarika')}
-														value={item.ane_link?.url || ''}
-														onChange={(value) => {
-															const newLink = { ...(item.ane_link || {}), url: value };
-															updateItem(index, 'ane_link', newLink);
-														}}
-														placeholder="https://"
-														type="url"
-													/>
+													<div style={{ marginBottom: '12px', position: 'relative' }}>
+														<label style={{ display: 'block', marginBottom: '8px', fontSize: '11px', fontWeight: '500', textTransform: 'uppercase', color: '#1e1e1e' }}>
+															{__('Link URL', 'sarika')}
+														</label>
+														<div style={{ position: 'relative', zIndex: 1 }}>
+															<URLInput
+																value={item.ane_link?.url || ''}
+																onChange={(value) => {
+																	const newLink = { ...(item.ane_link || {}), url: value };
+																	updateItem(index, 'ane_link', newLink);
+																}}
+																placeholder="https://"
+																__experimentalShowInitialSuggestions={false}
+															/>
+														</div>
+													</div>
 													<label style={{ display: 'flex', alignItems: 'center', marginTop: '8px', fontSize: '13px' }}>
 														<input
 															type="checkbox"
@@ -532,34 +607,47 @@ export default function Edit({ attributes, setAttributes }) {
 						// Options Tab
 						return (
 							<>
-								<PanelBody title={__('Block Options', 'sarika')} initialOpen={true}>
-									<p style={{ marginBottom: '8px', fontWeight: 600 }}>{__('Background Color', 'sarika')}</p>
+								{/* Section Options */}
+								<PanelBody title={__('Section Options', 'sarika')} initialOpen={true}>
 									<SelectControl
-										value={ane_background_color && (ane_background_color.startsWith('#') || ane_background_color.startsWith('rgb')) ? 'custom' : (ane_background_color || '')}
+										label={__('Section Background', 'sarika')}
+										value={ane_section_background}
 										options={[
-											{ label: __('None (Transparent)', 'sarika'), value: '' },
-											{ label: __('Primary', 'sarika'), value: 'primary' },
-											{ label: __('Secondary', 'sarika'), value: 'secondary' },
+											{ label: __('Default', 'sarika'), value: '' },
+											{ label: __('White', 'sarika'), value: 'white' },
 											{ label: __('Light', 'sarika'), value: 'light' },
 											{ label: __('Dark', 'sarika'), value: 'dark' },
-											{ label: __('White', 'sarika'), value: 'white' },
-											{ label: __('Custom Color', 'sarika'), value: 'custom' }
+											{ label: __('Primary', 'sarika'), value: 'primary' },
+											{ label: __('Secondary', 'sarika'), value: 'secondary' },
+											{ label: __('Accent', 'sarika'), value: 'accent' },
+											{ label: __('Gradient Primary', 'sarika'), value: 'gradient-primary' },
+											{ label: __('Gradient Dark', 'sarika'), value: 'gradient-dark' },
+											{ label: __('Gradient Light', 'sarika'), value: 'gradient-light' },
+											{ label: __('Gradient Accent', 'sarika'), value: 'gradient-accent' },
 										]}
-										onChange={(value) => {
-											if (value === 'custom') {
-												setAttributes({ ane_background_color: '#ffffff' });
-											} else {
-												setAttributes({ ane_background_color: value });
-											}
-										}}
+										onChange={(value) => setAttributes({ ane_section_background: value })}
 									/>
-									{ane_background_color && (ane_background_color.startsWith('#') || ane_background_color.startsWith('rgb')) && (
-										<div style={{ marginTop: '12px', padding: '12px', border: '1px solid #ddd', borderRadius: '4px' }}>
-											<ColorPicker
-												color={ane_background_color}
-												onChangeComplete={(color) => setAttributes({ ane_background_color: `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})` })}
-												disableAlpha={false}
-											/>
+
+									{ane_section_background && (
+										<div style={{ marginTop: '12px' }}>
+											<Button
+												variant="secondary"
+												onClick={() => setShowSectionColorPicker(!showSectionColorPicker)}
+											>
+												{__('Custom Color Picker', 'sarika')}
+											</Button>
+
+											{showSectionColorPicker && (
+												<div style={{ marginTop: '12px' }}>
+													<ColorPicker
+														color={ane_section_background}
+														onChangeComplete={(color) => {
+															setAttributes({ ane_section_background: `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})` });
+														}}
+														disableAlpha={false}
+													/>
+												</div>
+											)}
 										</div>
 									)}
 
@@ -567,8 +655,11 @@ export default function Edit({ attributes, setAttributes }) {
 										label={__('Padding Top', 'sarika')}
 										value={ane_padding_top}
 										options={[
-											{ label: __('Medium (3rem desktop, 1rem mobile)', 'sarika'), value: 'medium' },
-											{ label: __('Large (5rem desktop, 1rem mobile)', 'sarika'), value: 'large' }
+											{ label: __('None', 'sarika'), value: 'none' },
+											{ label: __('Small', 'sarika'), value: 'small' },
+											{ label: __('Medium', 'sarika'), value: 'medium' },
+											{ label: __('Large', 'sarika'), value: 'large' },
+											{ label: __('Extra Large', 'sarika'), value: 'xlarge' },
 										]}
 										onChange={(value) => setAttributes({ ane_padding_top: value })}
 									/>
@@ -577,8 +668,11 @@ export default function Edit({ attributes, setAttributes }) {
 										label={__('Padding Bottom', 'sarika')}
 										value={ane_padding_bottom}
 										options={[
-											{ label: __('Medium (3rem desktop, 1rem mobile)', 'sarika'), value: 'medium' },
-											{ label: __('Large (5rem desktop, 1rem mobile)', 'sarika'), value: 'large' }
+											{ label: __('None', 'sarika'), value: 'none' },
+											{ label: __('Small', 'sarika'), value: 'small' },
+											{ label: __('Medium', 'sarika'), value: 'medium' },
+											{ label: __('Large', 'sarika'), value: 'large' },
+											{ label: __('Extra Large', 'sarika'), value: 'xlarge' },
 										]}
 										onChange={(value) => setAttributes({ ane_padding_bottom: value })}
 									/>
@@ -587,11 +681,76 @@ export default function Edit({ attributes, setAttributes }) {
 										label={__('Margin Bottom', 'sarika')}
 										value={ane_margin_bottom}
 										options={[
-											{ label: __('Zero', 'sarika'), value: 'zero' },
-											{ label: __('Medium (3rem desktop, 1rem mobile)', 'sarika'), value: 'medium' },
-											{ label: __('Large (5rem desktop, 1rem mobile)', 'sarika'), value: 'large' }
+											{ label: __('None', 'sarika'), value: 'none' },
+											{ label: __('Small', 'sarika'), value: 'small' },
+											{ label: __('Medium', 'sarika'), value: 'medium' },
+											{ label: __('Large', 'sarika'), value: 'large' },
+											{ label: __('Extra Large', 'sarika'), value: 'xlarge' },
 										]}
 										onChange={(value) => setAttributes({ ane_margin_bottom: value })}
+									/>
+								</PanelBody>
+
+								{/* Container Options */}
+								<PanelBody title={__('Container Settings', 'sarika')} initialOpen={false}>
+									<SelectControl
+										label={__('Container Background', 'sarika')}
+										value={ane_container_background}
+										options={[
+											{ label: __('Default', 'sarika'), value: '' },
+											{ label: __('White', 'sarika'), value: 'white' },
+											{ label: __('Light', 'sarika'), value: 'light' },
+											{ label: __('Dark', 'sarika'), value: 'dark' },
+											{ label: __('Primary', 'sarika'), value: 'primary' },
+											{ label: __('Secondary', 'sarika'), value: 'secondary' },
+											{ label: __('Accent', 'sarika'), value: 'accent' },
+											{ label: __('Gradient Primary', 'sarika'), value: 'gradient-primary' },
+											{ label: __('Gradient Dark', 'sarika'), value: 'gradient-dark' },
+											{ label: __('Gradient Light', 'sarika'), value: 'gradient-light' },
+											{ label: __('Gradient Accent', 'sarika'), value: 'gradient-accent' },
+										]}
+										onChange={(value) => setAttributes({ ane_container_background: value })}
+									/>
+
+									{ane_container_background && (
+										<div style={{ marginTop: '12px' }}>
+											<Button
+												variant="secondary"
+												onClick={() => setShowContainerColorPicker(!showContainerColorPicker)}
+											>
+												{__('Custom Color Picker', 'sarika')}
+											</Button>
+
+											{showContainerColorPicker && (
+												<div style={{ marginTop: '12px' }}>
+													<ColorPicker
+														color={ane_container_background}
+														onChangeComplete={(color) => {
+															setAttributes({ ane_container_background: `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})` });
+														}}
+														disableAlpha={false}
+													/>
+												</div>
+											)}
+										</div>
+									)}
+
+									<RangeControl
+										label={__('Container Border Radius (px)', 'sarika')}
+										value={ane_container_border_radius}
+										onChange={(value) => setAttributes({ ane_container_border_radius: value })}
+										min={0}
+										max={50}
+										step={5}
+									/>
+
+									<RangeControl
+										label={__('Container Padding (px)', 'sarika')}
+										value={ane_container_padding}
+										onChange={(value) => setAttributes({ ane_container_padding: value })}
+										min={0}
+										max={100}
+										step={5}
 									/>
 								</PanelBody>
 
@@ -760,35 +919,6 @@ export default function Edit({ attributes, setAttributes }) {
 									/>
 								</PanelBody>
 
-								<PanelBody title={__('Button Styles', 'sarika')} initialOpen={false}>
-									<SelectControl
-										label={__('Button 1 Style', 'sarika')}
-										value={ane_button_style}
-										options={[
-											{ label: __('Primary', 'sarika'), value: 'primary' },
-											{ label: __('Primary Outline', 'sarika'), value: 'primary-outline' },
-											{ label: __('White', 'sarika'), value: 'white' },
-											{ label: __('White Outline', 'sarika'), value: 'white-outline' },
-											{ label: __('Dark', 'sarika'), value: 'dark' },
-											{ label: __('Dark Outline', 'sarika'), value: 'dark-outline' }
-										]}
-										onChange={(value) => setAttributes({ ane_button_style: value })}
-									/>
-
-									<SelectControl
-										label={__('Button 2 Style', 'sarika')}
-										value={ane_button2_style}
-										options={[
-											{ label: __('Primary', 'sarika'), value: 'primary' },
-											{ label: __('Primary Outline', 'sarika'), value: 'primary-outline' },
-											{ label: __('White', 'sarika'), value: 'white' },
-											{ label: __('White Outline', 'sarika'), value: 'white-outline' },
-											{ label: __('Dark', 'sarika'), value: 'dark' },
-											{ label: __('Dark Outline', 'sarika'), value: 'dark-outline' }
-										]}
-										onChange={(value) => setAttributes({ ane_button2_style: value })}
-									/>
-								</PanelBody>
 							</>
 						);
 					}}
@@ -796,8 +926,9 @@ export default function Edit({ attributes, setAttributes }) {
 			</InspectorControls>
 
 			<section {...blockProps}>
+				<div className={containerClasses} style={containerStyles}>
 				{/* Header Content */}
-				<div className={`sarika-icon-description__header text-${ane_alignment} container`}>
+				<div className={`sarika-icon-description__header text-${ane_alignment}`}>
 					{ane_title && (
 						<h2 className={titleProps.className} style={titleProps.style}>
 							{ane_title}
@@ -844,7 +975,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 				{/* Icon Items Grid */}
 				{ane_items && ane_items.length > 0 && (
-					<div className={`sarika-icon-description__grid grid grid-cols-${ane_columns} container`}>
+					<div className={`sarika-icon-description__grid grid grid-cols-${ane_columns}`}>
 						{ane_items.map((item, index) => (
 							<div key={index} className="sarika-icon-description__item">
 								{(item.ane_icon_image || item.ane_icon) && (
@@ -911,6 +1042,7 @@ export default function Edit({ attributes, setAttributes }) {
 						))}
 					</div>
 				)}
+				</div>
 			</section>
 		</>
 	);

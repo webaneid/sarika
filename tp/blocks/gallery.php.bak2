@@ -38,7 +38,7 @@ $section_styles  = array();
 if ( ! empty( $section_bg ) ) {
 	// Predefined colors and gradients.
 	$predefined_colors = array( 'white', 'light', 'dark', 'primary', 'secondary', 'accent' );
-	$predefined_gradients = array( 'gradient-primary', 'gradient-dark', 'gradient-light', 'gradient-accent' );
+	$predefined_gradients = array( 'gradient-primary', 'gradient-dark' );
 
 	if ( in_array( $section_bg, $predefined_colors, true ) ) {
 		$section_classes[] = 'bg-' . $section_bg;
@@ -71,7 +71,7 @@ $container_styles  = array();
 // Container background.
 if ( ! empty( $container_bg ) ) {
 	$predefined_colors = array( 'white', 'light', 'dark', 'primary', 'secondary', 'accent' );
-	$predefined_gradients = array( 'gradient-primary', 'gradient-dark', 'gradient-light', 'gradient-accent' );
+	$predefined_gradients = array( 'gradient-primary', 'gradient-dark' );
 
 	if ( in_array( $container_bg, $predefined_colors, true ) ) {
 		$container_classes[] = 'bg-' . $container_bg;

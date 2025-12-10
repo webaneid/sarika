@@ -38,6 +38,13 @@ function sarika_get_admin_sections() : array {
 					'link'        => admin_url( 'admin.php?page=sarika-seo-news' ),
 					'link_label'  => __( 'Open SEO & News', 'sarika' ),
 				),
+				array(
+					'label'       => __( 'Theme Updates', 'sarika' ),
+					'title'       => __( 'Check for Updates', 'sarika' ),
+					'description' => __( 'Check GitHub for latest Sarika theme version and update automatically.', 'sarika' ),
+					'link'        => add_query_arg( 'sarika_force_check', '1', admin_url( 'themes.php' ) ),
+					'link_label'  => __( 'Check Updates Now', 'sarika' ),
+				),
 			),
 		),
 		'sarika-seo-news'       => array(
@@ -295,8 +302,9 @@ function sarika_render_admin_intro() : void {
 			}
 			if ( ! empty( $card['link'] ) ) {
 				echo '<a class="sarika-admin__cta" href="' . esc_url( $card['link'] ) . '">';
-				echo esc_html( $card['link_label'] ?? __( 'Open page', 'sarika' ) );
-				echo '<span aria-hidden="true">→</span>';
+				echo '<span class="sarika-admin__cta-text">' . esc_html( $card['link_label'] ?? __( 'Open page', 'sarika' ) ) . '</span>';
+				echo '<span class="sarika-admin__cta-mobile">Open</span>';
+				echo '<span class="sarika-admin__cta-arrow" aria-hidden="true">→</span>';
 				echo '</a>';
 			}
 			echo '</div>';

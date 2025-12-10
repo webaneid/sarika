@@ -18,7 +18,7 @@ body {
    ============================================ */
 
 .postbox {
-	background: #ffffff;
+	background: var(--sarika-color-white);
 	border: 1px solid rgba(var(--sarika-color-primary-rgb, 45, 35, 46), 0.08);
 	border-radius: var(--sarika-radius-lg, 12px);
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
@@ -61,7 +61,7 @@ body {
 
 .button,
 .button-secondary {
-	background: #ffffff;
+	background: var(--sarika-color-white);
 	border: 1px solid rgba(var(--sarika-color-primary-rgb, 45, 35, 46), 0.15);
 	border-radius: var(--sarika-radius-md, 10px);
 	color: var(--sarika-color-body, #1e2d2f);
@@ -86,7 +86,7 @@ body {
 	background: var(--sarika-color-primary, #2d232e);
 	border: 1px solid var(--sarika-color-primary, #2d232e);
 	border-radius: var(--sarika-radius-md, 10px);
-	color: #ffffff;
+	color: var(--sarika-color-white);
 	padding: 0.625rem 1.5rem;
 	font-size: 14px;
 	font-weight: 600;
@@ -134,13 +134,14 @@ body {
 		background: var(--sarika-color-primary);
 		color: var(--sarika-color-light) !important;
 		text-align: center;
+		justify-content: center;
 	}
 }
 
 .wp-core-ui .button,
 .wp-core-ui .button-secondary {
 	color: var(--sarika-color-primary);
-	border-color: var(--sarika-color-primary) !important;
+	border-color: rgba(var(--sarika-color-dark-rgb), 0.05) !important;
 }
 
 .wp-core-ui .button-primary {
@@ -161,7 +162,7 @@ input[type="tel"],
 input[type="url"],
 textarea,
 select {
-	background: #ffffff;
+	background: var(--sarika-color-white);
 	border: 1px solid rgba(var(--sarika-color-body-rgb, 45, 35, 46), 0.15);
 	border-radius: var(--sarika-radius-md, 10px);
 	padding: 0.625rem 1rem !important;
@@ -171,7 +172,7 @@ select {
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
 
 	&:focus {
-		background: #ffffff;
+		background: var(--sarika-color-white);
 		border-color: var(--sarika-color-primary, #2d232e);
 		box-shadow: 0 0 0 4px rgba(var(--sarika-color-primary-rgb, 45, 35, 46), 0.08);
 		outline: none;
@@ -240,7 +241,7 @@ select {
 		width: 20px;
 		left: 3px;
 		bottom: 3px;
-		background: #ffffff;
+		background: var(--sarika-color-white);
 		border-radius: 50%;
 		transition: all var(--sarika-transition-base, 0.2s ease);
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);

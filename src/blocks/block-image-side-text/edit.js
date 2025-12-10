@@ -54,6 +54,10 @@ export default function Edit({ attributes, setAttributes }) {
 			sectionStyle.background = 'linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%)';
 		} else if (ane_section_background === 'gradient-dark') {
 			sectionStyle.background = 'linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%)';
+		} else if (ane_section_background === 'gradient-light') {
+			sectionStyle.background = 'linear-gradient(135deg, var(--sarika-color-light) 0%, var(--sarika-color-white) 100%)';
+		} else if (ane_section_background === 'gradient-accent') {
+			sectionStyle.background = 'linear-gradient(135deg, var(--sarika-color-accent) 0%, var(--sarika-color-primary) 100%)';
 		}
 	}
 
@@ -73,6 +77,10 @@ export default function Edit({ attributes, setAttributes }) {
 				containerStyle.background = 'linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%)';
 			} else if (ane_container_background === 'gradient-dark') {
 				containerStyle.background = 'linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%)';
+			} else if (ane_container_background === 'gradient-light') {
+				containerStyle.background = 'linear-gradient(135deg, var(--sarika-color-light) 0%, var(--sarika-color-white) 100%)';
+			} else if (ane_container_background === 'gradient-accent') {
+				containerStyle.background = 'linear-gradient(135deg, var(--sarika-color-accent) 0%, var(--sarika-color-primary) 100%)';
 			}
 		}
 	}
@@ -92,8 +100,10 @@ export default function Edit({ attributes, setAttributes }) {
 		{ label: __('Primary', 'sarika'), value: 'primary' },
 		{ label: __('Secondary', 'sarika'), value: 'secondary' },
 		{ label: __('Accent', 'sarika'), value: 'accent' },
-		{ label: __('Gradient Primary → Secondary', 'sarika'), value: 'gradient-primary' },
-		{ label: __('Gradient Dark → Primary', 'sarika'), value: 'gradient-dark' },
+		{ label: __('Gradient Primary', 'sarika'), value: 'gradient-primary' },
+		{ label: __('Gradient Dark', 'sarika'), value: 'gradient-dark' },
+		{ label: __('Gradient Light', 'sarika'), value: 'gradient-light' },
+		{ label: __('Gradient Accent', 'sarika'), value: 'gradient-accent' },
 	];
 
 	// Title classes and styles
@@ -461,8 +471,10 @@ export default function Edit({ attributes, setAttributes }) {
 												{ label: __('Light', 'sarika'), value: 'light' },
 												{ label: __('Dark', 'sarika'), value: 'dark' },
 												{ label: __('Primary', 'sarika'), value: 'primary' },
-												{ label: __('Gradient (Primary → Secondary)', 'sarika'), value: 'gradient-primary' },
+												{ label: __('Gradient Primary', 'sarika'), value: 'gradient-primary' },
 												{ label: __('Gradient Dark', 'sarika'), value: 'gradient-dark' },
+												{ label: __('Gradient Light', 'sarika'), value: 'gradient-light' },
+												{ label: __('Gradient Accent', 'sarika'), value: 'gradient-accent' },
 												{ label: __('Custom Color', 'sarika'), value: 'custom' }
 											]}
 											onChange={(value) => {
@@ -493,6 +505,7 @@ export default function Edit({ attributes, setAttributes }) {
 												{ label: __('Small', 'sarika'), value: 'small' },
 												{ label: __('Medium', 'sarika'), value: 'medium' },
 												{ label: __('Large', 'sarika'), value: 'large' },
+												{ label: __('Extra Large', 'sarika'), value: 'xlarge' },
 											]}
 											onChange={(value) => setAttributes({ ane_padding_top: value })}
 										/>
@@ -505,6 +518,7 @@ export default function Edit({ attributes, setAttributes }) {
 												{ label: __('Small', 'sarika'), value: 'small' },
 												{ label: __('Medium', 'sarika'), value: 'medium' },
 												{ label: __('Large', 'sarika'), value: 'large' },
+												{ label: __('Extra Large', 'sarika'), value: 'xlarge' },
 											]}
 											onChange={(value) => setAttributes({ ane_padding_bottom: value })}
 										/>
@@ -517,6 +531,7 @@ export default function Edit({ attributes, setAttributes }) {
 												{ label: __('Small', 'sarika'), value: 'small' },
 												{ label: __('Medium', 'sarika'), value: 'medium' },
 												{ label: __('Large', 'sarika'), value: 'large' },
+												{ label: __('Extra Large', 'sarika'), value: 'xlarge' },
 											]}
 											onChange={(value) => setAttributes({ ane_margin_bottom: value })}
 										/>

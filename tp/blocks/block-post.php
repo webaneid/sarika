@@ -75,6 +75,10 @@ if ( $section_bg ) {
 		$section_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%)';
 	} elseif ( $section_bg === 'gradient-dark' ) {
 		$section_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%)';
+	} elseif ( $section_bg === 'gradient-light' ) {
+		$section_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-light) 0%, var(--sarika-color-white) 100%)';
+	} elseif ( $section_bg === 'gradient-accent' ) {
+		$section_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-accent) 0%, var(--sarika-color-primary) 100%)';
 	}
 }
 
@@ -95,6 +99,10 @@ if ( $container_bg ) {
 		$container_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%)';
 	} elseif ( $container_bg === 'gradient-dark' ) {
 		$container_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%)';
+	} elseif ( $container_bg === 'gradient-light' ) {
+		$container_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-light) 0%, var(--sarika-color-white) 100%)';
+	} elseif ( $container_bg === 'gradient-accent' ) {
+		$container_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-accent) 0%, var(--sarika-color-primary) 100%)';
 	}
 }
 
@@ -181,7 +189,7 @@ if ( ! empty( $taxonomy_terms ) && is_array( $taxonomy_terms ) ) {
 $query = new WP_Query( $query_args );
 ?>
 
-<section class="<?php echo esc_attr( $section_class_str ); ?>" <?php echo $section_style_str ? 'style="' . esc_attr( $section_style_str ) . '"' : ''; ?>>
+<section class="sarika-section-page <?php echo esc_attr( $section_class_str ); ?>" <?php echo $section_style_str ? 'style="' . esc_attr( $section_style_str ) . '"' : ''; ?>>
 	<div class="<?php echo esc_attr( $container_class_str ); ?>" <?php echo $container_style_str ? 'style="' . esc_attr( $container_style_str ) . '"' : ''; ?>>
 
 		<?php if ( $title || $tagline || $description ) : ?>

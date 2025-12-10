@@ -52,7 +52,7 @@ $class_name .= ' sarika-hero--align-' . esc_attr( $content_alignment );
 $class_name .= ' sarika-hero--height-' . esc_attr( $min_height );
 ?>
 
-<section id="<?php echo esc_attr( $block_id ); ?>" class="<?php echo esc_attr( $class_name ); ?>">
+<section id="<?php echo esc_attr( $block_id ); ?>" class="sarika-section-page <?php echo esc_attr( $class_name ); ?>">
 
 	<?php if ( $background_url ) : ?>
 		<div class="sarika-hero__background" style="background-image: url('<?php echo esc_url( $background_url ); ?>');">

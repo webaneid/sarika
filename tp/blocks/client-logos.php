@@ -50,6 +50,10 @@ if ( $section_bg ) {
 		$section_style .= 'background: linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%);';
 	} elseif ( $section_bg === 'gradient-dark' ) {
 		$section_style .= 'background: linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%);';
+	} elseif ( $section_bg === 'gradient-light' ) {
+		$section_style .= 'background: linear-gradient(135deg, var(--sarika-color-light) 0%, var(--sarika-color-white) 100%);';
+	} elseif ( $section_bg === 'gradient-accent' ) {
+		$section_style .= 'background: linear-gradient(135deg, var(--sarika-color-accent) 0%, var(--sarika-color-primary) 100%);';
 	}
 }
 
@@ -70,6 +74,10 @@ if ( $container_bg ) {
 		$container_style .= 'background: linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%);';
 	} elseif ( $container_bg === 'gradient-dark' ) {
 		$container_style .= 'background: linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%);';
+	} elseif ( $container_bg === 'gradient-light' ) {
+		$container_style .= 'background: linear-gradient(135deg, var(--sarika-color-light) 0%, var(--sarika-color-white) 100%);';
+	} elseif ( $container_bg === 'gradient-accent' ) {
+		$container_style .= 'background: linear-gradient(135deg, var(--sarika-color-accent) 0%, var(--sarika-color-primary) 100%);';
 	}
 }
 
@@ -87,7 +95,7 @@ if ( empty( $client_logos ) || ! is_array( $client_logos ) ) {
 }
 ?>
 
-<section class="<?php echo esc_attr( $class_name ); ?>" <?php echo $section_style ? 'style="' . esc_attr( $section_style ) . '"' : ''; ?>>
+<section class="sarika-section-page <?php echo esc_attr( $class_name ); ?>" <?php echo $section_style ? 'style="' . esc_attr( $section_style ) . '"' : ''; ?>>
 	<div class="container">
 		<div class="<?php echo esc_attr( $container_class ); ?>" <?php echo $container_style ? 'style="' . esc_attr( $container_style ) . '"' : ''; ?>>
 

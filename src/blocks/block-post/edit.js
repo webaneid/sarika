@@ -60,6 +60,8 @@ export default function Edit({ attributes, setAttributes }) {
 		{ label: __('Black', 'sarika'), value: 'black' },
 		{ label: __('Gradient Primary', 'sarika'), value: 'gradient-primary' },
 		{ label: __('Gradient Dark', 'sarika'), value: 'gradient-dark' },
+		{ label: __('Gradient Light', 'sarika'), value: 'gradient-light' },
+		{ label: __('Gradient Accent', 'sarika'), value: 'gradient-accent' },
 	];
 
 	// Build classes

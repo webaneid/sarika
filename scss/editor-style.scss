@@ -15,6 +15,67 @@
 @use 'button';
 @use 'typography';
 
+/* Import utilities for background colors & gradients */
+// Background colors
+.bg-primary { background-color: var(--sarika-color-primary); }
+.bg-secondary { background-color: var(--sarika-color-secondary); }
+.bg-light { background-color: var(--sarika-color-light); }
+.bg-dark { background-color: var(--sarika-color-dark); }
+.bg-accent { background-color: var(--sarika-color-accent); }
+.bg-white { background-color: var(--sarika-color-white); }
+.bg-black { background-color: var(--sarika-color-black); }
+.bg-transparent { background-color: transparent; }
+
+// Gradient backgrounds - Elegant & Sophisticated
+.bg-gradient-primary {
+	background: linear-gradient(
+		135deg,
+		var(--sarika-color-primary) 0%,
+		var(--sarika-color-secondary) 100%
+	);
+}
+
+.bg-gradient-dark {
+	background: linear-gradient(
+		135deg,
+		var(--sarika-color-dark) 0%,
+		var(--sarika-color-primary) 100%
+	);
+}
+
+.bg-gradient-light {
+	background: linear-gradient(
+		135deg,
+		var(--sarika-color-light) 0%,
+		var(--sarika-color-white) 100%
+	);
+}
+
+.bg-gradient-accent {
+	background: linear-gradient(
+		135deg,
+		var(--sarika-color-accent) 0%,
+		var(--sarika-color-primary) 100%
+	);
+}
+
+// Gradient overlays - Subtle depth
+.bg-gradient-overlay-dark {
+	background: linear-gradient(
+		135deg,
+		rgba(var(--sarika-color-dark-rgb), 0.9) 0%,
+		rgba(var(--sarika-color-dark-rgb), 0.7) 100%
+	);
+}
+
+.bg-gradient-overlay-primary {
+	background: linear-gradient(
+		135deg,
+		rgba(var(--sarika-color-primary-rgb), 0.9) 0%,
+		rgba(var(--sarika-color-primary-rgb), 0.7) 100%
+	);
+}
+
 /* Import custom blocks */
 @import '../src/blocks/hero/editor.scss';
 @import '../src/blocks/icon-description/editor.scss';

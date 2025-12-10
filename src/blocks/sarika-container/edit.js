@@ -37,6 +37,8 @@ export default function Edit({ attributes, setAttributes }) {
 		{ label: __('Black', 'sarika'), value: 'black' },
 		{ label: __('Gradient Primary', 'sarika'), value: 'gradient-primary' },
 		{ label: __('Gradient Dark', 'sarika'), value: 'gradient-dark' },
+		{ label: __('Gradient Light', 'sarika'), value: 'gradient-light' },
+		{ label: __('Gradient Accent', 'sarika'), value: 'gradient-accent' },
 	];
 
 	// BUILD SECTION CLASSES
@@ -58,6 +60,10 @@ export default function Edit({ attributes, setAttributes }) {
 			sectionStyle.background = 'linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%)';
 		} else if (ane_section_background === 'gradient-dark') {
 			sectionStyle.background = 'linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%)';
+		} else if (ane_section_background === 'gradient-light') {
+			sectionStyle.background = 'linear-gradient(135deg, var(--sarika-color-light) 0%, var(--sarika-color-white) 100%)';
+		} else if (ane_section_background === 'gradient-accent') {
+			sectionStyle.background = 'linear-gradient(135deg, var(--sarika-color-accent) 0%, var(--sarika-color-primary) 100%)';
 		}
 	}
 
@@ -76,6 +82,10 @@ export default function Edit({ attributes, setAttributes }) {
 			containerStyle.background = 'linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%)';
 		} else if (ane_container_background === 'gradient-dark') {
 			containerStyle.background = 'linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%)';
+		} else if (ane_container_background === 'gradient-light') {
+			containerStyle.background = 'linear-gradient(135deg, var(--sarika-color-light) 0%, var(--sarika-color-white) 100%)';
+		} else if (ane_container_background === 'gradient-accent') {
+			containerStyle.background = 'linear-gradient(135deg, var(--sarika-color-accent) 0%, var(--sarika-color-primary) 100%)';
 		}
 	}
 	if (ane_container_border_radius > 0) {

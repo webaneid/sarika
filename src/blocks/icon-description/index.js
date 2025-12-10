@@ -20,11 +20,16 @@ registerBlockType('sarika/icon-description', {
 		ane_button_link: { type: 'object', default: { title: '', url: '', target: '' } },
 		ane_button2_link: { type: 'object', default: { title: '', url: '', target: '' } },
 
-		// Block Options
-		ane_background_color: { type: 'string', default: '' }, // Custom color or predefined
-		ane_padding_top: { type: 'string', default: 'large' }, // medium, large
-		ane_padding_bottom: { type: 'string', default: 'large' }, // medium, large
-		ane_margin_bottom: { type: 'string', default: 'large' }, // zero, medium, large
+		// Section Options
+		ane_section_background: { type: 'string', default: '' }, // Custom color or predefined (includes gradient-primary, gradient-dark, gradient-light, gradient-accent)
+		ane_padding_top: { type: 'string', default: 'large' }, // none, small, medium, large, xlarge
+		ane_padding_bottom: { type: 'string', default: 'large' }, // none, small, medium, large, xlarge
+		ane_margin_bottom: { type: 'string', default: 'large' }, // none, small, medium, large, xlarge
+
+		// Container Options
+		ane_container_background: { type: 'string', default: '' }, // Custom color or predefined (includes gradient-primary, gradient-dark, gradient-light, gradient-accent)
+		ane_container_border_radius: { type: 'number', default: 0 }, // 0-50px
+		ane_container_padding: { type: 'number', default: 0 }, // 0-100px
 
 		// Title Options
 		ane_title_size: { type: 'string', default: 'small' }, // small, desc, body, hero

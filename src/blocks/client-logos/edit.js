@@ -5,8 +5,9 @@
  */
 
 import { __ } from '@wordpress/i18n';
-import { InspectorControls, MediaUpload } from '@wordpress/block-editor';
+import { InspectorControls, MediaUpload, ColorPicker } from '@wordpress/block-editor';
 import { PanelBody, SelectControl, RangeControl, Button } from '@wordpress/components';
+import { useState } from '@wordpress/element';
 
 export default function Edit({ attributes, setAttributes }) {
 	const {
@@ -21,6 +22,10 @@ export default function Edit({ attributes, setAttributes }) {
 		ane_container_padding,
 	} = attributes;
 
+	// State for color pickers
+	const [showSectionColorPicker, setShowSectionColorPicker] = useState(false);
+	const [showContainerColorPicker, setShowContainerColorPicker] = useState(false);
+
 	// Predefined colors
 	const predefinedColors = [
 		{ label: __('Transparent (Default)', 'sarika'), value: '' },
@@ -30,8 +35,10 @@ export default function Edit({ attributes, setAttributes }) {
 		{ label: __('Primary', 'sarika'), value: 'primary' },
 		{ label: __('Secondary', 'sarika'), value: 'secondary' },
 		{ label: __('Accent', 'sarika'), value: 'accent' },
-		{ label: __('Gradient Primary → Secondary', 'sarika'), value: 'gradient-primary' },
-		{ label: __('Gradient Dark → Primary', 'sarika'), value: 'gradient-dark' },
+		{ label: __('Gradient Primary', 'sarika'), value: 'gradient-primary' },
+		{ label: __('Gradient Dark', 'sarika'), value: 'gradient-dark' },
+		{ label: __('Gradient Light', 'sarika'), value: 'gradient-light' },
+		{ label: __('Gradient Accent', 'sarika'), value: 'gradient-accent' },
 	];
 
 	// Build section style
@@ -44,6 +51,10 @@ export default function Edit({ attributes, setAttributes }) {
 				sectionStyle.background = 'linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%)';
 			} else if (ane_section_background === 'gradient-dark') {
 				sectionStyle.background = 'linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%)';
+			} else if (ane_section_background === 'gradient-light') {
+				sectionStyle.background = 'linear-gradient(135deg, var(--sarika-color-light) 0%, var(--sarika-color-white) 100%)';
+			} else if (ane_section_background === 'gradient-accent') {
+				sectionStyle.background = 'linear-gradient(135deg, var(--sarika-color-accent) 0%, var(--sarika-color-primary) 100%)';
 			}
 		}
 	}
@@ -58,6 +69,10 @@ export default function Edit({ attributes, setAttributes }) {
 				containerStyle.background = 'linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%)';
 			} else if (ane_container_background === 'gradient-dark') {
 				containerStyle.background = 'linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%)';
+			} else if (ane_container_background === 'gradient-light') {
+				containerStyle.background = 'linear-gradient(135deg, var(--sarika-color-light) 0%, var(--sarika-color-white) 100%)';
+			} else if (ane_container_background === 'gradient-accent') {
+				containerStyle.background = 'linear-gradient(135deg, var(--sarika-color-accent) 0%, var(--sarika-color-primary) 100%)';
 			}
 		}
 	}
@@ -138,6 +153,24 @@ export default function Edit({ attributes, setAttributes }) {
 						options={predefinedColors}
 						onChange={(value) => setAttributes({ ane_section_background: value })}
 					/>
+					{ane_section_background && (
+						<div style={{ marginTop: '12px' }}>
+							<Button variant="secondary" onClick={() => setShowSectionColorPicker(!showSectionColorPicker)}>
+								{__('Custom Color Picker', 'sarika')}
+							</Button>
+							{showSectionColorPicker && (
+								<div style={{ marginTop: '12px' }}>
+									<ColorPicker
+										color={ane_section_background}
+										onChangeComplete={(color) => {
+											setAttributes({ ane_section_background: `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})` });
+										}}
+										disableAlpha={false}
+									/>
+								</div>
+							)}
+						</div>
+					)}
 
 					<SelectControl
 						label={__('Padding Top', 'sarika')}
@@ -147,6 +180,7 @@ export default function Edit({ attributes, setAttributes }) {
 							{ label: __('Small', 'sarika'), value: 'small' },
 							{ label: __('Medium', 'sarika'), value: 'medium' },
 							{ label: __('Large', 'sarika'), value: 'large' },
+							{ label: __('Extra Large', 'sarika'), value: 'xlarge' },
 						]}
 						onChange={(value) => setAttributes({ ane_padding_top: value })}
 					/>
@@ -159,6 +193,7 @@ export default function Edit({ attributes, setAttributes }) {
 							{ label: __('Small', 'sarika'), value: 'small' },
 							{ label: __('Medium', 'sarika'), value: 'medium' },
 							{ label: __('Large', 'sarika'), value: 'large' },
+							{ label: __('Extra Large', 'sarika'), value: 'xlarge' },
 						]}
 						onChange={(value) => setAttributes({ ane_padding_bottom: value })}
 					/>
@@ -171,6 +206,7 @@ export default function Edit({ attributes, setAttributes }) {
 							{ label: __('Small', 'sarika'), value: 'small' },
 							{ label: __('Medium', 'sarika'), value: 'medium' },
 							{ label: __('Large', 'sarika'), value: 'large' },
+							{ label: __('Extra Large', 'sarika'), value: 'xlarge' },
 						]}
 						onChange={(value) => setAttributes({ ane_margin_bottom: value })}
 					/>
@@ -184,6 +220,24 @@ export default function Edit({ attributes, setAttributes }) {
 						options={predefinedColors}
 						onChange={(value) => setAttributes({ ane_container_background: value })}
 					/>
+					{ane_container_background && (
+						<div style={{ marginTop: '12px' }}>
+							<Button variant="secondary" onClick={() => setShowContainerColorPicker(!showContainerColorPicker)}>
+								{__('Custom Color Picker', 'sarika')}
+							</Button>
+							{showContainerColorPicker && (
+								<div style={{ marginTop: '12px' }}>
+									<ColorPicker
+										color={ane_container_background}
+										onChangeComplete={(color) => {
+											setAttributes({ ane_container_background: `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})` });
+										}}
+										disableAlpha={false}
+									/>
+								</div>
+							)}
+						</div>
+					)}
 
 					<RangeControl
 						label={__('Border Radius', 'sarika')}

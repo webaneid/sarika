@@ -238,7 +238,7 @@
   .wpcf7-not-valid-tip {
     display: block;
     font-size: 0.75rem;
-    color: #dc2626; // Standard red for errors (accessibility)
+    color: var(--sarika-color-accent); // Standard red for errors (accessibility)
     margin-top: 0.25rem;
   }
 
@@ -252,17 +252,17 @@
   }
 
   .wpcf7-mail-sent-ok {
-    background-color: #d1fae5; // Light green
-    color: #065f46; // Dark green text
-    border-color: #6ee7b7;
+    background-color: var(--sarika-color-light); // Light green
+    color: var(--sarika-color-primary); // Dark green text
+    border-color: var(--sarika-color-primary);
   }
 
   .wpcf7-mail-sent-ng,
   .wpcf7-validation-errors,
   .wpcf7-acceptance-missing {
-    background-color: #fee2e2; // Light red
-    color: #991b1b; // Dark red text
-    border-color: #fca5a5;
+    background-color: var(--sarika-color-primary); // Light red
+    color: var(--sarika-color-white); // Dark red text
+    border-color: var(--sarika-color-primary);
   }
 
   .wpcf7-spam-blocked {

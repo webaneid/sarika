@@ -282,3 +282,21 @@
 	}
 }
 
+/**
+ * URLInput Suggestions Styling
+ * NOTE: Tidak pakai CSS stabilizer karena bikin konflik dengan block inserter WordPress.
+ * Trade-off: URLInput mungkin sedikit shaking, tapi block inserter tetap normal.
+ */
+.block-editor-url-input__suggestion {
+	// Individual suggestion item styling
+	padding: 10px 16px;
+	font-size: 13px;
+	transition: background-color 0.15s ease;
+
+	&:hover,
+	&:focus {
+		background: rgba(var(--sarika-color-primary-rgb), 0.08);
+		color: var(--sarika-color-primary);
+	}
+}
+

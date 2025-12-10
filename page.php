@@ -21,7 +21,13 @@ get_header();
 
 		<!-- Centered single column layout (same width as single.php main content) -->
 		<div class="max-w-full md:max-w-[66.666%] mx-auto">
-			<article id="page-<?php the_ID(); ?>" <?php post_class( 'single-post min-w-0 sarika-page' ); ?>>
+			<?php
+		$page_classes = array( 'single-post', 'min-w-0', 'sarika-page' );
+		if ( has_post_thumbnail() ) {
+			$page_classes[] = 'has-featured-image';
+		}
+		?>
+		<article id="page-<?php the_ID(); ?>" <?php post_class( $page_classes ); ?>>
 
 				<!-- Title -->
 				<h1 class="single-post__title mb-4"><?php the_title(); ?></h1>

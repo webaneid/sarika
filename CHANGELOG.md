@@ -18,6 +18,107 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.1.8] - 2025-12-10
+
+### Fixed
+
+#### Block Icon Description - Editor Improvements
+- **Button Style Duplication** - Removed duplicate Button Style settings from Options tab
+  - Problem: Button Style controls appeared in both Content tab and Options tab
+  - Solution: Kept Button Style controls only in Content tab (grouped with button link fields)
+  - Benefit: Cleaner UI, less confusion for users
+  - File: `src/blocks/icon-description/edit.js`
+  - Build size: 39.8 KiB (reduced from 40.8 KiB)
+
+- **URLInput Popover Conflicts** - Fixed WordPress block inserter issues caused by CSS transform override
+  - Problem: CSS stabilizer for URLInput dropdown was blocking WordPress block inserter and toolbar popovers
+  - Root cause: Too aggressive CSS selector `.components-popover.is-positioned .components-popover__content`
+  - Solution: Removed all popover stabilizer CSS (URLInput may have slight shaking but block inserter now works)
+  - Trade-off: URLInput link picker may shake slightly when suggestions appear, but core WordPress functionality preserved
+  - Files: `src/blocks/icon-description/editor.scss`
+  - Build size: 34.8 KiB (reduced from 41 KiB - 15% smaller)
+
+- **Dashicons Frontend Display** - Fixed Dashicons not appearing on frontend
+  - Problem: Dashicons CSS only loaded in admin by default
+  - Solution: Enqueued `dashicons` stylesheet on frontend
+  - Added Dashicons reference link in editor with example usage
+  - File: `inc/assets.php` line 12, `src/blocks/icon-description/edit.js`
+
+#### Block Profile - Container Options Standard Compliance
+- **Container Background Rendering** - Fixed gradient backgrounds not displaying
+  - Problem: Gradients rendered as inline styles instead of CSS classes from `_utilities.scss`
+  - Solution: Use CSS classes (`.bg-gradient-primary`, `.bg-gradient-dark`, etc.) for all predefined colors and gradients
+  - Inline styles ONLY for custom hex/rgba colors
+  - Pattern matches BLOCK-DEVELOPMENT-STANDARD.md exactly
+  - File: `tp/blocks/block-profile.php` lines 104-136
+
+#### Admin Bar Mobile - Hidden Menu Click Prevention
+- **Mobile WP Admin Bar** - Fixed hidden submenu items still clickable on mobile
+  - Problem: WordPress submenu (site-name and my-account) hidden with `display: none` but still clickable
+  - Root cause: Menu items between hamburger and user avatar could be accidentally clicked
+  - Solution: Added comprehensive hide properties to prevent any interaction
+    - `display: none` - Hide visual
+    - `visibility: hidden` - Hide from accessibility tree
+    - `pointer-events: none` - Disable all click/touch events
+    - `opacity: 0` - Extra visual assurance
+  - Target selectors: `#wp-admin-bar-my-account .ab-submenu`, `#wp-admin-bar-site-name .ab-submenu`
+  - File: `scss/_admin-header.scss` lines 526-533
+  - Benefit: Clean mobile UX, no accidental clicks on hidden elements
+
+### Added
+
+#### Sarika Setup Page - Update Checker Integration
+- **Check for Updates Card** - Added theme update checker to Sarika Setup dashboard
+  - New card in 4-column grid layout with link to GitHub update system
+  - Label: "Theme Updates"
+  - Title: "Check for Updates"
+  - Description: "Check GitHub for latest Sarika theme version and update automatically"
+  - Link: Direct to WordPress themes page with force check parameter
+  - File: `inc/admin.php` lines 41-47
+
+### Changed
+
+#### Admin Cards Layout - Mobile Responsive Improvements
+- **4-Column Grid Layout** - Redesigned Sarika Setup cards for better space utilization
+  - Desktop (>1200px): 4 columns
+  - Tablet (782px-1200px): 2 columns
+  - Mobile (≤782px): 2 columns with compact sizing
+  - Gap: 1rem desktop, 0.75rem mobile
+  - File: `scss/_admin-style.scss` lines 252-267
+
+- **Mobile Card Optimization** - Compact cards for better mobile UX
+  - Reduced padding: 1rem → 0.75rem
+  - Smaller typography: h3 0.875rem, p 0.75rem
+  - Compact buttons: 0.375rem × 0.625rem padding, 0.75rem font-size
+  - File: `scss/_admin-style.scss` lines 318-337
+
+- **Button Text Variants** - Separate desktop and mobile button text
+  - Desktop: Full descriptive text + arrow (e.g., "Open General Setting →")
+  - Mobile: Compact "Open" text only (no arrow)
+  - Implementation: Separate `<span>` elements with conditional CSS display
+  - Classes: `.sarika-admin__cta-text` (desktop), `.sarika-admin__cta-mobile` (mobile), `.sarika-admin__cta-arrow` (desktop only)
+  - Files: `inc/admin.php` lines 304-308, `scss/_admin-style.scss` lines 340-361
+  - Benefit: Clean mobile UI without text overflow or wrapping
+
+#### Code Architecture Improvements
+- **CSS Class Pattern** - Standardized all blocks to use utility classes from `_utilities.scss`
+  - Predefined colors → `.bg-primary`, `.bg-secondary`, `.bg-white`, etc.
+  - Gradients → `.bg-gradient-primary`, `.bg-gradient-dark`, `.bg-gradient-light`, `.bg-gradient-accent`
+  - Custom colors → inline style `background-color: rgba(...)`
+  - Border radius → inline style `border-radius: Xpx`
+  - Padding → inline style `padding: Xpx`
+  - Benefit: Consistent styling across all blocks, better performance, easier maintenance
+
+### Development
+
+#### Editor Styles Optimization
+- **Icon Description Block** - Cleaned up editor CSS
+  - Removed URLInput stabilizer (85 lines of complex CSS)
+  - Simplified to basic suggestion styling only
+  - Total reduction: 6.2 KiB (from 41 KiB to 34.8 KiB)
+
+---
+
 ## [0.1.7] - 2025-12-09
 
 ### Added

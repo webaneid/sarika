@@ -238,13 +238,13 @@
 
 // Primary button (yellow)
 .sarika-hero__button--primary {
-	background: #F4C542;
-	color: #000;
-	border: 2px solid #F4C542;
+	background: var(--sarika-color-primary);
+	color: var(--sarika-color-white);
+	border: 2px solid var(--sarika-color-primary);
 
 	&:hover {
-		background: #E5B630;
-		border-color: #E5B630;
+		background: var(--sarika-color-secondary);
+		border-color: var(--sarika-color-secondary);
 		transform: translateY(-2px);
 		box-shadow: 0 4px 12px rgba(244, 197, 66, 0.4);
 	}
@@ -304,10 +304,10 @@
 // Preview placeholder (in editor)
 .sarika-hero__preview {
 	padding: 4rem 2rem;
-	background: #f0f0f1;
-	border: 2px dashed #c3c4c7;
+	background: var(--sarika-color-white);
+	border: 2px dashed var(--sarika-color-primary);
 	text-align: center;
-	color: #646970;
+	color: var(--sarika-color-body);
 	font-size: 1rem;
 }
 
@@ -1523,19 +1523,19 @@
 		font-size: 0.875rem;
 		font-weight: 600;
 		text-decoration: none;
-		background: #f4c542;
-		color: #000;
-		border: 2px solid #f4c542;
+		background: var(--sarika-color-primary);
+		color: var(--sarika-color-dark);
+		border: 2px solid var(--sarika-color-primary);
 		text-transform: uppercase;
 		letter-spacing: 0.5px;
 		font-family: 'Poppins', sans-serif;
 		transition: all 0.3s ease;
 
 		&:hover {
-			background: #e5b630;
-			border-color: #e5b630;
+			background: var(--sarika-color-secondary);
+			border-color: var(--sarika-color-secondary);
 			transform: translateY(-2px);
-			box-shadow: 0 4px 12px rgba(244, 197, 66, 0.4);
+			box-shadow: 0 4px 12px rgba(var(--sarika-color-dark-rgb), 0.4);
 		}
 
 		@media (max-width: 768px) {
@@ -1769,8 +1769,8 @@
 
 // Gallery Editor Styles
 .sarika-gallery-editor {
-	background: #f5f5f5;
-	border: 1px solid #ddd;
+	background: var(--sarika-color-white);
+	border: 1px solid var(--sarika-color-body);
 	border-radius: 4px;
 
 	h3 {
@@ -1781,7 +1781,7 @@
 
 	p {
 		margin: 0 0 1rem 0;
-		color: #666;
+		color: var(--sarika-color-body);
 		font-size: 0.875rem;
 	}
 }
@@ -1947,7 +1947,7 @@
 			}
 
 			&.empty {
-				color: #d1d5db;
+				color: var(--sarika-color-light);
 			}
 		}
 	}

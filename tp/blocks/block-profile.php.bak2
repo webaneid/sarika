@@ -94,46 +94,36 @@ if ( $section_bg ) {
 		$section_style .= 'background: linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%);';
 	} elseif ( $section_bg === 'gradient-dark' ) {
 		$section_style .= 'background: linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%);';
-	} elseif ( $section_bg === 'gradient-light' ) {
-		$section_style .= 'background: linear-gradient(135deg, var(--sarika-color-light) 0%, var(--sarika-color-white) 100%);';
-	} elseif ( $section_bg === 'gradient-accent' ) {
-		$section_style .= 'background: linear-gradient(135deg, var(--sarika-color-accent) 0%, var(--sarika-color-primary) 100%);';
 	}
 }
 
-// =========================================
-// BUILD CONTAINER CLASSES
-// =========================================
-$container_classes = [];
-$container_classes[] = 'sarika-block-profile__container';
+// Build container class
+$container_class = 'sarika-block-profile__container';
 
-// Container background (predefined color class from _utilities.scss)
+// Add predefined container background class
 if ( $container_bg && ! str_starts_with( $container_bg, '#' ) && ! str_starts_with( $container_bg, 'rgb' ) ) {
-	// Use CSS class for predefined colors AND gradients
-	$container_classes[] = 'bg-' . esc_attr( $container_bg );
+	$container_class .= ' bg-' . esc_attr( $container_bg );
 }
 
-// BUILD CONTAINER INLINE STYLES
-$container_styles = [];
-
-// Container custom background (hex/rgba ONLY - gradients use CSS class above)
-if ( $container_bg && ( str_starts_with( $container_bg, '#' ) || str_starts_with( $container_bg, 'rgb' ) ) ) {
-	$container_styles[] = 'background-color: ' . esc_attr( $container_bg );
+// Build container inline style
+$container_style = '';
+if ( $container_bg ) {
+	if ( str_starts_with( $container_bg, '#' ) || str_starts_with( $container_bg, 'rgb' ) ) {
+		$container_style .= 'background-color: ' . esc_attr( $container_bg ) . ';';
+	} elseif ( $container_bg === 'gradient-primary' ) {
+		$container_style .= 'background: linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%);';
+	} elseif ( $container_bg === 'gradient-dark' ) {
+		$container_style .= 'background: linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%);';
+	}
 }
 
-// Container border radius (always inline style with px)
 if ( $container_border_radius > 0 ) {
-	$container_styles[] = 'border-radius: ' . esc_attr( $container_border_radius ) . 'px';
+	$container_style .= 'border-radius: ' . esc_attr( $container_border_radius ) . 'px;';
 }
 
-// Container padding (inline style with px)
 if ( $container_padding > 0 ) {
-	$container_styles[] = 'padding: ' . esc_attr( $container_padding ) . 'px';
+	$container_style .= 'padding: ' . esc_attr( $container_padding ) . 'px;';
 }
-
-// Convert arrays to strings
-$container_class = implode( ' ', $container_classes );
-$container_style = implode( '; ', $container_styles );
 
 // Build content class
 $content_class = 'sarika-block-profile__content';

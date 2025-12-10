@@ -51,7 +51,7 @@ $title_class = $title_size . ' text-' . $title_color;
 $desc_class  = 'desc text-' . $description_color;
 ?>
 
-<section class="<?php echo esc_attr( implode( ' ', $section_classes ) ); ?>" data-video-bg="<?php echo esc_attr( $video_instance_id ); ?>">
+<section class="sarika-section-page <?php echo esc_attr( implode( ' ', $section_classes ) ); ?>" data-video-bg="<?php echo esc_attr( $video_instance_id ); ?>">
 
 	<?php if ( $video_id ) : ?>
 		<!-- YouTube Video Background -->

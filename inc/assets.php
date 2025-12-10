@@ -8,6 +8,9 @@
 function sarika_enqueue_assets() : void {
 	$theme_version = wp_get_theme()->get( 'Version' );
 
+	// Dashicons for icon-description block frontend
+	wp_enqueue_style( 'dashicons' );
+
 	// Google Fonts with font-display swap for performance.
 	wp_enqueue_style(
 		'sarika-fonts',

@@ -122,14 +122,18 @@ body.has-open-submenu #wpcontent {
 	opacity: 0.7; /* Match text opacity */
 	padding: 0 !important;
 }
+#adminmenu li.menu-top:hover {
+	background-color: transparent !important;
+}
 
 /* Menu item hover */
 #adminmenu li.menu-top:hover > a,
 #adminmenu li.opensub > a,
 #adminmenu li > a:focus {
-	background: rgba(255, 255, 255, 0.1) !important;
-	color: #ffffff !important;
-	box-shadow: none;
+	background: rgba(var(--sarika-color-white-rgb), 0.2) !important;
+	color: var(--sarika-color-white) !important;
+	font-weight: var(--sarika-font-semibold, 600);
+	box-shadow: inset 0 0 0 2px rgba(var(--sarika-color-white-rgb), 0.2);
 }
 
 #adminmenu li.menu-top:hover .wp-menu-image,
@@ -142,10 +146,10 @@ body.has-open-submenu #wpcontent {
 /* Menu item active/current - darker background */
 #adminmenu li.menu-top.current > a,
 #adminmenu li.menu-top.wp-has-current-submenu > a {
-	background: rgba(255, 255, 255, 0.2) !important;
-	color: #ffffff !important;
+	background: rgba(var(--sarika-color-white-rgb), 0.2) !important;
+	color: var(--sarika-color-white) !important;
 	font-weight: var(--sarika-font-semibold, 600);
-	box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.2);
+	box-shadow: inset 0 0 0 2px rgba(var(--sarika-color-white-rgb), 0.2);
 }
 
 #adminmenu li.menu-top.current .wp-menu-image,
@@ -178,7 +182,7 @@ body.has-open-submenu #wpcontent {
 	top: 50%;
 	transform: translateY(-50%) scale(0.9);
 	background: var(--sarika-color-primary, #2d232e);
-	color: #ffffff;
+	color: var(--sarika-color-white);
 	padding: 8px 12px;
 	border-radius: var(--sarika-radius-md, 10px);
 	font-size: 13px;

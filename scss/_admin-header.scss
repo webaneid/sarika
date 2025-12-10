@@ -5,8 +5,8 @@
 
 /* Admin bar container - light background */
 #wpadminbar {
-	background: #ffffff !important;
-	border-bottom: 1px solid rgba(45, 35, 46, 0.08) !important;
+	background: rgba (var(--sarika-color-white-rgb),0.2) !important;
+	border: 1px solid rgba(255, 255, 255, 0.3);
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
 	height: 48px !important;
 	position: fixed !important;
@@ -14,6 +14,9 @@
 	left: 0 !important;
 	right: 0 !important;
 	z-index: 99999 !important;
+  	backdrop-filter: blur(20px);
+	-webkit-backdrop-filter: blur(20px);
+	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 
 	.ab-item {
 		height: 48px !important;
@@ -25,7 +28,7 @@
 	a.ab-item,
 	> #wp-toolbar span.ab-label,
 	> #wp-toolbar span.noticon {
-		color: #1e2d2f !important;
+		color: var(--sarika-color-body) !important;
 		transition: all 0.15s ease;
 		background: transparent !important;
 	}
@@ -34,18 +37,18 @@
 	.ab-item:hover,
 	a.ab-item:hover,
 	> #wp-toolbar > #wp-admin-bar-root-default .ab-item:hover {
-		background: rgba(45, 35, 46, 0.04) !important;
-		color: #2d232e !important;
+		background: rgba(var(--sarika-color-light-rgb), 0.04) !important;
+		color: var(--sarika-color-darky) !important;
 	}
 
 	#wp-admin-bar-my-account.with-avatar .ab-item:hover > img {
-		border-color: #2d232e !important;
+		border-color: var(--sarika-color-light) !important;
 	}
 }
 
 /* Fix body margin untuk frontend */
 body.admin-bar {
-	padding-top: 20px !important;
+	padding-top: 0 !important;
 }
 
 /* Fix mobile */
@@ -277,8 +280,8 @@ body.admin-bar {
 
 	/* New Post - Solid */
 	#wp-admin-bar-sarika-new-post > a {
-		background: #2d232e !important;
-		color: #ffffff !important;
+		background: var(--sarika-color-primary) !important;
+		color: var(--sarika-color-light) !important;
 		border: none !important;
 		display: inline-flex !important;
 		align-items: center !important;
@@ -300,9 +303,9 @@ body.admin-bar {
 
 	/* New Page - Outline */
 	#wp-admin-bar-sarika-new-page > a {
-		background: transparent !important;
-		color: #2d232e !important;
-		border: 1.5px solid #2d232e !important;
+		background: rgba(var(--sarika-color-white-rgb),0.7) !important;
+		color: var(--sarika-color-dark) !important;
+		border: 1.5px solid rgba(var(--sarika-color-white-rgb),0.8)  !important;
 		display: inline-flex !important;
 		align-items: center !important;
 		gap: 6px !important;
@@ -521,8 +524,12 @@ body.admin-bar {
 		}
 
 		/* HIDE original WordPress submenu - we use custom panel instead */
-		#wp-admin-bar-my-account .ab-submenu {
+		#wp-admin-bar-my-account .ab-submenu,
+		#wp-admin-bar-site-name .ab-submenu {
 			display: none !important;
+			visibility: hidden !important;
+			pointer-events: none !important;
+			opacity: 0 !important;
 		}
 
 		/* Mobile dropdown menu - Full width overlay */

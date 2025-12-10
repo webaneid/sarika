@@ -61,10 +61,6 @@ if ( $container_bg ) {
 		$container_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%)';
 	} elseif ( $container_bg === 'gradient-dark' ) {
 		$container_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%)';
-	} elseif ( $container_bg === 'gradient-light' ) {
-		$container_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-light) 0%, var(--sarika-color-white) 100%)';
-	} elseif ( $container_bg === 'gradient-accent' ) {
-		$container_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-accent) 0%, var(--sarika-color-primary) 100%)';
 	}
 }
 

@@ -68,6 +68,10 @@ if ( $section_bg ) {
 		$section_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%)';
 	} elseif ( $section_bg === 'gradient-dark' ) {
 		$section_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%)';
+	} elseif ( $section_bg === 'gradient-light' ) {
+		$section_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-light) 0%, var(--sarika-color-white) 100%)';
+	} elseif ( $section_bg === 'gradient-accent' ) {
+		$section_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-accent) 0%, var(--sarika-color-primary) 100%)';
 	}
 }
 
@@ -89,6 +93,10 @@ if ( $container_bg ) {
 		$container_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-primary) 0%, var(--sarika-color-secondary) 100%)';
 	} elseif ( $container_bg === 'gradient-dark' ) {
 		$container_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-dark) 0%, var(--sarika-color-primary) 100%)';
+	} elseif ( $container_bg === 'gradient-light' ) {
+		$container_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-light) 0%, var(--sarika-color-white) 100%)';
+	} elseif ( $container_bg === 'gradient-accent' ) {
+		$container_styles[] = 'background: linear-gradient(135deg, var(--sarika-color-accent) 0%, var(--sarika-color-primary) 100%)';
 	}
 }
 if ( $container_radius > 0 ) {
@@ -208,7 +216,7 @@ $fact_desc_class_string = implode( ' ', $fact_desc_classes );
 $fact_desc_style_string = ! empty( $fact_desc_styles ) ? implode( '; ', $fact_desc_styles ) : '';
 ?>
 
-<section class="<?php echo esc_attr( $section_class_string ); ?>" <?php echo $section_style_string ? 'style="' . esc_attr( $section_style_string ) . '"' : ''; ?>>
+<section class="sarika-section-page <?php echo esc_attr( $section_class_string ); ?>" <?php echo $section_style_string ? 'style="' . esc_attr( $section_style_string ) . '"' : ''; ?>>
 	<div class="<?php echo esc_attr( $container_class_string ); ?>" <?php echo $container_style_string ? 'style="' . esc_attr( $container_style_string ) . '"' : ''; ?>>
 
 		<!-- DEBUG: funfact_items = <?php echo is_array( $funfact_items ) ? count( $funfact_items ) . ' items' : 'NOT ARRAY or EMPTY'; ?> -->

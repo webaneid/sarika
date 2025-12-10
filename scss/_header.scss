@@ -102,15 +102,18 @@
 	// Logo (Left)
 	&__logo-wrapper {
 		flex-shrink: 0;
+		max-width: 30%;
 	}
 
 	&__logo {
-		display: inline-block;
-
+		display: block;
+		width: 100%;
+		height: auto;
 		img {
 			display: block;
-			height: 36px;
-			width: auto;
+			height: auto;
+			width: 100%;
+			max-width: none;
 
 			@media (max-width: 768px) {
 				height: 32px;
